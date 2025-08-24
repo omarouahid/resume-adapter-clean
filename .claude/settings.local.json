@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/C:\\c\\Users\\omari\\PycharmProjects/**)",
+      "Bash(python test_vision_models.py:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

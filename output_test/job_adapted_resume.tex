@@ -1,0 +1,88 @@
+\documentclass[10pt,a4paper,ragged2e,withhyper]{altacv}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+% Define colors
+\definecolor{darkblue}{RGB}{0, 51, 102}
+\definecolor{lightgray}{RGB}{240, 240, 240}
+
+% Set up the page margins
+\geometry{left=1.25cm,right=1.25cm,top=1.5cm,bottom=1.5cm,columnsep=1.2cm}
+
+% Set up the color of sections and subsections
+\colorlet{heading}{darkblue}
+\colorlet{accent}{darkblue}
+\colorlet{emphasis}{black}
+\colorlet{body}{black!80!white}
+
+% Adjust font sizes
+\renewcommand{\namefont}{\Huge\bfseries}
+\renewcommand{\personalinfofont}{\large}
+\renewcommand{\cvsectionfont}{\Large\bfseries}
+\renewcommand{\cvsubsectionfont}{\large\bfseries}
+\renewcommand{\cveventfont}{\normalsize\bfseries}
+
+% Personal information
+\name{OUAHID OMAR}
+\tagline{Senior Data Engineer with 5+ Years of Experience in Python, SQL, and AWS}
+\personalinfo{%
+  \email{omarouahid.98@gmail.com}
+  \phone{+212680364513}
+  \linkedin{omar-ouahid}
+  \location{Casablanca, Morocco}
+}
+
+\begin{document}
+\makecvheader
+
+\cvsection{Professional Summary}
+\begin{minipage}{\textwidth}
+Senior Data Engineer with over 5 years of experience in designing and maintaining ETL pipelines, optimizing data warehouse performance, and collaborating with ML engineers. Proficient in Python, SQL, AWS, Apache Airflow, Spark, Kafka, Docker, and Kubernetes. Experienced in machine learning pipeline development and real-time data processing.
+\end{minipage}
+
+\cvsection{Technical Skills}
+\begin{itemize}[noitemsep]
+\item \textbf{Programming Languages:} Python, SQL
+\item \textbf{Data Engineering Tools:} AWS, Apache Airflow, Spark, Kafka
+\item \textbf{Containerization:} Docker, Kubernetes
+\item \textbf{Machine Learning:} Pipeline Development, Model Deployment
+\item \textbf{Data Processing:} Real-time Data Processing, ETL Pipelines
+\item \textbf{Data Quality:} Monitoring, Validation, Governance
+\end{itemize}
+
+\cvsection{Professional Experience}
+
+\cvevent{Data Engineer}{Berexia (External at SCOR)}{May 2024 -- Present}{Casablanca, Morocco}
+\begin{itemize}[noitemsep]
+\item Architected and implemented scalable data pipeline systems using AWS services (Fargate, ECR, Step Functions) with automated CI/CD deployment processes.
+\item Designed and built ETL pipelines for healthcare laboratory data processing, ensuring data quality and consistency.
+\item Developed API-driven data ingestion systems that dynamically generate data workflows from OpenAPI specifications.
+\item Implemented real-time data processing solutions using AWS Lambda and Step Functions for complex workflow orchestration and monitoring.
+\item Built and maintained data preparation workflows optimized for downstream analytics and machine learning applications.
+\item Established data governance and quality assurance processes, ensuring reliable data delivery across multiple business units.
+\end{itemize}
+
+\cvevent{Data Engineer}{Berexia (External at SCOR)}{Sep 2021 -- Jan 2024}{Casablanca, Morocco}
+\begin{itemize}[noitemsep]
+\item Designed and implemented automated data extraction and transformation pipelines using Python, reducing manual processing time by 70\%.
+\item Built scalable ETL systems for insurance data processing, handling millions of records with high availability and fault tolerance.
+\item Developed data validation and quality monitoring frameworks to ensure data integrity across multiple source systems.
+\item Created RESTful APIs and microservices architecture using Flask for efficient data access and integration.
+\item Implemented real-time data visualization dashboards using Dash, enabling stakeholders to monitor key business metrics.
+\item Optimized database performance and designed data models for improved query efficiency and storage optimization.
+\end{itemize}
+
+\cvevent{Data Scientist}{Adwebmaroc}{Mar 2021 -- Aug 2021}{Casablanca, Morocco}
+\begin{itemize}[noitemsep]
+\item Developed an automated brand detection system with Python, OpenCV, TensorFlow, and YOLOv5.
+\item Used advanced image processing for brand element detection.
+\item Implemented OCR to enhance data richness and accuracy.
+\item Applied NLP for comprehensive analysis of extracted text.
+\item Enhanced system efficiency with a custom-tuned YOLOv5 model.
+\item Combined computer vision, OCR, and NLP for robust brand detection.
+\end{itemize}
+
+\end{document}

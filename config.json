@@ -1,0 +1,16 @@
+{
+  "openrouter": {
+    "api_key": "your-openrouter-api-key-here",
+    "default_model": "mistralai/mistral-small-3.2-24b-instruct:free"
+  },
+  "ui": {
+    "default_port": 8501,
+    "auto_open_browser": true
+  },
+  "processing": {
+    "ocr_confidence_threshold": 0.5,
+    "max_file_size_mb": 10
+  }
+}
+
+

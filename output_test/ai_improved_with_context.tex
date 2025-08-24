@@ -1,0 +1,51 @@
+\documentclass[10pt,a4paper,ragged2e,withhyper]{altacv}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+% Define colors
+\definecolor{darkblue}{RGB}{0, 51, 102}
+\definecolor{lightgray}{RGB}{240, 240, 240}
+
+% Set up the page margins
+\geometry{left=1.25cm,right=1.25cm,top=1.5cm,bottom=1.5cm,columnsep=1.2cm}
+
+% Set up the color of sections and subsections
+\colorlet{heading}{darkblue}
+\colorlet{accent}{darkblue}
+\colorlet{emphasis}{black}
+\colorlet{body}{black!80!white}
+
+% Adjust font sizes
+\renewcommand{\namefont}{\Huge\bfseries}
+\renewcommand{\personalinfofont}{\large}
+\renewcommand{\cvsectionfont}{\Large\bfseries}
+\renewcommand{\cvsubsectionfont}{\large\bfseries}
+\renewcommand{\cveventfont}{\normalsize\bfseries}
+
+% Personal information
+\name{OUAHID OMAR}
+\tagline{AI-Focused Data Engineer}
+\personalinfo{%
+  \email{omarouahid.98@gmail.com}
+  \phone{+212680364513}
+  \linkedin{omar-ouahid}
+  \location{Casablanca, Morocco}
+}
+
+\begin{document}
+\makecvheader
+
+\cvsection{Professional Summary}
+\begin{minipage}{\textwidth}
+Experienced AI-focused Data Engineer with proven expertise in designing and implementing scalable data pipelines, machine learning infrastructure, and AI-powered data processing systems. Skilled in architecting end-to-end data solutions that support ML/AI workflows using modern cloud platforms and orchestration tools. Demonstrated ability to transform raw data into valuable business insights through robust ETL/ELT processes, feature engineering, and automated ML pipelines. Strong background in optimizing data systems for AI/ML workloads, performance, and scalability.
+\end{minipage}
+
+\cvsection{Professional Experience}
+\cvevent{Data Engineer at DXC Technology}{May 2024 - Present}{}{Casablanca, Morocco}
+\begin{itemize}[noitemsep]
+\item Arc... [truncated for brevity]
+\end{itemize}
+\end{document}

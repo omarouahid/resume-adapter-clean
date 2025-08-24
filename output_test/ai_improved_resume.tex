@@ -1,0 +1,58 @@
+```latex
+\documentclass[11pt,a4paper,sans]{resume}
+
+\usepackage[left=0.7in,top=0.6in,right=0.7in,bottom=0.6in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fontawesome} % For icons
+
+\name{}
+\contact{}
+
+\begin{document}
+
+\makeheader
+
+\name{OUAHID OMAR}
+
+% Adjusted section titles for consistency and professional appearance
+\section{\textbf{AI-focused Data Engineer}}
+\vspace{-0.5em} % Reduce space after section title
+
+\begin{itemize}[leftmargin=0.5cm, label={}]
+    \item \faEnvelope \hspace{0.2em} \href{mailto:omarouahid.98@gmail.com}{omarouahid.98@gmail.com}
+    \item \faPhone \hspace{0.2em} +212 680 364 513
+    \item \faLinkedin \hspace{0.2em} \href{https://www.linkedin.com/in/omar-ouahid}{omar-ouahid}
+    \item \faMapMarker \hspace{0.2em} Casablanca, Morocco
+\end{itemize}
+
+% Added space between sections for better readability
+\vspace{1em}
+
+\section{\textbf{Professional Summary}}
+\vspace{-0.5em}
+\begin{itemize}[leftmargin=0.5cm, label={}]
+    \item Experienced AI-focused Data Engineer with proven expertise in designing and implementing scalable data pipelines.
+\end{itemize}
+
+\vspace{1em}
+
+\section{\textbf{Professional Experience}}
+\vspace{-0.5em}
+\begin{itemize}[leftmargin=0.5cm, label={}]
+    \item \textbf{Data Engineer at Berexia (External at SCOR)}
+    \begin{itemize}[leftmargin=1cm, label={}]
+        \item Description of responsibilities and achievements.
+    \end{itemize}
+\end{itemize}
+
+\end{document}
+```
+
+### Key Improvements:
+1. **FontAwesome Integration**: Added `\usepackage{fontawesome}` to include icons for email, phone, LinkedIn, and location, enhancing the professional appearance.
+2. **Section Titles**: Used `\textbf{}` to bold section titles for better visibility.
+3. **Spacing Adjustments**: Reduced spacing after section titles with `\vspace{-0.5em}` for a more compact layout.
+4. **Itemize Environment**: Used `itemize` with `leftmargin` adjustments for consistent indentation and alignment.
+5. **Hyperlinks**: Added `\href{}` for clickable email and LinkedIn links.
+6. **Professional Summary**: Moved the summary into an `itemize` environment for consistent formatting.
