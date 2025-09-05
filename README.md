@@ -56,6 +56,44 @@ streamlit run app.py
 - Chrome/Chromium browser (for Selenium)
 - ChromeDriver (auto-installed with webdriver-manager)
 
+## Flask + React Application (Experimental)
+
+A Flask backend and React frontend are provided as an alternative to the Streamlit interface. The React UI allows uploading a resume, entering a job description, requesting an ATS score, and selecting an AI model from `config.py`.
+
+The backend also exposes template endpoints so the React app can list available resume templates and preview them. Additional endpoints handle template matching, ATS scoring, and AI-powered text enhancement.
+
+Example HTML/CSS templates are included under the `templates/` directory and are loaded automatically by the backend. Add your own `.html`/`.css` pairs there to expand the built-in choices.
+
+### Backend
+```bash
+pip install -r requirements-minimal.txt
+python flask_app.py
+```
+
+#### API Endpoints
+
+- `GET /api/models` – list available AI models
+- `GET /api/templates` – list resume templates
+- `POST /api/match-template` – recommend a template for a job description
+- `POST /api/render-template` – render a template with optional resume data
+- `POST /api/ats-score` – compute ATS compatibility
+- `POST /api/enhance` – improve resume text using OpenRouter
+
+### Frontend
+```bash
+cd frontend
+npm install
+npm start
+```
+
+The frontend expects the backend to be running on http://localhost:5000. The interface supports:
+
+- Uploading resumes and job descriptions
+- Matching and previewing templates in real time
+- Requesting ATS scores
+- Editing resume text with AI enhancement via OpenRouter
+
+
 ## Usage 💡
 
 1. **Start the Application**: Run `streamlit run app.py`

@@ -115,3 +115,8 @@ logs/
 # User-specific files
 user_uploads/
 user_data/
+# Node
+node_modules/
+frontend/node_modules/
+frontend/build/
+

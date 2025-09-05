@@ -5,11 +5,16 @@ No signup required - works with session data only.
 """
 
 import re
-import streamlit as st
 from typing import Dict, List, Tuple, Optional, Any
 import logging
 from dataclasses import dataclass
 from datetime import datetime
+
+# Streamlit is optional when using this module outside the original UI
+try:  # pragma: no cover - defensive optional import
+    import streamlit as st  # type: ignore
+except Exception:  # pragma: no cover - gracefully degrade if unavailable
+    st = None
 
 logger = logging.getLogger(__name__)
 
