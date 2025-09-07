@@ -97,6 +97,81 @@
       ]
     },
     {
+      "id": "meta-llama/llama-3.3-8b-instruct:free",
+      "name": "Meta: Llama 3.3 8B Instruct (free)",
+      "provider": "Meta-Llama",
+      "type": "text",
+      "free": true,
+      "recommended": true,
+      "context": 128000,
+      "pricing": {
+        "prompt": "0",
+        "completion": "0",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 21.0,
+      "description": "A lightweight and ultra-fast variant of Llama 3.3 70B, for use when quick response times are needed most.",
+      "capabilities": [
+        "chat",
+        "long-context"
+      ]
+    },
+    {
+      "id": "meta-llama/llama-4-maverick:free",
+      "name": "Meta: Llama 4 Maverick (free)",
+      "provider": "Meta-Llama",
+      "type": "text",
+      "free": true,
+      "recommended": true,
+      "context": 128000,
+      "pricing": {
+        "prompt": "0",
+        "completion": "0",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 21.0,
+      "description": "Llama 4 Maverick 17B Instruct (128E) is a high-capacity multimodal language model from Meta, built on a mixture-of-experts (MoE) architecture with 128 experts and 17 billion active parameters per forward pass (400B total). It supports multilingual text and image input, and produces multilingual text and code output across 12 supported languages. Optimized for vision-language tasks, Maverick is instruction-tuned for assistant-like behavior, image reasoning, and general-purpose multimodal interaction.\n\nMaverick features early fusion for native multimodality and a 1 million token context window. It was trained on a curated mixture of public, licensed, and Meta-platform data, covering ~22 trillion tokens, with a knowledge cutoff in August 2024. Released on April 5, 2025 under the Llama 4 Community License, Maverick is suited for research and commercial applications requiring advanced multimodal understanding and high model throughput.",
+      "capabilities": [
+        "coding",
+        "vision",
+        "chat",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
+      "id": "meta-llama/llama-4-scout:free",
+      "name": "Meta: Llama 4 Scout (free)",
+      "provider": "Meta-Llama",
+      "type": "text",
+      "free": true,
+      "recommended": true,
+      "context": 128000,
+      "pricing": {
+        "prompt": "0",
+        "completion": "0",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 21.0,
+      "description": "Llama 4 Scout 17B Instruct (16E) is a mixture-of-experts (MoE) language model developed by Meta, activating 17 billion parameters out of a total of 109B. It supports native multimodal input (text and image) and multilingual output (text and code) across 12 supported languages. Designed for assistant-style interaction and visual reasoning, Scout uses 16 experts per forward pass and features a context length of 10 million tokens, with a training corpus of ~40 trillion tokens.\n\nBuilt for high efficiency and local or commercial deployment, Llama 4 Scout incorporates early fusion for seamless modality integration. It is instruction-tuned for use in multilingual chat, captioning, and image understanding tasks. Released under the Llama 4 Community License, it was last trained on data up to August 2024 and launched publicly on April 5, 2025.",
+      "capabilities": [
+        "coding",
+        "vision",
+        "chat",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
       "id": "mistralai/mistral-small-3.1-24b-instruct:free",
       "name": "Mistral: Mistral Small 3.1 24B (free)",
       "provider": "Mistralai",
@@ -187,31 +262,6 @@
       "quality_score": 21.0,
       "description": "Llama 3.2 3B is a 3-billion-parameter multilingual large language model, optimized for advanced natural language processing tasks like dialogue generation, reasoning, and summarization. Designed with the latest transformer architecture, it supports eight languages, including English, Spanish, and Hindi, and is adaptable for additional languages.\n\nTrained on 9 trillion tokens, the Llama 3.2 3B model excels in instruction-following, complex reasoning, and tool use. Its balanced performance makes it ideal for applications needing accuracy and efficiency in text generation across multilingual settings.\n\nClick here for the [original model card](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md).\n\nUsage of this model is subject to [Meta's Acceptable Use Policy](https://www.llama.com/llama3/use-policy/).",
       "capabilities": [
-        "chat",
-        "reasoning",
-        "long-context"
-      ]
-    },
-    {
-      "id": "meta-llama/llama-3.2-11b-vision-instruct:free",
-      "name": "Meta: Llama 3.2 11B Vision Instruct (free)",
-      "provider": "Meta-Llama",
-      "type": "vision",
-      "free": true,
-      "recommended": true,
-      "context": 131072,
-      "pricing": {
-        "prompt": "0",
-        "completion": "0",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 21.0,
-      "description": "Llama 3.2 11B Vision is a multimodal model with 11 billion parameters, designed to handle tasks combining visual and textual data. It excels in tasks such as image captioning and visual question answering, bridging the gap between language generation and visual reasoning. Pre-trained on a massive dataset of image-text pairs, it performs well in complex, high-accuracy image analysis.\n\nIts ability to integrate visual understanding with language processing makes it an ideal solution for industries requiring comprehensive visual-linguistic AI applications, such as content creation, AI-driven customer service, and research.\n\nClick here for the [original model card](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md).\n\nUsage of this model is subject to [Meta's Acceptable Use Policy](https://www.llama.com/llama3/use-policy/).",
-      "capabilities": [
-        "vision",
         "chat",
         "reasoning",
         "long-context"
@@ -403,6 +453,7 @@
       "description": "GPT-4o mini Search Preview is a specialized model for web search in Chat Completions. It is trained to understand and execute web search queries.",
       "capabilities": [
         "chat",
+        "internet",
         "long-context"
       ]
     },
@@ -426,6 +477,7 @@
       "description": "GPT-4o Search Previewis a specialized model for web search in Chat Completions. It is trained to understand and execute web search queries.",
       "capabilities": [
         "chat",
+        "internet",
         "long-context"
       ]
     },
@@ -552,6 +604,30 @@
       ]
     },
     {
+      "id": "openai/gpt-4o-2024-05-13",
+      "name": "OpenAI: GPT-4o (2024-05-13)",
+      "provider": "Openai",
+      "type": "text",
+      "free": false,
+      "recommended": true,
+      "context": 128000,
+      "pricing": {
+        "prompt": "0.000005",
+        "completion": "0.000015",
+        "request": "0",
+        "image": "0.007225",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 20.0,
+      "description": "GPT-4o (\"o\" for \"omni\") is OpenAI's latest AI model, supporting both text and image inputs with text outputs. It maintains the intelligence level of [GPT-4 Turbo](/models/openai/gpt-4-turbo) while being twice as fast and 50% more cost-effective. GPT-4o also offers improved performance in processing non-English languages and enhanced visual capabilities.\n\nFor benchmarking against other models, it was briefly called [\"im-also-a-good-gpt2-chatbot\"](https://twitter.com/LiamFedus/status/1790064963966370209)\n\n#multimodal",
+      "capabilities": [
+        "vision",
+        "chat",
+        "long-context"
+      ]
+    },
+    {
       "id": "openai/gpt-4o",
       "name": "OpenAI: GPT-4o",
       "provider": "Openai",
@@ -587,30 +663,6 @@
       "pricing": {
         "prompt": "0.000006",
         "completion": "0.000018",
-        "request": "0",
-        "image": "0.007225",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 20.0,
-      "description": "GPT-4o (\"o\" for \"omni\") is OpenAI's latest AI model, supporting both text and image inputs with text outputs. It maintains the intelligence level of [GPT-4 Turbo](/models/openai/gpt-4-turbo) while being twice as fast and 50% more cost-effective. GPT-4o also offers improved performance in processing non-English languages and enhanced visual capabilities.\n\nFor benchmarking against other models, it was briefly called [\"im-also-a-good-gpt2-chatbot\"](https://twitter.com/LiamFedus/status/1790064963966370209)\n\n#multimodal",
-      "capabilities": [
-        "vision",
-        "chat",
-        "long-context"
-      ]
-    },
-    {
-      "id": "openai/gpt-4o-2024-05-13",
-      "name": "OpenAI: GPT-4o (2024-05-13)",
-      "provider": "Openai",
-      "type": "text",
-      "free": false,
-      "recommended": true,
-      "context": 128000,
-      "pricing": {
-        "prompt": "0.000005",
-        "completion": "0.000015",
         "request": "0",
         "image": "0.007225",
         "web_search": "0",
@@ -694,8 +746,33 @@
       ]
     },
     {
+      "id": "deepseek/deepseek-chat-v3.1:free",
+      "name": "DeepSeek: DeepSeek V3.1 (free)",
+      "provider": "Deepseek",
+      "type": "text",
+      "free": true,
+      "recommended": true,
+      "context": 64000,
+      "pricing": {
+        "prompt": "0",
+        "completion": "0",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 19.0,
+      "description": "DeepSeek-V3.1 is a large hybrid reasoning model (671B parameters, 37B active) that supports both thinking and non-thinking modes via prompt templates. It extends the DeepSeek-V3 base with a two-phase long-context training process, reaching up to 128K tokens, and uses FP8 microscaling for efficient inference. Users can control the reasoning behaviour with the `reasoning` `enabled` boolean. [Learn more in our docs](https://openrouter.ai/docs/use-cases/reasoning-tokens#enable-reasoning-with-default-config)\n\nThe model improves tool use, code generation, and reasoning efficiency, achieving performance comparable to DeepSeek-R1 on difficult benchmarks while responding more quickly. It supports structured tool calling, code agents, and search agents, making it suitable for research, coding, and agentic workflows. \n\nIt succeeds the [DeepSeek V3-0324](/deepseek/deepseek-chat-v3-0324) model and performs well on a variety of tasks.",
+      "capabilities": [
+        "coding",
+        "chat",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
       "id": "qwen/qwen3-coder:free",
-      "name": "Qwen: Qwen3 Coder  (free)",
+      "name": "Qwen: Qwen3 Coder 480B A35B (free)",
       "provider": "Qwen",
       "type": "text",
       "free": true,
@@ -1120,27 +1197,24 @@
       "capabilities": []
     },
     {
-      "id": "openai/gpt-3.5-turbo",
-      "name": "OpenAI: GPT-3.5 Turbo",
+      "id": "openai/gpt-4-0314",
+      "name": "OpenAI: GPT-4 (older v0314)",
       "provider": "Openai",
       "type": "text",
       "free": false,
       "recommended": true,
-      "context": 16385,
+      "context": 8191,
       "pricing": {
-        "prompt": "0.0000005",
-        "completion": "0.0000015",
+        "prompt": "0.00003",
+        "completion": "0.00006",
         "request": "0",
         "image": "0",
         "web_search": "0",
         "internal_reasoning": "0"
       },
       "quality_score": 16.0,
-      "description": "GPT-3.5 Turbo is OpenAI's fastest model. It can understand and generate natural language or code, and is optimized for chat and traditional completion tasks.\n\nTraining data up to Sep 2021.",
-      "capabilities": [
-        "coding",
-        "chat"
-      ]
+      "description": "GPT-4-0314 is the first version of GPT-4 released, with a context length of 8,192 tokens, and was supported until June 14. Training data: up to Sep 2021.",
+      "capabilities": []
     },
     {
       "id": "openai/gpt-4",
@@ -1166,24 +1240,27 @@
       ]
     },
     {
-      "id": "openai/gpt-4-0314",
-      "name": "OpenAI: GPT-4 (older v0314)",
+      "id": "openai/gpt-3.5-turbo",
+      "name": "OpenAI: GPT-3.5 Turbo",
       "provider": "Openai",
       "type": "text",
       "free": false,
       "recommended": true,
-      "context": 8191,
+      "context": 16385,
       "pricing": {
-        "prompt": "0.00003",
-        "completion": "0.00006",
+        "prompt": "0.0000005",
+        "completion": "0.0000015",
         "request": "0",
         "image": "0",
         "web_search": "0",
         "internal_reasoning": "0"
       },
       "quality_score": 16.0,
-      "description": "GPT-4-0314 is the first version of GPT-4 released, with a context length of 8,192 tokens, and was supported until June 14. Training data: up to Sep 2021.",
-      "capabilities": []
+      "description": "GPT-3.5 Turbo is OpenAI's fastest model. It can understand and generate natural language or code, and is optimized for chat and traditional completion tasks.\n\nTraining data up to Sep 2021.",
+      "capabilities": [
+        "coding",
+        "chat"
+      ]
     },
     {
       "id": "cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
@@ -1376,6 +1453,28 @@
       ]
     },
     {
+      "id": "google/gemini-2.5-flash-image-preview",
+      "name": "Google: Gemini 2.5 Flash Image Preview",
+      "provider": "Google",
+      "type": "text",
+      "free": false,
+      "recommended": true,
+      "context": 32768,
+      "pricing": {
+        "prompt": "0.0000003",
+        "completion": "0.0000025",
+        "request": "0",
+        "image": "0.001238",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 13.0,
+      "description": "Gemini 2.5 Flash Image Preview is a state of the art image generation model with contextual understanding. It is capable of image generation, edits, and multi-turn conversations.",
+      "capabilities": [
+        "long-context"
+      ]
+    },
+    {
       "id": "anthropic/claude-opus-4.1",
       "name": "Anthropic: Claude Opus 4.1",
       "provider": "Anthropic",
@@ -1557,7 +1656,7 @@
       "type": "text",
       "free": false,
       "recommended": true,
-      "context": 200000,
+      "context": 1000000,
       "pricing": {
         "prompt": "0.000003",
         "completion": "0.000015",
@@ -1704,31 +1803,6 @@
       ]
     },
     {
-      "id": "anthropic/claude-3.5-haiku",
-      "name": "Anthropic: Claude 3.5 Haiku",
-      "provider": "Anthropic",
-      "type": "text",
-      "free": false,
-      "recommended": true,
-      "context": 200000,
-      "pricing": {
-        "prompt": "0.0000008",
-        "completion": "0.000004",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0",
-        "input_cache_read": "0.00000008",
-        "input_cache_write": "0.000001"
-      },
-      "quality_score": 13.0,
-      "description": "Claude 3.5 Haiku features offers enhanced capabilities in speed, coding accuracy, and tool use. Engineered to excel in real-time applications, it delivers quick response times that are essential for dynamic tasks such as chat interactions and immediate coding suggestions.\n\nThis makes it highly suitable for environments that demand both speed and precision, such as software development, customer service bots, and data management systems.\n\nThis model is currently pointing to [Claude 3.5 Haiku (2024-10-22)](/anthropic/claude-3-5-haiku-20241022).",
-      "capabilities": [
-        "chat",
-        "long-context"
-      ]
-    },
-    {
       "id": "anthropic/claude-3.5-haiku-20241022",
       "name": "Anthropic: Claude 3.5 Haiku (2024-10-22)",
       "provider": "Anthropic",
@@ -1752,6 +1826,31 @@
         "coding",
         "chat",
         "reasoning",
+        "long-context"
+      ]
+    },
+    {
+      "id": "anthropic/claude-3.5-haiku",
+      "name": "Anthropic: Claude 3.5 Haiku",
+      "provider": "Anthropic",
+      "type": "text",
+      "free": false,
+      "recommended": true,
+      "context": 200000,
+      "pricing": {
+        "prompt": "0.0000008",
+        "completion": "0.000004",
+        "request": "0",
+        "image": "0",
+        "web_search": "0.01",
+        "internal_reasoning": "0",
+        "input_cache_read": "0.00000008",
+        "input_cache_write": "0.000001"
+      },
+      "quality_score": 13.0,
+      "description": "Claude 3.5 Haiku features offers enhanced capabilities in speed, coding accuracy, and tool use. Engineered to excel in real-time applications, it delivers quick response times that are essential for dynamic tasks such as chat interactions and immediate coding suggestions.\n\nThis makes it highly suitable for environments that demand both speed and precision, such as software development, customer service bots, and data management systems.\n\nThis model is currently pointing to [Claude 3.5 Haiku (2024-10-22)](/anthropic/claude-3-5-haiku-20241022).",
+      "capabilities": [
+        "chat",
         "long-context"
       ]
     },
@@ -1985,7 +2084,7 @@
       "type": "text",
       "free": false,
       "recommended": true,
-      "context": 262144,
+      "context": 131072,
       "pricing": {
         "prompt": "0.0000004",
         "completion": "0.000002",
@@ -2501,29 +2600,6 @@
       ]
     },
     {
-      "id": "mistralai/ministral-8b",
-      "name": "Mistral: Ministral 8B",
-      "provider": "Mistralai",
-      "type": "text",
-      "free": false,
-      "recommended": true,
-      "context": 128000,
-      "pricing": {
-        "prompt": "0.0000001",
-        "completion": "0.0000001",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 11.0,
-      "description": "Ministral 8B is an 8B parameter model featuring a unique interleaved sliding-window attention pattern for faster, memory-efficient inference. Designed for edge use cases, it supports up to 128k context length and excels in knowledge and reasoning tasks. It outperforms peers in the sub-10B category, making it perfect for low-latency, privacy-first applications.",
-      "capabilities": [
-        "reasoning",
-        "long-context"
-      ]
-    },
-    {
       "id": "mistralai/ministral-3b",
       "name": "Mistral: Ministral 3B",
       "provider": "Mistralai",
@@ -2547,49 +2623,47 @@
       ]
     },
     {
-      "id": "meta-llama/llama-3.2-1b-instruct",
-      "name": "Meta: Llama 3.2 1B Instruct",
-      "provider": "Meta-Llama",
+      "id": "mistralai/ministral-8b",
+      "name": "Mistral: Ministral 8B",
+      "provider": "Mistralai",
       "type": "text",
       "free": false,
       "recommended": true,
-      "context": 131072,
+      "context": 128000,
       "pricing": {
-        "prompt": "0.000000005",
-        "completion": "0.00000001",
+        "prompt": "0.0000001",
+        "completion": "0.0000001",
         "request": "0",
         "image": "0",
         "web_search": "0",
         "internal_reasoning": "0"
       },
       "quality_score": 11.0,
-      "description": "Llama 3.2 1B is a 1-billion-parameter language model focused on efficiently performing natural language tasks, such as summarization, dialogue, and multilingual text analysis. Its smaller size allows it to operate efficiently in low-resource environments while maintaining strong task performance.\n\nSupporting eight core languages and fine-tunable for more, Llama 1.3B is ideal for businesses or developers seeking lightweight yet powerful AI solutions that can operate in diverse multilingual settings without the high computational demand of larger models.\n\nClick here for the [original model card](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md).\n\nUsage of this model is subject to [Meta's Acceptable Use Policy](https://www.llama.com/llama3/use-policy/).",
+      "description": "Ministral 8B is an 8B parameter model featuring a unique interleaved sliding-window attention pattern for faster, memory-efficient inference. Designed for edge use cases, it supports up to 128k context length and excels in knowledge and reasoning tasks. It outperforms peers in the sub-10B category, making it perfect for low-latency, privacy-first applications.",
       "capabilities": [
-        "chat",
         "reasoning",
         "long-context"
       ]
     },
     {
-      "id": "meta-llama/llama-3.2-90b-vision-instruct",
-      "name": "Meta: Llama 3.2 90B Vision Instruct",
+      "id": "meta-llama/llama-3.2-3b-instruct",
+      "name": "Meta: Llama 3.2 3B Instruct",
       "provider": "Meta-Llama",
-      "type": "vision",
+      "type": "text",
       "free": false,
       "recommended": true,
       "context": 131072,
       "pricing": {
-        "prompt": "0.0000012",
-        "completion": "0.0000012",
+        "prompt": "0.000000012",
+        "completion": "0.000000024",
         "request": "0",
-        "image": "0.001734",
+        "image": "0",
         "web_search": "0",
         "internal_reasoning": "0"
       },
       "quality_score": 11.0,
-      "description": "The Llama 90B Vision model is a top-tier, 90-billion-parameter multimodal model designed for the most challenging visual reasoning and language tasks. It offers unparalleled accuracy in image captioning, visual question answering, and advanced image-text comprehension. Pre-trained on vast multimodal datasets and fine-tuned with human feedback, the Llama 90B Vision is engineered to handle the most demanding image-based AI tasks.\n\nThis model is perfect for industries requiring cutting-edge multimodal AI capabilities, particularly those dealing with complex, real-time visual and textual analysis.\n\nClick here for the [original model card](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md).\n\nUsage of this model is subject to [Meta's Acceptable Use Policy](https://www.llama.com/llama3/use-policy/).",
+      "description": "Llama 3.2 3B is a 3-billion-parameter multilingual large language model, optimized for advanced natural language processing tasks like dialogue generation, reasoning, and summarization. Designed with the latest transformer architecture, it supports eight languages, including English, Spanish, and Hindi, and is adaptable for additional languages.\n\nTrained on 9 trillion tokens, the Llama 3.2 3B model excels in instruction-following, complex reasoning, and tool use. Its balanced performance makes it ideal for applications needing accuracy and efficiency in text generation across multilingual settings.\n\nClick here for the [original model card](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md).\n\nUsage of this model is subject to [Meta's Acceptable Use Policy](https://www.llama.com/llama3/use-policy/).",
       "capabilities": [
-        "vision",
         "chat",
         "reasoning",
         "long-context"
@@ -2615,6 +2689,55 @@
       "description": "Llama 3.2 11B Vision is a multimodal model with 11 billion parameters, designed to handle tasks combining visual and textual data. It excels in tasks such as image captioning and visual question answering, bridging the gap between language generation and visual reasoning. Pre-trained on a massive dataset of image-text pairs, it performs well in complex, high-accuracy image analysis.\n\nIts ability to integrate visual understanding with language processing makes it an ideal solution for industries requiring comprehensive visual-linguistic AI applications, such as content creation, AI-driven customer service, and research.\n\nClick here for the [original model card](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md).\n\nUsage of this model is subject to [Meta's Acceptable Use Policy](https://www.llama.com/llama3/use-policy/).",
       "capabilities": [
         "vision",
+        "chat",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
+      "id": "meta-llama/llama-3.2-90b-vision-instruct",
+      "name": "Meta: Llama 3.2 90B Vision Instruct",
+      "provider": "Meta-Llama",
+      "type": "vision",
+      "free": false,
+      "recommended": true,
+      "context": 32768,
+      "pricing": {
+        "prompt": "0.00000035",
+        "completion": "0.0000004",
+        "request": "0",
+        "image": "0.0005058",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 11.0,
+      "description": "The Llama 90B Vision model is a top-tier, 90-billion-parameter multimodal model designed for the most challenging visual reasoning and language tasks. It offers unparalleled accuracy in image captioning, visual question answering, and advanced image-text comprehension. Pre-trained on vast multimodal datasets and fine-tuned with human feedback, the Llama 90B Vision is engineered to handle the most demanding image-based AI tasks.\n\nThis model is perfect for industries requiring cutting-edge multimodal AI capabilities, particularly those dealing with complex, real-time visual and textual analysis.\n\nClick here for the [original model card](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD_VISION.md).\n\nUsage of this model is subject to [Meta's Acceptable Use Policy](https://www.llama.com/llama3/use-policy/).",
+      "capabilities": [
+        "vision",
+        "chat",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
+      "id": "meta-llama/llama-3.2-1b-instruct",
+      "name": "Meta: Llama 3.2 1B Instruct",
+      "provider": "Meta-Llama",
+      "type": "text",
+      "free": false,
+      "recommended": true,
+      "context": 131072,
+      "pricing": {
+        "prompt": "0.000000005",
+        "completion": "0.00000001",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 11.0,
+      "description": "Llama 3.2 1B is a 1-billion-parameter language model focused on efficiently performing natural language tasks, such as summarization, dialogue, and multilingual text analysis. Its smaller size allows it to operate efficiently in low-resource environments while maintaining strong task performance.\n\nSupporting eight core languages and fine-tunable for more, Llama 1.3B is ideal for businesses or developers seeking lightweight yet powerful AI solutions that can operate in diverse multilingual settings without the high computational demand of larger models.\n\nClick here for the [original model card](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md).\n\nUsage of this model is subject to [Meta's Acceptable Use Policy](https://www.llama.com/llama3/use-policy/).",
+      "capabilities": [
         "chat",
         "reasoning",
         "long-context"
@@ -2665,29 +2788,6 @@
       ]
     },
     {
-      "id": "meta-llama/llama-3.1-8b-instruct",
-      "name": "Meta: Llama 3.1 8B Instruct",
-      "provider": "Meta-Llama",
-      "type": "text",
-      "free": false,
-      "recommended": true,
-      "context": 131072,
-      "pricing": {
-        "prompt": "0.000000015",
-        "completion": "0.00000002",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 11.0,
-      "description": "Meta's latest class of model (Llama 3.1) launched with a variety of sizes & flavors. This 8B instruct-tuned version is fast and efficient.\n\nIt has demonstrated strong performance compared to leading closed-source models in human evaluations.\n\nTo read more about the model release, [click here](https://ai.meta.com/blog/meta-llama-3-1/). Usage of this model is subject to [Meta's Acceptable Use Policy](https://llama.meta.com/llama3/use-policy/).",
-      "capabilities": [
-        "chat",
-        "long-context"
-      ]
-    },
-    {
       "id": "meta-llama/llama-3.1-405b-instruct",
       "name": "Meta: Llama 3.1 405B Instruct",
       "provider": "Meta-Llama",
@@ -2734,16 +2834,39 @@
       ]
     },
     {
+      "id": "meta-llama/llama-3.1-8b-instruct",
+      "name": "Meta: Llama 3.1 8B Instruct",
+      "provider": "Meta-Llama",
+      "type": "text",
+      "free": false,
+      "recommended": true,
+      "context": 131072,
+      "pricing": {
+        "prompt": "0.000000015",
+        "completion": "0.00000002",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 11.0,
+      "description": "Meta's latest class of model (Llama 3.1) launched with a variety of sizes & flavors. This 8B instruct-tuned version is fast and efficient.\n\nIt has demonstrated strong performance compared to leading closed-source models in human evaluations.\n\nTo read more about the model release, [click here](https://ai.meta.com/blog/meta-llama-3-1/). Usage of this model is subject to [Meta's Acceptable Use Policy](https://llama.meta.com/llama3/use-policy/).",
+      "capabilities": [
+        "chat",
+        "long-context"
+      ]
+    },
+    {
       "id": "mistralai/mistral-nemo",
       "name": "Mistral: Mistral Nemo",
       "provider": "Mistralai",
       "type": "text",
       "free": false,
       "recommended": true,
-      "context": 32000,
+      "context": 131072,
       "pricing": {
-        "prompt": "0.0000000075",
-        "completion": "0.00000005",
+        "prompt": "0.00000001",
+        "completion": "0.0000000400032",
         "request": "0",
         "image": "0",
         "web_search": "0",
@@ -2922,6 +3045,80 @@
       ]
     },
     {
+      "id": "qwen/qwen3-max",
+      "name": "Qwen: Qwen3 Max",
+      "provider": "Qwen",
+      "type": "text",
+      "free": false,
+      "recommended": true,
+      "context": 256000,
+      "pricing": {
+        "prompt": "0.0000012",
+        "completion": "0.000006",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0",
+        "input_cache_read": "0.00000024"
+      },
+      "quality_score": 9.0,
+      "description": "Qwen3-Max is an updated release built on the Qwen3 series, offering major improvements in reasoning, instruction following, multilingual support, and long-tail knowledge coverage compared to the January 2025 version. It delivers higher accuracy in math, coding, logic, and science tasks, follows complex instructions in Chinese and English more reliably, reduces hallucinations, and produces higher-quality responses for open-ended Q&A, writing, and conversation. The model supports over 100 languages with stronger translation and commonsense reasoning, and is optimized for retrieval-augmented generation (RAG) and tool calling, though it does not include a dedicated \u201cthinking\u201d mode.",
+      "capabilities": [
+        "chat",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
+      "id": "deepcogito/cogito-v2-preview-deepseek-671b",
+      "name": "Deep Cogito: Cogito V2 Preview Deepseek 671B",
+      "provider": "Deepcogito",
+      "type": "text",
+      "free": false,
+      "recommended": true,
+      "context": 163840,
+      "pricing": {
+        "prompt": "0.00000125",
+        "completion": "0.00000125",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 9.0,
+      "description": "Cogito v2 is a multilingual, instruction-tuned Mixture of Experts (MoE) large language model with 671 billion parameters. It supports both standard and reasoning-based generation modes. The model introduces hybrid reasoning via Iterated Distillation and Amplification (IDA)\u2014an iterative self-improvement strategy designed to scale alignment with general intelligence. Cogito v2 has been optimized for STEM, programming, instruction following, and tool use. It supports 128k context length and offers strong performance in both multilingual and code-heavy environments. Users can control the reasoning behaviour with the `reasoning` `enabled` boolean. [Learn more in our docs](https://openrouter.ai/docs/use-cases/reasoning-tokens#enable-reasoning-with-default-config)",
+      "capabilities": [
+        "coding",
+        "chat",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
+      "id": "qwen/qwen3-30b-a3b-thinking-2507",
+      "name": "Qwen: Qwen3 30B A3B Thinking 2507",
+      "provider": "Qwen",
+      "type": "text",
+      "free": false,
+      "recommended": true,
+      "context": 262144,
+      "pricing": {
+        "prompt": "0.0000000713",
+        "completion": "0.0000002852",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 9.0,
+      "description": "Qwen3-30B-A3B-Thinking-2507 is a 30B parameter Mixture-of-Experts reasoning model optimized for complex tasks requiring extended multi-step thinking. The model is designed specifically for \u201cthinking mode,\u201d where internal reasoning traces are separated from final answers.\n\nCompared to earlier Qwen3-30B releases, this version improves performance across logical reasoning, mathematics, science, coding, and multilingual benchmarks. It also demonstrates stronger instruction following, tool use, and alignment with human preferences. With higher reasoning efficiency and extended output budgets, it is best suited for advanced research, competitive problem solving, and agentic applications requiring structured long-context reasoning.",
+      "capabilities": [
+        "chat",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
       "id": "deepseek/deepseek-chat-v3.1",
       "name": "DeepSeek: DeepSeek V3.1",
       "provider": "Deepseek",
@@ -2971,16 +3168,41 @@
       ]
     },
     {
+      "id": "qwen/qwen3-coder-30b-a3b-instruct",
+      "name": "Qwen: Qwen3 Coder 30B A3B Instruct",
+      "provider": "Qwen",
+      "type": "text",
+      "free": false,
+      "recommended": true,
+      "context": 262144,
+      "pricing": {
+        "prompt": "0.0000000518308",
+        "completion": "0.000000207424",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 9.0,
+      "description": "Qwen3-Coder-30B-A3B-Instruct is a 30.5B parameter Mixture-of-Experts (MoE) model with 128 experts (8 active per forward pass), designed for advanced code generation, repository-scale understanding, and agentic tool use. Built on the Qwen3 architecture, it supports a native context length of 256K tokens (extendable to 1M with Yarn) and performs strongly in tasks involving function calls, browser use, and structured code completion.\n\nThis model is optimized for instruction-following without \u201cthinking mode\u201d, and integrates well with OpenAI-compatible tool-use formats. ",
+      "capabilities": [
+        "coding",
+        "chat",
+        "internet",
+        "long-context"
+      ]
+    },
+    {
       "id": "qwen/qwen3-30b-a3b-instruct-2507",
       "name": "Qwen: Qwen3 30B A3B Instruct 2507",
       "provider": "Qwen",
       "type": "text",
       "free": false,
       "recommended": true,
-      "context": 131072,
+      "context": 262144,
       "pricing": {
-        "prompt": "0.0000002",
-        "completion": "0.0000008",
+        "prompt": "0.0000000518308",
+        "completion": "0.000000207424",
         "request": "0",
         "image": "0",
         "web_search": "0",
@@ -3022,7 +3244,7 @@
     },
     {
       "id": "qwen/qwen3-coder",
-      "name": "Qwen: Qwen3 Coder ",
+      "name": "Qwen: Qwen3 Coder 480B A35B",
       "provider": "Qwen",
       "type": "text",
       "free": false,
@@ -3077,10 +3299,10 @@
       "type": "text",
       "free": false,
       "recommended": true,
-      "context": 32000,
+      "context": 131072,
       "pricing": {
-        "prompt": "0.00000001",
-        "completion": "0.00000002",
+        "prompt": "0.00000001703012",
+        "completion": "0.0000000681536",
         "request": "0",
         "image": "0",
         "web_search": "0",
@@ -3286,30 +3508,6 @@
       ]
     },
     {
-      "id": "deepseek/deepseek-v3-base",
-      "name": "DeepSeek: DeepSeek V3 Base",
-      "provider": "Deepseek",
-      "type": "text",
-      "free": false,
-      "recommended": true,
-      "context": 163840,
-      "pricing": {
-        "prompt": "0.0000001999188",
-        "completion": "0.000000800064",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 9.0,
-      "description": "Note that this is a base model mostly meant for testing, you need to provide detailed prompts for the model to return useful responses. \n\nDeepSeek-V3 Base is a 671B parameter open Mixture-of-Experts (MoE) language model with 37B active parameters per forward pass and a context length of 128K tokens. Trained on 14.8T tokens using FP8 mixed precision, it achieves high training efficiency and stability, with strong performance across language, reasoning, math, and coding tasks. \n\nDeepSeek-V3 Base is the pre-trained model behind [DeepSeek V3](/deepseek/deepseek-chat-v3)",
-      "capabilities": [
-        "chat",
-        "reasoning",
-        "long-context"
-      ]
-    },
-    {
       "id": "deepseek/deepseek-chat-v3-0324",
       "name": "DeepSeek: DeepSeek V3 0324",
       "provider": "Deepseek",
@@ -3339,10 +3537,10 @@
       "type": "text",
       "free": false,
       "recommended": true,
-      "context": 131072,
+      "context": 32768,
       "pricing": {
-        "prompt": "0.000000075",
-        "completion": "0.00000015",
+        "prompt": "0.00000015",
+        "completion": "0.0000004",
         "request": "0",
         "image": "0",
         "web_search": "0",
@@ -3474,29 +3672,6 @@
       ]
     },
     {
-      "id": "deepseek/deepseek-r1-distill-qwen-1.5b",
-      "name": "DeepSeek: R1 Distill Qwen 1.5B",
-      "provider": "Deepseek",
-      "type": "text",
-      "free": false,
-      "recommended": true,
-      "context": 131072,
-      "pricing": {
-        "prompt": "0.00000018",
-        "completion": "0.00000018",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 9.0,
-      "description": "DeepSeek R1 Distill Qwen 1.5B is a distilled large language model based on  [Qwen 2.5 Math 1.5B](https://huggingface.co/Qwen/Qwen2.5-Math-1.5B), using outputs from [DeepSeek R1](/deepseek/deepseek-r1). It's a very small and efficient model which outperforms [GPT 4o 0513](/openai/gpt-4o-2024-05-13) on Math Benchmarks.\n\nOther benchmark results include:\n\n- AIME 2024 pass@1: 28.9\n- AIME 2024 cons@64: 52.7\n- MATH-500 pass@1: 83.9\n\nThe model leverages fine-tuning from DeepSeek R1's outputs, enabling competitive performance comparable to larger frontier models.",
-      "capabilities": [
-        "reasoning",
-        "long-context"
-      ]
-    },
-    {
       "id": "deepseek/deepseek-r1-distill-qwen-32b",
       "name": "DeepSeek: R1 Distill Qwen 32B",
       "provider": "Deepseek",
@@ -3553,8 +3728,8 @@
       "recommended": true,
       "context": 131072,
       "pricing": {
-        "prompt": "0.0000000333198",
-        "completion": "0.000000133344",
+        "prompt": "0.0000000259154",
+        "completion": "0.000000103712",
         "request": "0",
         "image": "0",
         "web_search": "0",
@@ -3689,29 +3864,6 @@
       ]
     },
     {
-      "id": "meta-llama/llama-3.2-3b-instruct",
-      "name": "Meta: Llama 3.2 3B Instruct",
-      "provider": "Meta-Llama",
-      "type": "text",
-      "free": false,
-      "recommended": true,
-      "context": 20000,
-      "pricing": {
-        "prompt": "0.000000003",
-        "completion": "0.000000006",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 9.0,
-      "description": "Llama 3.2 3B is a 3-billion-parameter multilingual large language model, optimized for advanced natural language processing tasks like dialogue generation, reasoning, and summarization. Designed with the latest transformer architecture, it supports eight languages, including English, Spanish, and Hindi, and is adaptable for additional languages.\n\nTrained on 9 trillion tokens, the Llama 3.2 3B model excels in instruction-following, complex reasoning, and tool use. Its balanced performance makes it ideal for applications needing accuracy and efficiency in text generation across multilingual settings.\n\nClick here for the [original model card](https://github.com/meta-llama/llama-models/blob/main/models/llama3_2/MODEL_CARD.md).\n\nUsage of this model is subject to [Meta's Acceptable Use Policy](https://www.llama.com/llama3/use-policy/).",
-      "capabilities": [
-        "chat",
-        "reasoning"
-      ]
-    },
-    {
       "id": "qwen/qwen-2.5-72b-instruct",
       "name": "Qwen2.5 72B Instruct",
       "provider": "Qwen",
@@ -3720,8 +3872,8 @@
       "recommended": true,
       "context": 32768,
       "pricing": {
-        "prompt": "0.0000000666396",
-        "completion": "0.000000266688",
+        "prompt": "0.0000000518308",
+        "completion": "0.000000207424",
         "request": "0",
         "image": "0",
         "web_search": "0",
@@ -3755,30 +3907,6 @@
       "description": "Qwen2.5 VL 7B is a multimodal LLM from the Qwen Team with the following key enhancements:\n\n- SoTA understanding of images of various resolution & ratio: Qwen2.5-VL achieves state-of-the-art performance on visual understanding benchmarks, including MathVista, DocVQA, RealWorldQA, MTVQA, etc.\n\n- Understanding videos of 20min+: Qwen2.5-VL can understand videos over 20 minutes for high-quality video-based question answering, dialog, content creation, etc.\n\n- Agent that can operate your mobiles, robots, etc.: with the abilities of complex reasoning and decision making, Qwen2.5-VL can be integrated with devices like mobile phones, robots, etc., for automatic operation based on visual environment and text instructions.\n\n- Multilingual Support: to serve global users, besides English and Chinese, Qwen2.5-VL now supports the understanding of texts in different languages inside images, including most European languages, Japanese, Korean, Arabic, Vietnamese, etc.\n\nFor more details, see this [blog post](https://qwenlm.github.io/blog/qwen2-vl/) and [GitHub repo](https://github.com/QwenLM/Qwen2-VL).\n\nUsage of this model is subject to [Tongyi Qianwen LICENSE AGREEMENT](https://huggingface.co/Qwen/Qwen1.5-110B-Chat/blob/main/LICENSE).",
       "capabilities": [
         "vision",
-        "chat",
-        "reasoning",
-        "long-context"
-      ]
-    },
-    {
-      "id": "qwen/qwen-2-72b-instruct",
-      "name": "Qwen 2 72B Instruct",
-      "provider": "Qwen",
-      "type": "text",
-      "free": false,
-      "recommended": true,
-      "context": 32768,
-      "pricing": {
-        "prompt": "0.0000009",
-        "completion": "0.0000009",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 9.0,
-      "description": "Qwen2 72B is a transformer-based model that excels in language understanding, multilingual capabilities, coding, mathematics, and reasoning.\n\nIt features SwiGLU activation, attention QKV bias, and group query attention. It is pretrained on extensive data with supervised finetuning and direct preference optimization.\n\nFor more details, see this [blog post](https://qwenlm.github.io/blog/qwen2/) and [GitHub repo](https://github.com/QwenLM/Qwen2).\n\nUsage of this model is subject to [Tongyi Qianwen LICENSE AGREEMENT](https://huggingface.co/Qwen/Qwen1.5-110B-Chat/blob/main/LICENSE).",
-      "capabilities": [
         "chat",
         "reasoning",
         "long-context"
@@ -3832,28 +3960,6 @@
       ]
     },
     {
-      "id": "meta-llama/llama-3-8b-instruct",
-      "name": "Meta: Llama 3 8B Instruct",
-      "provider": "Meta-Llama",
-      "type": "text",
-      "free": false,
-      "recommended": true,
-      "context": 8192,
-      "pricing": {
-        "prompt": "0.00000003",
-        "completion": "0.00000006",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 7.0,
-      "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 8B instruct-tuned version was optimized for high quality dialogue usecases.\n\nIt has demonstrated strong performance compared to leading closed-source models in human evaluations.\n\nTo read more about the model release, [click here](https://ai.meta.com/blog/meta-llama-3/). Usage of this model is subject to [Meta's Acceptable Use Policy](https://llama.meta.com/llama3/use-policy/).",
-      "capabilities": [
-        "chat"
-      ]
-    },
-    {
       "id": "meta-llama/llama-3-70b-instruct",
       "name": "Meta: Llama 3 70B Instruct",
       "provider": "Meta-Llama",
@@ -3871,6 +3977,28 @@
       },
       "quality_score": 7.0,
       "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 70B instruct-tuned version was optimized for high quality dialogue usecases.\n\nIt has demonstrated strong performance compared to leading closed-source models in human evaluations.\n\nTo read more about the model release, [click here](https://ai.meta.com/blog/meta-llama-3/). Usage of this model is subject to [Meta's Acceptable Use Policy](https://llama.meta.com/llama3/use-policy/).",
+      "capabilities": [
+        "chat"
+      ]
+    },
+    {
+      "id": "meta-llama/llama-3-8b-instruct",
+      "name": "Meta: Llama 3 8B Instruct",
+      "provider": "Meta-Llama",
+      "type": "text",
+      "free": false,
+      "recommended": true,
+      "context": 8192,
+      "pricing": {
+        "prompt": "0.00000003",
+        "completion": "0.00000006",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 7.0,
+      "description": "Meta's latest class of model (Llama 3) launched with a variety of sizes & flavors. This 8B instruct-tuned version was optimized for high quality dialogue usecases.\n\nIt has demonstrated strong performance compared to leading closed-source models in human evaluations.\n\nTo read more about the model release, [click here](https://ai.meta.com/blog/meta-llama-3/). Usage of this model is subject to [Meta's Acceptable Use Policy](https://llama.meta.com/llama3/use-policy/).",
       "capabilities": [
         "chat"
       ]
@@ -3895,6 +4023,30 @@
       "description": "A 7.3B parameter model that outperforms Llama 2 13B on all benchmarks, with optimizations for speed and context length.",
       "capabilities": [
         "chat"
+      ]
+    },
+    {
+      "id": "deepcogito/cogito-v2-preview-llama-109b-moe",
+      "name": "Cogito V2 Preview Llama 109B",
+      "provider": "Deepcogito",
+      "type": "text",
+      "free": false,
+      "recommended": true,
+      "context": 32767,
+      "pricing": {
+        "prompt": "0.00000018",
+        "completion": "0.00000059",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 5.0,
+      "description": "An instruction-tuned, hybrid-reasoning Mixture-of-Experts model built on Llama-4-Scout-17B-16E. Cogito v2 can answer directly or engage an extended \u201cthinking\u201d phase, with alignment guided by Iterated Distillation & Amplification (IDA). It targets coding, STEM, instruction following, and general helpfulness, with stronger multilingual, tool-calling, and reasoning performance than size-equivalent baselines. The model supports long-context use (up to 10M tokens) and standard Transformers workflows. Users can control the reasoning behaviour with the `reasoning` `enabled` boolean. [Learn more in our docs](https://openrouter.ai/docs/use-cases/reasoning-tokens#enable-reasoning-with-default-config)",
+      "capabilities": [
+        "chat",
+        "reasoning",
+        "long-context"
       ]
     },
     {
@@ -4226,28 +4378,6 @@
       ]
     },
     {
-      "id": "cohere/command-r-plus-08-2024",
-      "name": "Cohere: Command R+ (08-2024)",
-      "provider": "Cohere",
-      "type": "text",
-      "free": false,
-      "recommended": true,
-      "context": 128000,
-      "pricing": {
-        "prompt": "0.0000025",
-        "completion": "0.00001",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 5.0,
-      "description": "command-r-plus-08-2024 is an update of the [Command R+](/models/cohere/command-r-plus) with roughly 50% higher throughput and 25% lower latencies as compared to the previous Command R+ version, while keeping the hardware footprint the same.\n\nRead the launch post [here](https://docs.cohere.com/changelog/command-gets-refreshed).\n\nUse of this model is subject to Cohere's [Usage Policy](https://docs.cohere.com/docs/usage-policy) and [SaaS Agreement](https://cohere.com/saas-agreement).",
-      "capabilities": [
-        "long-context"
-      ]
-    },
-    {
       "id": "cohere/command-r-08-2024",
       "name": "Cohere: Command R (08-2024)",
       "provider": "Cohere",
@@ -4268,6 +4398,28 @@
       "capabilities": [
         "coding",
         "reasoning",
+        "long-context"
+      ]
+    },
+    {
+      "id": "cohere/command-r-plus-08-2024",
+      "name": "Cohere: Command R+ (08-2024)",
+      "provider": "Cohere",
+      "type": "text",
+      "free": false,
+      "recommended": true,
+      "context": 128000,
+      "pricing": {
+        "prompt": "0.0000025",
+        "completion": "0.00001",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 5.0,
+      "description": "command-r-plus-08-2024 is an update of the [Command R+](/models/cohere/command-r-plus) with roughly 50% higher throughput and 25% lower latencies as compared to the previous Command R+ version, while keeping the hardware footprint the same.\n\nRead the launch post [here](https://docs.cohere.com/changelog/command-gets-refreshed).\n\nUse of this model is subject to Cohere's [Usage Policy](https://docs.cohere.com/docs/usage-policy) and [SaaS Agreement](https://cohere.com/saas-agreement).",
+      "capabilities": [
         "long-context"
       ]
     },
@@ -4315,6 +4467,7 @@
         "coding",
         "chat",
         "reasoning",
+        "internet",
         "long-context"
       ]
     },
@@ -4594,7 +4747,8 @@
       "description": "[Microsoft Research](/microsoft) Phi-4 is designed to perform well in complex reasoning tasks and can operate efficiently in situations with limited memory or where quick responses are needed. \n\nAt 14 billion parameters, it was trained on a mix of high-quality synthetic datasets, data from curated websites, and academic materials. It has undergone careful improvement to follow instructions accurately and maintain strong safety standards. It works best with English language inputs.\n\nFor more information, please see [Phi-4 Technical Report](https://arxiv.org/pdf/2412.08905)\n",
       "capabilities": [
         "chat",
-        "reasoning"
+        "reasoning",
+        "internet"
       ]
     },
     {
@@ -4640,30 +4794,6 @@
       "capabilities": [
         "coding",
         "chat"
-      ]
-    },
-    {
-      "id": "scb10x/llama3.1-typhoon2-70b-instruct",
-      "name": "Typhoon2 70B Instruct",
-      "provider": "Scb10X",
-      "type": "text",
-      "free": false,
-      "recommended": true,
-      "context": 8192,
-      "pricing": {
-        "prompt": "0.00000088",
-        "completion": "0.00000088",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 1.0,
-      "description": "Llama3.1-Typhoon2-70B-Instruct is a Thai-English instruction-tuned language model with 70 billion parameters, built on Llama 3.1. It demonstrates strong performance across general instruction-following, math, coding, and tool-use tasks, with state-of-the-art results in Thai-specific benchmarks such as IFEval, MT-Bench, and Thai-English code-switching.\n\nThe model excels in bilingual reasoning and function-calling scenarios, offering high accuracy across diverse domains. Comparative evaluations show consistent improvements over prior Thai LLMs and other Llama-based baselines. Full results and methodology are available in the [technical report.](https://arxiv.org/abs/2412.13702)",
-      "capabilities": [
-        "coding",
-        "chat",
-        "reasoning"
       ]
     },
     {
@@ -4771,6 +4901,30 @@
       "description": "Command is an instruction-following conversational model that performs language tasks with high quality, more reliably and with a longer context than our base generative models.\n\nUse of this model is subject to Cohere's [Usage Policy](https://docs.cohere.com/docs/usage-policy) and [SaaS Agreement](https://cohere.com/saas-agreement).",
       "capabilities": [
         "chat"
+      ]
+    },
+    {
+      "id": "openai/gpt-oss-120b:free",
+      "name": "OpenAI: gpt-oss-120b (free)",
+      "provider": "Openai",
+      "type": "text",
+      "free": true,
+      "recommended": false,
+      "context": 32768,
+      "pricing": {
+        "prompt": "0",
+        "completion": "0",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 23.0,
+      "description": "gpt-oss-120b is an open-weight, 117B-parameter Mixture-of-Experts (MoE) language model from OpenAI designed for high-reasoning, agentic, and general-purpose production use cases. It activates 5.1B parameters per forward pass and is optimized to run on a single H100 GPU with native MXFP4 quantization. The model supports configurable reasoning depth, full chain-of-thought access, and native tool use, including function calling, browsing, and structured output generation.",
+      "capabilities": [
+        "reasoning",
+        "internet",
+        "long-context"
       ]
     },
     {
@@ -4893,7 +5047,8 @@
         "coding",
         "vision",
         "chat",
-        "reasoning"
+        "reasoning",
+        "internet"
       ]
     },
     {
@@ -4940,6 +5095,50 @@
       "capabilities": []
     },
     {
+      "id": "openrouter/sonoma-dusk-alpha",
+      "name": "Sonoma Dusk Alpha",
+      "provider": "Openrouter",
+      "type": "text",
+      "free": true,
+      "recommended": false,
+      "context": 2000000,
+      "pricing": {
+        "prompt": "0",
+        "completion": "0",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 15.0,
+      "description": "This is a cloaked model provided to the community to gather feedback. A fast and intelligent general-purpose frontier model with a 2 million token context window. Supports image inputs and parallel tool calling.\n\nNote: It\u2019s free to use during this testing period, and prompts and completions are logged by the model creator for feedback and training.",
+      "capabilities": [
+        "long-context"
+      ]
+    },
+    {
+      "id": "openrouter/sonoma-sky-alpha",
+      "name": "Sonoma Sky Alpha",
+      "provider": "Openrouter",
+      "type": "text",
+      "free": true,
+      "recommended": false,
+      "context": 2000000,
+      "pricing": {
+        "prompt": "0",
+        "completion": "0",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 15.0,
+      "description": "This is a cloaked model provided to the community to gather feedback. A maximally intelligent general-purpose frontier model with a 2 million token context window. Supports image inputs and parallel tool calling.\n\nNote: It\u2019s free to use during this testing period, and prompts and completions are logged by the model creator for feedback and training.",
+      "capabilities": [
+        "long-context"
+      ]
+    },
+    {
       "id": "z-ai/glm-4.5-air:free",
       "name": "Z.AI: GLM 4.5 Air (free)",
       "provider": "Z-Ai",
@@ -4964,7 +5163,7 @@
     },
     {
       "id": "moonshotai/kimi-k2:free",
-      "name": "MoonshotAI: Kimi K2 (free)",
+      "name": "MoonshotAI: Kimi K2 0711 (free)",
       "provider": "Moonshotai",
       "type": "text",
       "free": true,
@@ -5031,30 +5230,6 @@
       "description": "Kimi-Dev-72B is an open-source large language model fine-tuned for software engineering and issue resolution tasks. Based on Qwen2.5-72B, it is optimized using large-scale reinforcement learning that applies code patches in real repositories and validates them via full test suite execution\u2014rewarding only correct, robust completions. The model achieves 60.4% on SWE-bench Verified, setting a new benchmark among open-source models for software bug fixing and code reasoning.",
       "capabilities": [
         "coding",
-        "reasoning",
-        "long-context"
-      ]
-    },
-    {
-      "id": "sarvamai/sarvam-m:free",
-      "name": "Sarvam AI: Sarvam-M (free)",
-      "provider": "Sarvamai",
-      "type": "text",
-      "free": true,
-      "recommended": false,
-      "context": 32768,
-      "pricing": {
-        "prompt": "0",
-        "completion": "0",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 15.0,
-      "description": "Sarvam-M is a 24 B-parameter, instruction-tuned derivative of Mistral-Small-3.1-24B-Base-2503, post-trained on English plus eleven major Indic languages (bn, hi, kn, gu, mr, ml, or, pa, ta, te). The model introduces a dual-mode interface: \u201cnon-think\u201d for low-latency chat and a optional \u201cthink\u201d phase that exposes chain-of-thought tokens for more demanding reasoning, math, and coding tasks. \n\nBenchmark reports show solid gains versus similarly sized open models on Indic-language QA, GSM-8K math, and SWE-Bench coding, making Sarvam-M a practical general-purpose choice for multilingual conversational agents as well as analytical workloads that mix English, native Indic scripts, or romanized text.",
-      "capabilities": [
-        "chat",
         "reasoning",
         "long-context"
       ]
@@ -5154,28 +5329,6 @@
       ]
     },
     {
-      "id": "featherless/qwerky-72b:free",
-      "name": "Qrwkv 72B (free)",
-      "provider": "Featherless",
-      "type": "text",
-      "free": true,
-      "recommended": false,
-      "context": 32768,
-      "pricing": {
-        "prompt": "0",
-        "completion": "0",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 15.0,
-      "description": "Qrwkv-72B is a linear-attention RWKV variant of the Qwen 2.5 72B model, optimized to significantly reduce computational cost at scale. Leveraging linear attention, it achieves substantial inference speedups (>1000x) while retaining competitive accuracy on common benchmarks like ARC, HellaSwag, Lambada, and MMLU. It inherits knowledge and language support from Qwen 2.5, supporting approximately 30 languages, making it suitable for efficient inference in large-context applications.",
-      "capabilities": [
-        "long-context"
-      ]
-    },
-    {
       "id": "rekaai/reka-flash-3:free",
       "name": "Reka: Flash 3 (free)",
       "provider": "Rekaai",
@@ -5206,7 +5359,7 @@
       "type": "text",
       "free": false,
       "recommended": false,
-      "context": 400000,
+      "context": 128000,
       "pricing": {
         "prompt": "0.00000125",
         "completion": "0.00001",
@@ -5288,7 +5441,7 @@
         "completion": "0.0000004",
         "request": "0",
         "image": "0",
-        "web_search": "0",
+        "web_search": "0.01",
         "internal_reasoning": "0",
         "input_cache_read": "0.000000005"
       },
@@ -5320,6 +5473,7 @@
       "description": "gpt-oss-120b is an open-weight, 117B-parameter Mixture-of-Experts (MoE) language model from OpenAI designed for high-reasoning, agentic, and general-purpose production use cases. It activates 5.1B parameters per forward pass and is optimized to run on a single H100 GPU with native MXFP4 quantization. The model supports configurable reasoning depth, full chain-of-thought access, and native tool use, including function calling, browsing, and structured output generation.",
       "capabilities": [
         "reasoning",
+        "internet",
         "long-context"
       ]
     },
@@ -5461,7 +5615,7 @@
         "input_cache_read": "0.0000005"
       },
       "quality_score": 13.0,
-      "description": "o3 is a well-rounded and powerful model across domains. It sets a new standard for math, science, coding, and visual reasoning tasks. It also excels at technical writing and instruction-following. Use it to think through multi-step problems that involve analysis across text, code, and images. Note that BYOK is required for this model. Set up here: https://openrouter.ai/settings/integrations",
+      "description": "o3 is a well-rounded and powerful model across domains. It sets a new standard for math, science, coding, and visual reasoning tasks. It also excels at technical writing and instruction-following. Use it to think through multi-step problems that involve analysis across text, code, and images. ",
       "capabilities": [
         "coding",
         "vision",
@@ -5528,8 +5682,8 @@
       "recommended": false,
       "context": 131072,
       "pricing": {
-        "prompt": "0.00000002",
-        "completion": "0.00000004",
+        "prompt": "0.00000004",
+        "completion": "0.00000008",
         "request": "0",
         "image": "0",
         "web_search": "0",
@@ -5670,8 +5824,8 @@
       ]
     },
     {
-      "id": "openai/o1-mini",
-      "name": "OpenAI: o1-mini",
+      "id": "openai/o1-mini-2024-09-12",
+      "name": "OpenAI: o1-mini (2024-09-12)",
       "provider": "Openai",
       "type": "text",
       "free": false,
@@ -5695,8 +5849,8 @@
       ]
     },
     {
-      "id": "openai/o1-mini-2024-09-12",
-      "name": "OpenAI: o1-mini (2024-09-12)",
+      "id": "openai/o1-mini",
+      "name": "OpenAI: o1-mini",
       "provider": "Openai",
       "type": "text",
       "free": false,
@@ -5762,6 +5916,153 @@
       "capabilities": []
     },
     {
+      "id": "moonshotai/kimi-k2-0905",
+      "name": "MoonshotAI: Kimi K2 0905",
+      "provider": "Moonshotai",
+      "type": "text",
+      "free": false,
+      "recommended": false,
+      "context": 262144,
+      "pricing": {
+        "prompt": "0.0000002962",
+        "completion": "0.0000011853",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 5.0,
+      "description": "Kimi K2 0905 is the September update of [Kimi K2 0711](moonshotai/kimi-k2). It is a large-scale Mixture-of-Experts (MoE) language model developed by Moonshot AI, featuring 1 trillion total parameters with 32 billion active per forward pass. It supports long-context inference up to 256k tokens, extended from the previous 128k.\n\nThis update improves agentic coding with higher accuracy and better generalization across scaffolds, and enhances frontend coding with more aesthetic and functional outputs for web, 3D, and related tasks. Kimi K2 is optimized for agentic capabilities, including advanced tool use, reasoning, and code synthesis. It excels across coding (LiveCodeBench, SWE-bench), reasoning (ZebraLogic, GPQA), and tool-use (Tau2, AceBench) benchmarks. The model is trained with a novel stack incorporating the MuonClip optimizer for stable large-scale MoE training.",
+      "capabilities": [
+        "coding",
+        "reasoning",
+        "internet",
+        "long-context"
+      ]
+    },
+    {
+      "id": "bytedance/seed-oss-36b-instruct",
+      "name": "ByteDance: Seed OSS 36B Instruct",
+      "provider": "Bytedance",
+      "type": "text",
+      "free": false,
+      "recommended": false,
+      "context": 131072,
+      "pricing": {
+        "prompt": "0.0000001036616",
+        "completion": "0.000000414848",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 5.0,
+      "description": "Seed-OSS-36B-Instruct is a 36B-parameter instruction-tuned reasoning language model from ByteDance\u2019s Seed team, released under Apache-2.0. The model is optimized for general instruction following with strong performance in reasoning, mathematics, coding, tool use/agentic workflows, and multilingual tasks, and is intended for international (i18n) use cases. It is not currently possible to control the reasoning effort.",
+      "capabilities": [
+        "chat",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
+      "id": "stepfun-ai/step3",
+      "name": "StepFun: Step3",
+      "provider": "Stepfun-Ai",
+      "type": "text",
+      "free": false,
+      "recommended": false,
+      "context": 65536,
+      "pricing": {
+        "prompt": "0.00000057",
+        "completion": "0.00000142",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 5.0,
+      "description": "Step3 is a cutting-edge multimodal reasoning model\u2014built on a Mixture-of-Experts architecture with 321B total parameters and 38B active. It is designed end-to-end to minimize decoding costs while delivering top-tier performance in vision\u2013language reasoning. Through the co-design of Multi-Matrix Factorization Attention (MFA) and Attention-FFN Disaggregation (AFD), Step3 maintains exceptional efficiency across both flagship and low-end accelerators.",
+      "capabilities": [
+        "vision",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
+      "id": "x-ai/grok-code-fast-1",
+      "name": "xAI: Grok Code Fast 1",
+      "provider": "X-Ai",
+      "type": "text",
+      "free": false,
+      "recommended": false,
+      "context": 256000,
+      "pricing": {
+        "prompt": "0.0000002",
+        "completion": "0.0000015",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0",
+        "input_cache_read": "0.00000002"
+      },
+      "quality_score": 5.0,
+      "description": "Grok Code Fast 1 is a speedy and economical reasoning model that excels at agentic coding. With reasoning traces visible in the response, developers can steer Grok Code for high-quality work flows.",
+      "capabilities": [
+        "coding",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
+      "id": "nousresearch/hermes-4-70b",
+      "name": "Nous: Hermes 4 70B",
+      "provider": "Nousresearch",
+      "type": "text",
+      "free": false,
+      "recommended": false,
+      "context": 131072,
+      "pricing": {
+        "prompt": "0.00000009329544",
+        "completion": "0.0000003733632",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 5.0,
+      "description": "Hermes 4 70B is a hybrid reasoning model from Nous Research, built on Meta-Llama-3.1-70B. It introduces the same hybrid mode as the larger 405B release, allowing the model to either respond directly or generate explicit <think>...</think> reasoning traces before answering. Users can control the reasoning behaviour with the `reasoning` `enabled` boolean. [Learn more in our docs](https://openrouter.ai/docs/use-cases/reasoning-tokens#enable-reasoning-with-default-config)\n\nThis 70B variant is trained with the expanded post-training corpus (~60B tokens) emphasizing verified reasoning data, leading to improvements in mathematics, coding, STEM, logic, and structured outputs while maintaining general assistant performance. It supports JSON mode, schema adherence, function calling, and tool use, and is designed for greater steerability with reduced refusal rates.",
+      "capabilities": [
+        "chat",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
+      "id": "nousresearch/hermes-4-405b",
+      "name": "Nous: Hermes 4 405B",
+      "provider": "Nousresearch",
+      "type": "text",
+      "free": false,
+      "recommended": false,
+      "context": 131072,
+      "pricing": {
+        "prompt": "0.0000001999188",
+        "completion": "0.000000800064",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 5.0,
+      "description": "Hermes 4 is a large-scale reasoning model built on Meta-Llama-3.1-405B and released by Nous Research. It introduces a hybrid reasoning mode, where the model can choose to deliberate internally with <think>...</think> traces or respond directly, offering flexibility between speed and depth. Users can control the reasoning behaviour with the `reasoning` `enabled` boolean. [Learn more in our docs](https://openrouter.ai/docs/use-cases/reasoning-tokens#enable-reasoning-with-default-config)\n\nThe model is instruction-tuned with an expanded post-training corpus (~60B tokens) emphasizing reasoning traces, improving performance in math, code, STEM, and logical reasoning, while retaining broad assistant utility. It also supports structured outputs, including JSON mode, schema adherence, function calling, and tool use. Hermes 4 is trained for steerability, lower refusal rates, and alignment toward neutral, user-directed behavior.",
+      "capabilities": [
+        "coding",
+        "chat",
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
       "id": "baidu/ernie-4.5-21b-a3b",
       "name": "Baidu: ERNIE 4.5 21B A3B",
       "provider": "Baidu",
@@ -5805,6 +6106,7 @@
       "capabilities": [
         "vision",
         "reasoning",
+        "internet",
         "long-context"
       ]
     },
@@ -5863,8 +6165,8 @@
       "recommended": false,
       "context": 131072,
       "pricing": {
-        "prompt": "0.0000001999188",
-        "completion": "0.000000800064",
+        "prompt": "0.00000032986602",
+        "completion": "0.0000013201056",
         "request": "0",
         "image": "0",
         "web_search": "0",
@@ -5887,13 +6189,12 @@
       "recommended": false,
       "context": 131072,
       "pricing": {
-        "prompt": "0.0000002",
-        "completion": "0.0000011",
+        "prompt": "0.00000014",
+        "completion": "0.00000086",
         "request": "0",
         "image": "0",
         "web_search": "0",
-        "internal_reasoning": "0",
-        "input_cache_read": "0.00000003"
+        "internal_reasoning": "0"
       },
       "quality_score": 5.0,
       "description": "GLM-4.5-Air is the lightweight variant of our latest flagship model family, also purpose-built for agent-centric applications. Like GLM-4.5, it adopts the Mixture-of-Experts (MoE) architecture but with a more compact parameter size. GLM-4.5-Air also supports hybrid inference modes, offering a \"thinking mode\" for advanced reasoning and tool use, and a \"non-thinking mode\" for real-time interaction. Users can control the reasoning behaviour with the `reasoning` `enabled` boolean. [Learn more in our docs](https://openrouter.ai/docs/use-cases/reasoning-tokens#enable-reasoning-with-default-config)",
@@ -5922,12 +6223,13 @@
       "description": "GLM 4 32B is a cost-effective foundation language model.\n\nIt can efficiently perform complex tasks and has significantly enhanced capabilities in tool use, online search, and code-related intelligent tasks.\n\nIt is made by the same lab behind the thudm models.",
       "capabilities": [
         "coding",
+        "internet",
         "long-context"
       ]
     },
     {
       "id": "bytedance/ui-tars-1.5-7b",
-      "name": "Bytedance: UI-TARS 7B ",
+      "name": "ByteDance: UI-TARS 7B ",
       "provider": "Bytedance",
       "type": "text",
       "free": false,
@@ -5946,6 +6248,7 @@
       "capabilities": [
         "vision",
         "reasoning",
+        "internet",
         "long-context"
       ]
     },
@@ -5973,7 +6276,7 @@
     },
     {
       "id": "moonshotai/kimi-k2",
-      "name": "MoonshotAI: Kimi K2",
+      "name": "MoonshotAI: Kimi K2 0711",
       "provider": "Moonshotai",
       "type": "text",
       "free": false,
@@ -6203,6 +6506,30 @@
       "quality_score": 5.0,
       "description": "MiniMax-M1 is a large-scale, open-weight reasoning model designed for extended context and high-efficiency inference. It leverages a hybrid Mixture-of-Experts (MoE) architecture paired with a custom \"lightning attention\" mechanism, allowing it to process long sequences\u2014up to 1 million tokens\u2014while maintaining competitive FLOP efficiency. With 456 billion total parameters and 45.9B active per token, this variant is optimized for complex, multi-step reasoning tasks.\n\nTrained via a custom reinforcement learning pipeline (CISPO), M1 excels in long-context understanding, software engineering, agentic tool use, and mathematical reasoning. Benchmarks show strong performance across FullStackBench, SWE-bench, MATH, GPQA, and TAU-Bench, often outperforming other open models like DeepSeek R1 and Qwen3-235B.",
       "capabilities": [
+        "reasoning",
+        "long-context"
+      ]
+    },
+    {
+      "id": "moonshotai/kimi-dev-72b",
+      "name": "MoonshotAI: Kimi Dev 72B",
+      "provider": "Moonshotai",
+      "type": "text",
+      "free": false,
+      "recommended": false,
+      "context": 131072,
+      "pricing": {
+        "prompt": "0.00000029",
+        "completion": "0.00000115",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 5.0,
+      "description": "Kimi-Dev-72B is an open-source large language model fine-tuned for software engineering and issue resolution tasks. Based on Qwen2.5-72B, it is optimized using large-scale reinforcement learning that applies code patches in real repositories and validates them via full test suite execution\u2014rewarding only correct, robust completions. The model achieves 60.4% on SWE-bench Verified, setting a new benchmark among open-source models for software bug fixing and code reasoning.",
+      "capabilities": [
+        "coding",
         "reasoning",
         "long-context"
       ]
@@ -6629,6 +6956,7 @@
       "description": "Note: Sonar Pro pricing includes Perplexity search pricing. See [details here](https://docs.perplexity.ai/guides/pricing#detailed-pricing-breakdown-for-sonar-reasoning-pro-and-sonar-pro)\n\nSonar Reasoning Pro is a premier reasoning model powered by DeepSeek R1 with Chain of Thought (CoT). Designed for advanced use cases, it supports in-depth, multi-step queries with a larger context window and can surface more citations per search, enabling more comprehensive and extensible responses.",
       "capabilities": [
         "reasoning",
+        "internet",
         "long-context"
       ]
     },
@@ -6652,6 +6980,7 @@
       "description": "Note: Sonar Pro pricing includes Perplexity search pricing. See [details here](https://docs.perplexity.ai/guides/pricing#detailed-pricing-breakdown-for-sonar-reasoning-pro-and-sonar-pro)\n\nFor enterprises seeking more advanced capabilities, the Sonar Pro API can handle in-depth, multi-step queries with added extensibility, like double the number of citations per search as Sonar on average. Plus, with a larger context window, it can handle longer and more nuanced searches and follow-up questions. ",
       "capabilities": [
         "reasoning",
+        "internet",
         "long-context"
       ]
     },
@@ -6675,6 +7004,7 @@
       "description": "Sonar Deep Research is a research-focused model designed for multi-step retrieval, synthesis, and reasoning across complex topics. It autonomously searches, reads, and evaluates sources, refining its approach as it gathers information. This enables comprehensive report generation across domains like finance, technology, health, and current events.\n\nNotes on Pricing ([Source](https://docs.perplexity.ai/guides/pricing#detailed-pricing-breakdown-for-sonar-deep-research)) \n- Input tokens comprise of Prompt tokens (user prompt) + Citation tokens (these are processed tokens from running searches)\n- Deep Research runs multiple searches to conduct exhaustive research. Searches are priced at $5/1000 searches. A request that does 30 searches will cost $0.15 in this step.\n- Reasoning is a distinct step in Deep Research since it does extensive automated reasoning through all the material it gathers during its research phase. Reasoning tokens here are a bit different than the CoTs in the answer - these are tokens that we use to reason through the research material prior to generating the outputs via the CoTs. Reasoning tokens are priced at $3/1M tokens",
       "capabilities": [
         "reasoning",
+        "internet",
         "long-context"
       ]
     },
@@ -6699,6 +7029,7 @@
       "capabilities": [
         "chat",
         "reasoning",
+        "internet",
         "long-context"
       ]
     },
@@ -6768,6 +7099,7 @@
       "description": "Sonar Reasoning is a reasoning model provided by Perplexity based on [DeepSeek R1](/deepseek/deepseek-r1).\n\nIt allows developers to utilize long chain of thought with built-in web search. Sonar Reasoning is uncensored and hosted in US datacenters. ",
       "capabilities": [
         "reasoning",
+        "internet",
         "long-context"
       ]
     },
@@ -6790,6 +7122,7 @@
       "quality_score": 5.0,
       "description": "Sonar is lightweight, affordable, fast, and simple to use \u2014 now featuring citations and the ability to customize sources. It is designed for companies seeking to integrate lightweight question-and-answer features optimized for speed.",
       "capabilities": [
+        "internet",
         "long-context"
       ]
     },
@@ -7002,28 +7335,6 @@
       ]
     },
     {
-      "id": "thedrummer/rocinante-12b",
-      "name": "TheDrummer: Rocinante 12B",
-      "provider": "Thedrummer",
-      "type": "text",
-      "free": false,
-      "recommended": false,
-      "context": 32768,
-      "pricing": {
-        "prompt": "0.00000017",
-        "completion": "0.00000043",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 5.0,
-      "description": "Rocinante 12B is designed for engaging storytelling and rich prose.\n\nEarly testers have reported:\n- Expanded vocabulary with unique and expressive word choices\n- Enhanced creativity for vivid narratives\n- Adventure-filled and captivating stories",
-      "capabilities": [
-        "long-context"
-      ]
-    },
-    {
       "id": "anthracite-org/magnum-v2-72b",
       "name": "Magnum v2 72B",
       "provider": "Anthracite-Org",
@@ -7047,6 +7358,28 @@
       ]
     },
     {
+      "id": "thedrummer/rocinante-12b",
+      "name": "TheDrummer: Rocinante 12B",
+      "provider": "Thedrummer",
+      "type": "text",
+      "free": false,
+      "recommended": false,
+      "context": 32768,
+      "pricing": {
+        "prompt": "0.00000017",
+        "completion": "0.00000043",
+        "request": "0",
+        "image": "0",
+        "web_search": "0",
+        "internal_reasoning": "0"
+      },
+      "quality_score": 5.0,
+      "description": "Rocinante 12B is designed for engaging storytelling and rich prose.\n\nEarly testers have reported:\n- Expanded vocabulary with unique and expressive word choices\n- Enhanced creativity for vivid narratives\n- Adventure-filled and captivating stories",
+      "capabilities": [
+        "long-context"
+      ]
+    },
+    {
       "id": "microsoft/wizardlm-2-8x22b",
       "name": "WizardLM-2 8x22B",
       "provider": "Microsoft",
@@ -7066,28 +7399,6 @@
       "description": "WizardLM-2 8x22B is Microsoft AI's most advanced Wizard model. It demonstrates highly competitive performance compared to leading proprietary models, and it consistently outperforms all existing state-of-the-art opensource models.\n\nIt is an instruct finetune of [Mixtral 8x22B](/models/mistralai/mixtral-8x22b).\n\nTo read more about the model release, [click here](https://wizardlm.github.io/WizardLM2/).\n\n#moe",
       "capabilities": [
         "chat",
-        "long-context"
-      ]
-    },
-    {
-      "id": "nousresearch/nous-hermes-2-mixtral-8x7b-dpo",
-      "name": "Nous: Hermes 2 Mixtral 8x7B DPO",
-      "provider": "Nousresearch",
-      "type": "text",
-      "free": false,
-      "recommended": false,
-      "context": 32768,
-      "pricing": {
-        "prompt": "0.0000006",
-        "completion": "0.0000006",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 5.0,
-      "description": "Nous Hermes 2 Mixtral 8x7B DPO is the new flagship Nous Research model trained over the [Mixtral 8x7B MoE LLM](/models/mistralai/mixtral-8x7b).\n\nThe model was trained on over 1,000,000 entries of primarily [GPT-4](/models/openai/gpt-4) generated data, as well as other high quality data from open datasets across the AI landscape, achieving state of the art performance on a variety of tasks.\n\n#moe",
-      "capabilities": [
         "long-context"
       ]
     },
@@ -7201,48 +7512,25 @@
       ]
     },
     {
-      "id": "opengvlab/internvl3-14b",
-      "name": "OpenGVLab: InternVL3 14B",
-      "provider": "Opengvlab",
-      "type": "vision",
+      "id": "inflection/inflection-3-pi",
+      "name": "Inflection: Inflection 3 Pi",
+      "provider": "Inflection",
+      "type": "text",
       "free": false,
       "recommended": false,
-      "context": 12288,
+      "context": 8000,
       "pricing": {
-        "prompt": "0.0000002",
-        "completion": "0.0000004",
+        "prompt": "0.0000025",
+        "completion": "0.00001",
         "request": "0",
         "image": "0",
         "web_search": "0",
         "internal_reasoning": "0"
       },
       "quality_score": 1.0,
-      "description": "The 14b version of the InternVL3 series. An advanced multimodal large language model (MLLM) series that demonstrates superior overall performance. Compared to InternVL 2.5, InternVL3 exhibits superior multimodal perception and reasoning capabilities, while further extending its multimodal capabilities to encompass tool usage, GUI agents, industrial image analysis, 3D vision perception, and more.",
+      "description": "Inflection 3 Pi powers Inflection's [Pi](https://pi.ai) chatbot, including backstory, emotional intelligence, productivity, and safety. It has access to recent news, and excels in scenarios like customer support and roleplay.\n\nPi has been trained to mirror your tone and style, if you use more emojis, so will Pi! Try experimenting with various prompts and conversation styles.",
       "capabilities": [
-        "vision",
-        "reasoning"
-      ]
-    },
-    {
-      "id": "x-ai/grok-vision-beta",
-      "name": "xAI: Grok Vision Beta",
-      "provider": "X-Ai",
-      "type": "vision",
-      "free": false,
-      "recommended": false,
-      "context": 8192,
-      "pricing": {
-        "prompt": "0.000005",
-        "completion": "0.000015",
-        "request": "0",
-        "image": "0.009",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 1.0,
-      "description": "Grok Vision Beta is xAI's experimental language model with vision capability.\n\n",
-      "capabilities": [
-        "vision"
+        "chat"
       ]
     },
     {
@@ -7263,28 +7551,6 @@
       },
       "quality_score": 1.0,
       "description": "Inflection 3 Productivity is optimized for following instructions. It is better for tasks requiring JSON output or precise adherence to provided guidelines. It has access to recent news.\n\nFor emotional intelligence similar to Pi, see [Inflect 3 Pi](/inflection/inflection-3-pi)\n\nSee [Inflection's announcement](https://inflection.ai/blog/enterprise) for more details.",
-      "capabilities": [
-        "chat"
-      ]
-    },
-    {
-      "id": "inflection/inflection-3-pi",
-      "name": "Inflection: Inflection 3 Pi",
-      "provider": "Inflection",
-      "type": "text",
-      "free": false,
-      "recommended": false,
-      "context": 8000,
-      "pricing": {
-        "prompt": "0.0000025",
-        "completion": "0.00001",
-        "request": "0",
-        "image": "0",
-        "web_search": "0",
-        "internal_reasoning": "0"
-      },
-      "quality_score": 1.0,
-      "description": "Inflection 3 Pi powers Inflection's [Pi](https://pi.ai) chatbot, including backstory, emotional intelligence, productivity, and safety. It has access to recent news, and excels in scenarios like customer support and roleplay.\n\nPi has been trained to mirror your tone and style, if you use more emojis, so will Pi! Try experimenting with various prompts and conversation styles.",
       "capabilities": [
         "chat"
       ]
@@ -7453,6 +7719,6 @@
       "capabilities": []
     }
   ],
-  "last_updated": "2025-08-24T16:19:01.192954",
-  "total_models": 316
+  "last_updated": "2025-09-06T04:36:39.324591",
+  "total_models": 326
 }

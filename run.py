@@ -17,10 +17,10 @@ def check_dependencies():
         import fitz
         import docx
         import PIL
-        print("✅ Core dependencies found")
+        print("Core dependencies found")
         return True
     except ImportError as e:
-        print(f"❌ Missing dependency: {e}")
+        print(f"Missing dependency: {e}")
         print("Please run: pip install -r requirements.txt")
         return False
 
@@ -34,18 +34,18 @@ def check_optional_dependencies():
     for dep, warning in optional_deps.items():
         try:
             __import__(dep)
-            print(f"✅ {dep} found")
+            print(f"{dep} found")
         except ImportError:
-            print(f"⚠️  {dep} not found - {warning}")
+            print(f"WARNING: {dep} not found - {warning}")
 
 def main():
     """Main function to launch the Streamlit app."""
-    print("🚀 Starting Resume to LaTeX Generator...")
+    print("Starting Resume to LaTeX Generator...")
     print("=" * 50)
     
     # Check if we're in the right directory
     if not Path("app.py").exists():
-        print("❌ app.py not found. Please run this script from the project directory.")
+        print("ERROR: app.py not found. Please run this script from the project directory.")
         sys.exit(1)
     
     # Check dependencies
@@ -55,9 +55,9 @@ def main():
     check_optional_dependencies()
     
     print("=" * 50)
-    print("🌐 Launching Streamlit application...")
-    print("📝 The app will open in your default browser")
-    print("🔑 Remember to add your OpenRouter API key in the sidebar")
+    print("Launching Streamlit application...")
+    print("The app will open in your default browser")
+    print("Remember to add your OpenRouter API key in the sidebar")
     print("=" * 50)
     
     # Launch Streamlit
@@ -69,9 +69,9 @@ def main():
             "--server.enableCORS", "false"
         ])
     except KeyboardInterrupt:
-        print("\n👋 Application stopped by user")
+        print("\nApplication stopped by user")
     except Exception as e:
-        print(f"❌ Error launching application: {e}")
+        print(f"ERROR: Error launching application: {e}")
 
 if __name__ == "__main__":
     main()

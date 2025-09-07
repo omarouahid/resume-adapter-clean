@@ -1079,7 +1079,14 @@ class HTMLResumeGenerator:
             {'name': 'Skills', 'data_key': 'skills'},
             {'name': 'Projects', 'data_key': 'projects'},
             {'name': 'Certifications', 'data_key': 'certifications'},
-            {'name': 'Testimonials', 'data_key': 'testimonials'}
+            {'name': 'Testimonials', 'data_key': 'testimonials'},
+            {'name': 'Languages', 'data_key': 'languages'},
+            {'name': 'Awards & Recognitions', 'data_key': 'awards'},
+            {'name': 'Publications', 'data_key': 'publications'},
+            {'name': 'Volunteer', 'data_key': 'volunteer'},
+            {'name': 'Courses', 'data_key': 'courses'},
+            {'name': 'Achievements', 'data_key': 'achievements'},
+            {'name': 'Interests', 'data_key': 'interests'}
         ]
         
         for section in section_checks:
@@ -1382,7 +1389,7 @@ class HTMLResumeGenerator:
         """Build testimonials section."""
         if not testimonials:
             return "<div class='testimonials'><div class='testimonial-card'><div class='testimonial-text'>Client testimonials will appear here when available.</div><div class='testimonial-author'>Satisfied Client</div></div></div>"
-        
+
         testimonials_html = "<div class='testimonials'>"
         for testimonial in testimonials:
             text = self._safe_get_value(testimonial, 'text', 'Great work and professional service.')
@@ -1396,9 +1403,115 @@ class HTMLResumeGenerator:
                 {f'<div class="testimonial-company">{company}</div>' if company else ''}
             </div>
             """
-        
+
         testimonials_html += "</div>"
         return testimonials_html
+
+    def _build_awards_section(self, awards: list) -> str:
+        """Build awards/recognitions section."""
+        if not awards:
+            return ""
+        html = "<div class='awards-section'><h3>Awards & Recognitions</h3><ul>"
+        for a in awards:
+            if isinstance(a, str):
+                html += f"<li>{a}</li>"
+            elif isinstance(a, dict):
+                name = self._safe_get_value(a, 'name', 'Award')
+                org = self._safe_get_value(a, 'issuer', '')
+                year = self._safe_get_value(a, 'year', '')
+                detail = self._safe_get_value(a, 'details', '')
+                meta = " ".join([p for p in [org, year] if p])
+                html += f"<li><strong>{name}</strong>{f' — {meta}' if meta else ''}{f': {detail}' if detail else ''}</li>"
+        html += "</ul></div>"
+        return html
+
+    def _build_publications_section(self, publications: list) -> str:
+        """Build publications section."""
+        if not publications:
+            return ""
+        html = "<div class='publications-section'><h3>Publications</h3><ul>"
+        for p in publications:
+            if isinstance(p, str):
+                html += f"<li>{p}</li>"
+            else:
+                title = self._safe_get_value(p, 'title', 'Publication')
+                venue = self._safe_get_value(p, 'venue', '')
+                year = self._safe_get_value(p, 'year', '')
+                link = self._safe_get_value(p, 'url', '')
+                suffix = " ".join([v for v in [venue, year] if v])
+                if link:
+                    html += f"<li><a href='{link}' target='_blank'>{title}</a>{f' — {suffix}' if suffix else ''}</li>"
+                else:
+                    html += f"<li>{title}{f' — {suffix}' if suffix else ''}</li>"
+        html += "</ul></div>"
+        return html
+
+    def _build_languages_section(self, languages: list) -> str:
+        """Build languages section (general template usage)."""
+        if not languages:
+            return ""
+        items = []
+        for lang in languages:
+            if isinstance(lang, str):
+                items.append(lang)
+            elif isinstance(lang, dict):
+                n = self._safe_get_value(lang, 'name', '')
+                prof = self._safe_get_value(lang, 'proficiency', '')
+                items.append(f"{n}{f' ({prof})' if prof else ''}")
+        if not items:
+            return ""
+        return "<div class='languages-section'><h3>Languages</h3><div>" + ", ".join(items) + "</div></div>"
+
+    def _build_volunteer_section(self, volunteer: list) -> str:
+        """Build volunteer section."""
+        if not volunteer:
+            return ""
+        html = "<div class='volunteer-section'><h3>Volunteer</h3>"
+        for v in volunteer:
+            role = self._safe_get_value(v, 'role', 'Volunteer')
+            org = self._safe_get_value(v, 'organization', '')
+            desc = self._safe_get_value(v, 'description', '')
+            html += f"<div class='volunteer-item'><strong>{role}</strong>{f' — {org}' if org else ''}{f': {desc}' if desc else ''}</div>"
+        html += "</div>"
+        return html
+
+    def _build_interests_section(self, interests: list) -> str:
+        """Build interests/hobbies section."""
+        if not interests:
+            return ""
+        items = []
+        for it in interests:
+            items.append(str(it))
+        if not items:
+            return ""
+        return "<div class='interests-section'><h3>Interests</h3><div>" + ", ".join(items[:12]) + "</div></div>"
+
+    def _build_achievements_section(self, achievements: list) -> str:
+        """Build achievements section."""
+        if not achievements:
+            return ""
+        html = "<div class='achievements-section'><h3>Achievements</h3><ul>"
+        for a in achievements:
+            html += f"<li>{str(a)}</li>"
+        html += "</ul></div>"
+        return html
+
+    def _build_courses_section(self, courses: list) -> str:
+        """Build courses/professional training section."""
+        if not courses:
+            return ""
+        html = "<div class='courses-section'><h3>Courses</h3><ul>"
+        for c in courses:
+            if isinstance(c, str):
+                html += f"<li>{c}</li>"
+            else:
+                title = self._safe_get_value(c, 'title', 'Course')
+                provider = self._safe_get_value(c, 'provider', '')
+                year = self._safe_get_value(c, 'year', '')
+                meta = " ".join([p for p in [provider, year] if p])
+                html += f"<li>{title}{f' — {meta}' if meta else ''}</li>"
+        html += "</ul></div>"
+        return html
     
     def _infer_job_title(self, resume_data: Dict[str, Any]) -> str:
         """Infer professional title from resume data."""
@@ -1453,6 +1566,22 @@ class HTMLResumeGenerator:
                 'priority': 2
             },
             {
+                'name': 'Awards & Recognitions',
+                'data_key': 'awards',
+                'keywords': ['award', 'recognition', 'awards-section', '{{awards}}'],
+                'builder': self._build_awards_section,
+                'class': 'awards-section',
+                'priority': 2
+            },
+            {
+                'name': 'Publications',
+                'data_key': 'publications',
+                'keywords': ['publication', 'publications-section', '{{publications}}', 'papers', 'articles'],
+                'builder': self._build_publications_section,
+                'class': 'publications-section',
+                'priority': 2
+            },
+            {
                 'name': 'Work Experience',
                 'data_key': 'job_experiences',
                 'keywords': ['work', 'experience', '{{work_experience}}', 'job', 'employment', 'work-experience'],
@@ -1477,13 +1606,53 @@ class HTMLResumeGenerator:
                 'priority': 0  # Highest priority
             },
             {
+                'name': 'Languages',
+                'data_key': 'languages',
+                'keywords': ['language', 'languages-section', '{{languages}}'],
+                'builder': self._build_languages_section,
+                'class': 'languages-section',
+                'priority': 3
+            },
+            {
                 'name': 'Testimonials',
                 'data_key': 'testimonials',
                 'keywords': ['testimonial', '{{testimonials}}', 'testimonials-section', 'reference'],
                 'builder': self._build_testimonials_section,
                 'class': 'testimonials-section',
                 'priority': 3
-            }
+            },
+            {
+                'name': 'Volunteer',
+                'data_key': 'volunteer',
+                'keywords': ['volunteer', 'volunteering', 'volunteer-section', '{{volunteer}}'],
+                'builder': self._build_volunteer_section,
+                'class': 'volunteer-section',
+                'priority': 3
+            },
+            {
+                'name': 'Courses',
+                'data_key': 'courses',
+                'keywords': ['course', 'courses', 'training', 'courses-section', '{{courses}}'],
+                'builder': self._build_courses_section,
+                'class': 'courses-section',
+                'priority': 3
+            },
+            {
+                'name': 'Achievements',
+                'data_key': 'achievements',
+                'keywords': ['achievement', 'achievements-section', '{{achievements}}'],
+                'builder': self._build_achievements_section,
+                'class': 'achievements-section',
+                'priority': 3
+            },
+            {
+                'name': 'Interests',
+                'data_key': 'interests',
+                'keywords': ['interest', 'hobbies', 'interests-section', '{{interests}}'],
+                'builder': self._build_interests_section,
+                'class': 'interests-section',
+                'priority': 4
+            },
         ]
         
         # Check each section
@@ -4774,7 +4943,7 @@ body {
         github = getattr(contact_info, 'github', '') if hasattr(contact_info, 'github') else contact_info.get('github', '')
         
         professional_summary = resume_data.get('professional_summary', '')
-        
+
         # Build contact info line
         contact_parts = []
         if email: contact_parts.append(email)
@@ -4783,7 +4952,7 @@ body {
         if linkedin: contact_parts.append(linkedin)
         if github: contact_parts.append(github)
         contact_line = ' • '.join(contact_parts)
-        
+
         # Build experience section
         experience_html = ""
         job_experiences = resume_data.get('job_experiences', [])
@@ -4874,7 +5043,83 @@ body {
                     <span class="skills-list">{', '.join(skill_list)}</span>
                 </div>
                 '''
-        
+
+        # Build projects section (if available)
+        projects_html = ""
+        projects = resume_data.get('projects', [])
+        for proj in projects:
+            if hasattr(proj, '__dict__'):
+                title = getattr(proj, 'title', '') or 'Project'
+                description = getattr(proj, 'description', '') or ''
+                date = getattr(proj, 'date', '') or ''
+                link = getattr(proj, 'link', '') or ''
+                technologies = getattr(proj, 'technologies', []) or []
+            elif isinstance(proj, dict):
+                title = proj.get('title') or 'Project'
+                description = proj.get('description', '')
+                date = proj.get('date', '')
+                link = proj.get('link', '')
+                technologies = proj.get('technologies', []) or []
+            else:
+                title, description, date, link, technologies = str(proj), '', '', '', []
+
+            tech_text = f"<div class=\"project-tech\">{', '.join(technologies)}</div>" if technologies else ''
+            link_text = f"<span class=\"project-link\"><a href=\"{link}\" target=\"_blank\">Link</a></span>" if link else ''
+            date_text = f"<span class=\"project-date\">{date}</span>" if date else ''
+            meta = ' '.join([s for s in [date_text, link_text] if s])
+            projects_html += f'''
+            <div class="original-project-item">
+                <div class="project-title">{title}</div>
+                {f'<div class="project-meta">{meta}</div>' if meta else ''}
+                {f'<div class="project-description">{description}</div>' if description else ''}
+                {tech_text}
+            </div>
+            '''
+
+        # Build certifications section
+        certifications_html = ""
+        certs = resume_data.get('certifications', [])
+        for cert in certs:
+            certifications_html += f"<div class=\"original-cert-item\">{cert}</div>"
+
+        # Build languages section
+        languages_html = ""
+        languages = resume_data.get('languages', [])
+        for lang in languages:
+            languages_html += f"<div class=\"original-lang-item\">{lang}</div>"
+
+        # Build additional sections (generic)
+        additional_sections_html = ""
+        additional = resume_data.get('additional_sections', {}) or {}
+        # Some parsers may place these at the top-level; include them if so
+        for key in ['remote_work', 'timezone', 'visa_sponsorship']:
+            if key in resume_data and key not in additional:
+                val = resume_data.get(key)
+                if isinstance(val, list):
+                    additional[key] = val
+                elif isinstance(val, str) and val.strip():
+                    additional[key] = [val]
+
+        if isinstance(additional, dict):
+            for section_name, items in additional.items():
+                if not items:
+                    continue
+                # Normalize items to list[str]
+                if isinstance(items, str):
+                    items = [items]
+                section_items = ''.join(
+                    f"<li>{str(it).strip()}</li>" for it in items if str(it).strip()
+                )
+                if section_items:
+                    additional_sections_html += f'''
+                    <div class="original-section">
+                        <h2 class="original-section-title">{section_name.replace('_',' ')}</h2>
+                        <ul class="original-list">
+                            {section_items}
+                        </ul>
+                    </div>
+                    '''
+
         return f'''
         <div class="original-resume-container">
             <div class="original-header">
@@ -4889,6 +5134,14 @@ body {
             {f'<div class="original-section"><h2 class="original-section-title">Education</h2>{education_html}</div>' if education_html else ''}
             
             {f'<div class="original-section"><h2 class="original-section-title">Skills</h2>{skills_html}</div>' if skills_html else ''}
+
+            {f'<div class="original-section"><h2 class="original-section-title">Projects</h2>{projects_html}</div>' if projects_html else ''}
+
+            {f'<div class="original-section"><h2 class="original-section-title">Certifications</h2>{certifications_html}</div>' if certifications_html else ''}
+
+            {f'<div class="original-section"><h2 class="original-section-title">Languages</h2>{languages_html}</div>' if languages_html else ''}
+
+            {additional_sections_html}
         </div>
         '''
     
@@ -5047,6 +5300,44 @@ body {
 
 .skills-list {
     color: {{text_dark}};
+}
+
+/* Projects */
+.original-project-item {
+    margin-bottom: 15px;
+}
+
+.project-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: {{text_dark}};
+}
+
+.project-meta {
+    font-size: 13px;
+    color: {{text_light}};
+    margin-bottom: 6px;
+}
+
+.project-description {
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.project-tech {
+    font-size: 13px;
+    color: {{text_light}};
+}
+
+/* Certifications, Languages, and generic lists */
+.original-cert-item, .original-lang-item {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.original-list {
+    margin-left: 18px;
+    list-style-type: disc;
 }
 
 @media print {

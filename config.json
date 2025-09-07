@@ -1,6 +1,6 @@
 {
   "openrouter": {
-    "api_key": "your-openrouter-api-key-here",
+    "api_key": "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",
     "default_model": "mistralai/mistral-small-3.2-24b-instruct:free"
   },
   "ui": {

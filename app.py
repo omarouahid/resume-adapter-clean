@@ -42,6 +42,8 @@ from image_converter import image_converter
 from professional_templates import professional_templates
 from freelancer_templates import freelancer_templates
 from engineering_templates import engineering_templates
+from cover_letter_service import CoverLetterService
+from web_research import CompanyResearchService
 
 # Configure logging with file output
 import os
@@ -460,6 +462,23 @@ def initialize_session_state():
         st.session_state.original_parsed_resume = None
     if 'openrouter_api_key' not in st.session_state:
         st.session_state.openrouter_api_key = ""
+    if 'cover_letter_service' not in st.session_state:
+        st.session_state.cover_letter_service = CoverLetterService()
+    if 'research_service' not in st.session_state:
+        st.session_state.research_service = CompanyResearchService()
+    if 'company_research' not in st.session_state:
+        st.session_state.company_research = None
+    if 'cover_letter_text' not in st.session_state:
+        st.session_state.cover_letter_text = ""
+    # Wire OpenRouter client into auxiliary services if available
+    try:
+        if st.session_state.openrouter_client:
+            if 'cover_letter_service' in st.session_state and st.session_state.cover_letter_service:
+                st.session_state.cover_letter_service.set_client(st.session_state.openrouter_client)
+            if 'research_service' in st.session_state and st.session_state.research_service:
+                st.session_state.research_service.set_client(st.session_state.openrouter_client)
+    except Exception:
+        pass
 
 def create_header():
     """Create the application header."""
@@ -4006,6 +4025,8 @@ def display_html_resume_builder():
         # Enhanced tabs with new features
         tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["👁️ Preview", "✏️ Edit", "🎯 ATS Score", "🔧 Customize", "🎨 Template Match", "💾 Download"])
         
+        tabs_new = st.tabs(["Preview", "Edit", "ATS Score", "Customize", "Template Match", "Download", "Cover Letter"])
+        tab1, tab2, tab3, tab4, tab5, tab6, tab7 = tabs_new
         with tab1:
             st.markdown("### 👁️ Live Preview")
             
@@ -4450,6 +4471,97 @@ def display_html_resume_builder():
         with tab5:
             display_integrated_template_matching()
             
+        with tab7:
+            st.markdown("### Cover Letter Generator")
+            # Inputs
+            company_name = st.text_input("Company Name", value=getattr(st.session_state, 'cover_company', ""))
+            job_desc = st.text_area("Job Description", value=getattr(st.session_state, 'cover_job_desc', ""), height=160)
+
+            # Persist inputs
+            st.session_state.cover_company = company_name
+            st.session_state.cover_job_desc = job_desc
+
+            # Model browsing support info
+            browsing_supported = False
+            if getattr(st.session_state, 'openrouter_client', None):
+                try:
+                    # Best-effort check via service helper
+                    st.session_state.cover_letter_service.set_client(st.session_state.openrouter_client)
+                    browsing_supported = st.session_state.cover_letter_service.model_supports_browsing(
+                        st.session_state.openrouter_client.model
+                    )
+                except Exception:
+                    browsing_supported = False
+            st.caption(f"Model browsing supported: {'Yes' if browsing_supported else 'No'}")
+
+            col_a, col_b = st.columns(2)
+            with col_a:
+                if st.button("Research Company", use_container_width=True):
+                    if company_name.strip():
+                        with st.spinner("Fetching company info..."):
+                            try:
+                                research = st.session_state.research_service.research(company_name, job_desc)
+                                st.session_state.company_research = research
+                                st.success("Company research updated.")
+                            except Exception as e:
+                                st.error(f"Research failed: {e}")
+                    else:
+                        st.warning("Please enter a company name.")
+            with col_b:
+                if st.button("Generate Cover Letter", use_container_width=True):
+                    if not getattr(st.session_state, 'openrouter_client', None):
+                        st.warning("Please add your OpenRouter API key in the sidebar.")
+                    elif not st.session_state.parsed_resume:
+                        st.warning("Upload and analyze your resume first.")
+                    elif not job_desc.strip() or not company_name.strip():
+                        st.warning("Provide both company name and job description.")
+                    else:
+                        with st.spinner("Composing cover letter..."):
+                            resume_dict = convert_parsed_resume_to_dict(st.session_state.parsed_resume)
+                            letter = st.session_state.cover_letter_service.generate_cover_letter(
+                                resume_dict,
+                                job_desc,
+                                company_name,
+                                st.session_state.company_research
+                            )
+                            st.session_state.cover_letter_text = letter
+                            st.success("Draft ready. You can edit below.")
+
+            # Research preview
+            if st.session_state.company_research:
+                with st.expander("Research Findings", expanded=False):
+                    r = st.session_state.company_research
+                    st.write({
+                        'company': r.get('company'),
+                        'domain': r.get('domain'),
+                        'description': r.get('description'),
+                        'overview': (r.get('overview') or '')[:400],
+                        'about_excerpt': (r.get('about_text') or '')[:400],
+                        'careers_excerpt': (r.get('careers_text') or '')[:400],
+                        'role_keywords': r.get('role_keywords'),
+                    })
+                    if r.get('sources'):
+                        st.markdown("**Sources:**")
+                        for s in r['sources']:
+                            st.write(f"- {s}")
+
+            # Editor and preview
+            st.markdown("#### Draft")
+            st.session_state.cover_letter_text = st.text_area(
+                "Cover Letter Text (editable)",
+                value=st.session_state.cover_letter_text or "",
+                height=260
+            )
+            if st.session_state.cover_letter_text:
+                st.markdown("#### Preview")
+                st.markdown(st.session_state.cover_letter_text)
+                st.download_button(
+                    "Download Cover Letter (.txt)",
+                    st.session_state.cover_letter_text.encode('utf-8'),
+                    file_name=f"cover_letter_{(company_name or 'company').replace(' ', '_')}.txt",
+                    mime="text/plain"
+                )
+
         with tab6:
             st.markdown("### 💾 Download Your Resume")
             

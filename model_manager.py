@@ -205,6 +205,10 @@ class ModelManager:
         if any(keyword in name or keyword in description for keyword in ['reasoning', 'analysis', 'math']):
             capabilities.append('reasoning')
         
+        # Browsing/Internet support (best-effort; some providers like Perplexity do this server-side)
+        if any(keyword in name or keyword in description or keyword in model_id for keyword in ['perplexity', 'sonar', 'online', 'browse', 'browsing', 'internet', 'web']):
+            capabilities.append('internet')
+        
         if model.get('context_length', 0) >= 32000:
             capabilities.append('long-context')
         

@@ -1289,6 +1289,41 @@ Return ONLY the complete HTML document with updated colors.
         except (KeyError, IndexError) as e:
             logger.error(f"Unexpected API response format: {e}")
             return "Error: Unexpected response format from AI service"
+
+    def generate_text(self, prompt: str, system_prompt: str = None, max_tokens: int = 1200, temperature: float = 0.3) -> str:
+        """General-purpose text generation with optional custom system prompt."""
+        # Rate limit
+        if not self.rate_limiter.record_request():
+            status = self.rate_limiter.get_rate_limit_status()
+            raise RateLimitExceeded("Rate limit exceeded", status)
+
+        messages = []
+        if system_prompt:
+            messages.append({"role": "system", "content": system_prompt})
+        else:
+            messages.append({"role": "system", "content": "You are a helpful assistant."})
+        messages.append({"role": "user", "content": prompt})
+
+        data = {
+            "model": self.model,
+            "messages": messages,
+            "max_tokens": max_tokens,
+            "temperature": temperature
+        }
+
+        try:
+            response = requests.post(
+                f"{self.base_url}/chat/completions",
+                headers=self.headers,
+                json=data,
+                timeout=60
+            )
+            response.raise_for_status()
+            result = response.json()
+            return result["choices"][0]["message"]["content"]
+        except Exception as e:
+            logger.error(f"OpenRouter generate_text failed: {e}")
+            return f"Error: Unable to generate text - {e}"
     
     def get_available_models(self) -> List[Dict]:
         """Get list of available models from OpenRouter."""
