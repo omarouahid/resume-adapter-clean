@@ -211,7 +211,7 @@ class OpenRouterClient:
         """
         prompt = self._create_structure_analysis_prompt(analysis_data)
         
-        response = self._make_request(prompt, max_tokens=2000)
+        response = self._make_request(prompt, max_tokens=2000, prompt_type="structure_analysis")
         
         try:
             return json.loads(response)
@@ -234,7 +234,7 @@ class OpenRouterClient:
         """
         prompt = self._create_latex_improvement_prompt(tex_content, cls_content)
         
-        response = self._make_request(prompt, max_tokens=3000)
+        response = self._make_request(prompt, max_tokens=3000, prompt_type="latex_improvement")
         
         return response
     
@@ -261,7 +261,7 @@ class OpenRouterClient:
         Please fix the errors and return the corrected LaTeX code. Only return the corrected code, no explanations.
         """
         
-        response = self._make_request(prompt, max_tokens=3000)
+        response = self._make_request(prompt, max_tokens=3000, prompt_type="latex_error_fix")
         return response
     
     def suggest_layout_improvements(self, sections_data: List[Dict]) -> Dict[str, str]:
@@ -289,7 +289,7 @@ class OpenRouterClient:
         Return as JSON with keys: spacing, fonts, ordering, hierarchy
         """
         
-        response = self._make_request(prompt, max_tokens=1500)
+        response = self._make_request(prompt, max_tokens=1500, prompt_type="layout_suggestions")
         
         try:
             return json.loads(response)
@@ -520,17 +520,57 @@ class OpenRouterClient:
         # Encode image for API
         image_b64 = base64.b64encode(image_data).decode('utf-8')
         
-        prompt = """Analyze this resume image and provide detailed layout information:
+        prompt = """COMPREHENSIVE RESUME LAYOUT ANALYSIS
 
-1. **Layout Type**: single-column, two-column, sidebar, etc.
-2. **Section Structure**: Order and positioning of sections (header, summary, experience, education, skills)
-3. **Typography**: Font sizes, weights, styles used for different sections
-4. **Spacing**: Margins, padding, line spacing between sections and elements
-5. **Colors**: Identify main colors used (text, headers, accents)
-6. **Visual Hierarchy**: How information is organized visually
-7. **Styling Elements**: Borders, lines, backgrounds, bullet styles
+Analyze this resume image with extreme precision for template replication:
 
-Return as JSON with keys: layout_type, sections, typography, spacing, colors, hierarchy, styling"""
+**STRUCTURAL ANALYSIS:**
+1. **Layout Architecture**: 
+   - Column structure (single/two/three column, percentages)
+   - Page margins (exact measurements if possible)
+   - Content area width and positioning
+   - Header/footer presence and size
+
+2. **Section Mapping**:
+   - Exact order of all sections from top to bottom
+   - Section titles and formatting
+   - Section spacing and separation methods
+   - Content organization within each section
+
+3. **Typography Precision**:
+   - Header hierarchy levels (H1, H2, H3 equivalent sizes)
+   - Body text size and line height
+   - Font weights (normal, bold, light) for different elements
+   - Text alignment patterns (left, center, justified)
+
+4. **Spacing Measurements**:
+   - Vertical spacing between sections
+   - Paragraph spacing within sections  
+   - Indentation levels for lists and subsections
+   - Margin and padding patterns
+
+5. **Visual Elements Detail**:
+   - Border styles, colors, and thickness
+   - Bullet point styles and indentation
+   - Background colors or shading
+   - Lines, dividers, or separators
+   - Icons or symbols used
+
+6. **Color Scheme Analysis**:
+   - Primary text color (usually black/dark gray)
+   - Header colors (if different)
+   - Accent colors for highlights or links
+   - Background colors or patterns
+
+7. **Content Density & Flow**:
+   - Information density per section
+   - Text-to-whitespace ratio
+   - Reading flow and visual guidance
+   - Emphasis techniques used
+
+CRITICAL: Provide measurements, percentages, and specific values wherever possible.
+
+Return detailed JSON: {layout_type, column_structure, sections_order, typography_scale, spacing_measurements, visual_elements, color_palette, content_flow, replication_notes}"""
 
         data = {
             "model": model,  # User-selected vision model
@@ -591,45 +631,51 @@ Return as JSON with keys: layout_type, sections, typography, spacing, colors, hi
         generated_b64 = base64.b64encode(generated_image).decode('utf-8')
         
         prompt = """
-Compare these two resume images and provide detailed feedback for improving the generated version to match the original.
+TEMPLATE MATCHING ANALYSIS: Compare these two resume images for EXACT replication.
 
-ORIGINAL RESUME (left/first image):
-This is the target design we want to replicate.
+ORIGINAL TEMPLATE (First Image):
+This is the TARGET DESIGN that must be replicated exactly.
 
-GENERATED RESUME (right/second image):
-This is our current HTML-generated version.
+GENERATED VERSION (Second Image):
+This is the current HTML version that needs improvement.
 
-Please analyze and provide specific feedback on:
+CRITICAL ANALYSIS REQUIRED:
 
-1. **Layout Differences**:
-   - Header positioning and size
-   - Section arrangement and spacing
-   - Overall page proportions
-   - Text alignment and justification
+1. **Layout Precision Analysis**:
+   - Measure header height and positioning differences
+   - Compare section spacing and margins (top/bottom/left/right)
+   - Analyze column widths and text alignment
+   - Check page proportions and content density
+   - Identify any missing or misplaced elements
 
-2. **Typography Comparison**:
-   - Font sizes for different elements
-   - Font weights and styles
-   - Text hierarchy differences
-   - Line spacing variations
+2. **Typography Matching**:
+   - Compare exact font sizes for each element type (headers, body, labels)
+   - Analyze font weights (bold, regular, light differences)
+   - Check line heights and text spacing
+   - Examine text hierarchy and emphasis patterns
 
-3. **Visual Elements**:
-   - Colors and styling differences
-   - Borders, lines, and separators
-   - Bullet points and list styling
-   - White space distribution
+3. **Visual Style Replication**:
+   - Color differences (backgrounds, text, accents)
+   - Border styles, thickness, and positioning
+   - Bullet point styles and indentation
+   - White space distribution and balance
+   - Any decorative elements or styling
 
-4. **Content Organization**:
-   - Section order and prominence
-   - Information density
-   - Visual balance and flow
+4. **Structural Organization**:
+   - Section order and arrangement
+   - Content grouping and separation
+   - Information hierarchy and prominence
+   - Overall visual flow and balance
 
-5. **Specific Improvement Actions**:
-   - CSS modifications needed
-   - HTML structure changes
-   - Styling adjustments required
+5. **Actionable CSS/HTML Improvements**:
+   - Specific CSS property changes needed (with exact values)
+   - HTML structure modifications required
+   - Styling adjustments for exact template matching
+   - Priority order for most impactful changes
 
-Return as JSON with keys: layout_differences, typography_issues, visual_elements, content_organization, improvement_actions, similarity_score (0-100)
+SCORING: Rate similarity 0-100 where 85+ means visually nearly identical.
+
+Return as JSON: {layout_differences, typography_issues, visual_elements, content_organization, improvement_actions, similarity_score}
 """
 
         data = {
@@ -702,23 +748,30 @@ Return as JSON with keys: layout_differences, typography_issues, visual_elements
         similarity_score = comparison_feedback.get('similarity_score', 0)
         
         prompt = f"""
-You are an expert web developer improving an HTML resume to better match a target design.
+You are an expert web developer improving an HTML resume to EXACTLY MATCH a target template design.
 
-CURRENT ITERATION: {iteration}
-SIMILARITY SCORE: {similarity_score}/100
+TEMPLATE MATCHING TASK - ITERATION {iteration}
+CURRENT SIMILARITY SCORE: {similarity_score}/100 (TARGET: 85+)
 
 CURRENT HTML RESUME:
 {current_html}
 
-COMPARISON FEEDBACK:
+VISUAL COMPARISON FEEDBACK FROM ORIGINAL TEMPLATE:
 Layout Differences: {layout_differences}
 Typography Issues: {typography_issues}
 Visual Elements: {visual_elements}
 
-SPECIFIC IMPROVEMENT ACTIONS:
+CRITICAL IMPROVEMENT ACTIONS (IMPLEMENT ALL):
 {json.dumps(improvement_actions, indent=2)}
 
-Based on this feedback, generate an improved version of the HTML resume that addresses these issues:
+TEMPLATE MATCHING PRIORITY:
+The goal is to make the HTML resume visually IDENTICAL to the original template. Focus on:
+1. EXACT layout replication - positioning, spacing, margins
+2. EXACT typography matching - fonts, sizes, weights, line heights
+3. EXACT visual element matching - colors, borders, styling
+4. EXACT section arrangement and hierarchy
+
+Based on this feedback, generate an improved version that addresses EVERY issue identified:
 
 1. **Layout Adjustments**:
    - Modify CSS for better spacing and positioning
@@ -762,12 +815,12 @@ Focus on the highest impact changes that will increase the similarity score.
         
         if success and result.get("choices"):
             improved_html = result["choices"][0]["message"]["content"]
-            return improved_html
+            return self._extract_html_from_response(improved_html)
         else:
             logger.error(f"Iterative improvement failed")
             return current_html
 
-    def generate_html_resume(self, resume_data: Dict[str, Any], template_style: str = "modern", ensure_complete: bool = True) -> str:
+    def generate_html_resume(self, resume_data: Dict[str, Any], template_style: str = "modern", ensure_complete: bool = True, country_standards: Dict[str, Any] = None, profile_image_data: bytes = None, translate_content: bool = False) -> str:
         """
         Generate HTML resume from parsed resume data.
         
@@ -781,6 +834,48 @@ Focus on the highest impact changes that will increase the similarity score.
         
         # Format resume data for the prompt
         formatted_data = self._format_resume_data_for_html(resume_data)
+        
+        # Handle country-specific requirements
+        country_guidance = ""
+        profile_image_guidance = ""
+        translation_guidance = ""
+        
+        if country_standards:
+            country_guidance = self._generate_country_specific_guidance(country_standards)
+        
+        if profile_image_data:
+            profile_image_guidance = self._generate_profile_image_guidance(country_standards, profile_image_data)
+        
+        if translate_content:
+            translation_guidance = self._generate_translation_guidance(country_standards)
+        
+        # Check for layout hints from template matching
+        layout_guidance = ""
+        css_specifications = ""
+        if 'layout_hints' in resume_data:
+            layout_analysis = resume_data['layout_hints']
+            
+            # Generate specific CSS based on layout analysis
+            css_specifications = self._generate_css_from_layout_analysis(layout_analysis)
+            
+            layout_guidance = f"""
+
+CRITICAL - ORIGINAL LAYOUT ANALYSIS (REPLICATE THIS EXACTLY):
+{json.dumps(layout_analysis, indent=2)}
+
+TEMPLATE-SPECIFIC CSS REQUIREMENTS:
+{css_specifications}
+
+LAYOUT MATCHING REQUIREMENTS:
+- Replicate the original layout structure EXACTLY as analyzed
+- Match the layout type: {layout_analysis.get('layout_type', 'Unknown')}
+- Follow the visual hierarchy and spacing patterns identified
+- Maintain the same section ordering and positioning
+- Use similar typography scale and emphasis patterns
+- Preserve the original color scheme and visual elements where identified
+- This is a template matching task - the goal is visual similarity to the original
+
+"""
         
         completeness_instruction = ""
         if ensure_complete:
@@ -803,13 +898,16 @@ Create a complete, comprehensive HTML resume with embedded CSS based on this par
 
 Resume Data:
 {formatted_data}
-
+{country_guidance}
+{profile_image_guidance}
+{translation_guidance}
+{layout_guidance}
 {completeness_instruction}
 
 Requirements:
 1. Create a complete HTML document with embedded CSS
-2. Use {template_style} design style that supports multi-page content
-3. Make it responsive and mobile-friendly
+2. {"PRIORITY: Replicate the original layout structure exactly as described in the layout analysis above" if 'layout_hints' in resume_data else f"Use {template_style} design style that supports multi-page content"}
+3. {"Match the visual hierarchy, spacing, and typography patterns from the original" if 'layout_hints' in resume_data else "Make it responsive and mobile-friendly"}
 4. Use semantic HTML elements
 5. Include print-friendly styles with proper page breaks
 6. Make it ATS-friendly with proper structure
@@ -818,9 +916,10 @@ Requirements:
 9. Ensure good contrast and accessibility
 10. Design for multi-page printing if content requires it
 11. Include ALL provided content without truncation or summarization
+12. **CRITICAL IMAGE LOGIC**: IF profile image guidance is provided above, use the exact placeholder {{PROFILE_IMAGE_PLACEHOLDER}}; IF NO image guidance provided, do NOT include any image elements
 
 Return ONLY the complete HTML document with <html>, <head>, and <body> tags.
-Make it production-ready, visually appealing, and comprehensive.
+{"Make it visually identical to the original layout while being production-ready and comprehensive." if 'layout_hints' in resume_data else "Make it production-ready, visually appealing, and comprehensive."}
         """
         
         # Create request data with higher token limit for complete resumes
@@ -837,10 +936,13 @@ Make it production-ready, visually appealing, and comprehensive.
         if success and result.get("choices"):
             html_content = result["choices"][0]["message"]["content"]
             
+            # Extract clean HTML from response
+            html_content = self._extract_html_from_response(html_content)
+            
             # Check if resume seems incomplete and try to complete it
             if ensure_complete and self._is_resume_incomplete(html_content, resume_data):
                 completed_html = self._complete_partial_resume(html_content, resume_data, template_style)
-                return completed_html if completed_html else html_content
+                return self._extract_html_from_response(completed_html) if completed_html else html_content
             
             return html_content
         else:
@@ -892,7 +994,7 @@ Requirements:
 Return ONLY the complete improved HTML document.
         """
         
-        return self._make_request(prompt, max_tokens=4000)
+        return self._make_request(prompt, max_tokens=4000, prompt_type="resume_improvement")
     
     def custom_improve_resume(self, html_content: str, user_prompt: str, resume_data: Dict[str, Any], additional_info: str = "") -> str:
         """
@@ -946,7 +1048,7 @@ IMPORTANT INSTRUCTIONS:
 Return ONLY the complete improved HTML document with embedded CSS.
         """
         
-        return self._make_request(prompt, max_tokens=5000)
+        return self._make_request(prompt, max_tokens=5000, prompt_type="custom_improvement")
     
     def improve_resume_for_ats(self, html_content: str, resume_data: Dict[str, Any], ats_improvement_prompt: str, job_description: str = "") -> str:
         """
@@ -990,9 +1092,9 @@ Return ONLY the complete, ATS-optimized HTML document with embedded CSS.
 Make it both ATS-friendly AND visually appealing for human reviewers.
         """
         
-        return self._make_request(prompt, max_tokens=5000)
+        return self._make_request(prompt, max_tokens=5000, prompt_type="custom_improvement")
     
-    def adapt_resume_to_template(self, resume_data: Dict[str, Any], template_info: Dict[str, Any], template_html: str) -> str:
+    def adapt_resume_to_template(self, resume_data: Dict[str, Any], template_info: Dict[str, Any], template_html: str, country_standards: Dict[str, Any] = None, profile_image_data: bytes = None, translate_content: bool = False) -> str:
         """
         Use AI to intelligently adapt resume data to match the specific template's style and requirements.
         
@@ -1007,6 +1109,20 @@ Make it both ATS-friendly AND visually appealing for human reviewers.
         
         # Format resume data for the prompt
         formatted_data = self._format_resume_data_for_html(resume_data)
+        
+        # Handle country-specific requirements
+        country_guidance = ""
+        profile_image_guidance = ""
+        translation_guidance = ""
+        
+        if country_standards:
+            country_guidance = self._generate_country_specific_guidance(country_standards)
+        
+        if profile_image_data:
+            profile_image_guidance = self._generate_profile_image_guidance(country_standards, profile_image_data)
+        
+        if translate_content:
+            translation_guidance = self._generate_translation_guidance(country_standards)
         
         template_name = template_info.get('name', 'Professional Template')
         template_description = template_info.get('description', '')
@@ -1025,6 +1141,9 @@ Template HTML Structure:
 
 Resume Data to Adapt:
 {formatted_data}
+{country_guidance}
+{profile_image_guidance}
+{translation_guidance}
 
 TEMPLATE ADAPTATION REQUIREMENTS:
 
@@ -1051,18 +1170,26 @@ TEMPLATE ADAPTATION REQUIREMENTS:
    - For consulting templates: Focus on problem-solving and client outcomes
    - For academic templates: Emphasize research, publications, and teaching
 
-5. **Complete HTML Generation**:
+5. **Image Handling Logic**:
+   - IF profile image guidance is provided above: MUST include the placeholder exactly as specified
+   - Use the exact placeholder format: {{PROFILE_IMAGE_PLACEHOLDER}}
+   - IF no profile image guidance is provided: Do NOT include any image placeholders or img tags
+   - NEVER create empty image elements or broken image links
+   - The placeholder will be automatically replaced with actual image data after generation
+
+6. **Complete HTML Generation**:
    - Return the FULL HTML document with all template placeholders filled
    - Include proper HTML structure with embedded CSS
    - Ensure all sections are comprehensive and complete
    - Make it production-ready and ATS-friendly
+   - Apply image logic: include image elements ONLY if image data was provided
 
 Generate the complete, adapted HTML resume that perfectly matches this template's requirements and showcases the candidate's strengths in the most effective way for the template's target use case.
 
 Return ONLY the complete HTML document - no explanations or additional text.
         """
         
-        return self._make_request(prompt, max_tokens=6000)
+        return self._make_request(prompt, max_tokens=6000, prompt_type="template_adaptation")
     
     def customize_resume_colors(self, html_content: str, color_scheme: str) -> str:
         """
@@ -1094,7 +1221,7 @@ Requirements:
 Return ONLY the complete HTML document with updated colors.
         """
         
-        return self._make_request(prompt, max_tokens=3000)
+        return self._make_request(prompt, max_tokens=3000, prompt_type="color_customization")
     
     def _format_resume_data_for_html(self, resume_data: Dict[str, Any]) -> str:
         """Format resume data for HTML generation prompts."""
@@ -1224,8 +1351,233 @@ Return ONLY the complete HTML document with updated colors.
         
         return '\n'.join(formatted_parts)
     
-    def _make_request(self, prompt: str, max_tokens: int = 2000) -> str:
+    def _generate_css_from_layout_analysis(self, layout_analysis: Dict[str, Any]) -> str:
+        """Generate specific CSS specifications based on layout analysis."""
+        css_specs = []
+        
+        # Column structure CSS
+        if 'column_structure' in layout_analysis:
+            column_info = layout_analysis['column_structure']
+            css_specs.append(f"COLUMN LAYOUT: {column_info}")
+        
+        # Typography specifications
+        if 'typography_scale' in layout_analysis:
+            typo_info = layout_analysis['typography_scale']
+            css_specs.append(f"TYPOGRAPHY SCALE: {typo_info}")
+        
+        # Spacing measurements
+        if 'spacing_measurements' in layout_analysis:
+            spacing_info = layout_analysis['spacing_measurements']
+            css_specs.append(f"SPACING REQUIREMENTS: {spacing_info}")
+        
+        # Color palette
+        if 'color_palette' in layout_analysis:
+            color_info = layout_analysis['color_palette']
+            css_specs.append(f"COLOR SCHEME: {color_info}")
+        
+        # Visual elements
+        if 'visual_elements' in layout_analysis:
+            visual_info = layout_analysis['visual_elements']
+            css_specs.append(f"VISUAL ELEMENTS: {visual_info}")
+        
+        # Generate specific CSS rules based on analysis
+        if 'sections_order' in layout_analysis:
+            sections = layout_analysis['sections_order']
+            css_specs.append(f"SECTION ORDER: {sections}")
+        
+        # Layout type specific CSS
+        layout_type = layout_analysis.get('layout_type', 'single_column')
+        if layout_type == 'two_column':
+            css_specs.append("CSS STRUCTURE: Use CSS Grid or Flexbox for two-column layout")
+        elif layout_type == 'sidebar':
+            css_specs.append("CSS STRUCTURE: Implement sidebar layout with proper width ratios")
+        
+        return '\n'.join([f"- {spec}" for spec in css_specs])
+    
+    def _generate_country_specific_guidance(self, country_standards: Dict[str, Any]) -> str:
+        """Generate country-specific formatting guidance."""
+        if not country_standards:
+            return ""
+        
+        guidance_parts = ["\nCOUNTRY-SPECIFIC RESUME STANDARDS:"]
+        
+        # Add format style
+        format_style = country_standards.get('format_style', 'generic')
+        guidance_parts.append(f"- Format Style: {format_style}")
+        
+        # Add length requirements
+        length = country_standards.get('length', '1-2 pages')
+        guidance_parts.append(f"- Length: {length}")
+        
+        # Add specific requirements
+        requirements = country_standards.get('specific_requirements', [])
+        if requirements:
+            guidance_parts.append("- Specific Requirements:")
+            for req in requirements:
+                guidance_parts.append(f"  • {req}")
+        
+        # Add photo placement guidance
+        photo_placement = country_standards.get('photo_placement', 'none')
+        if photo_placement != 'none':
+            guidance_parts.append(f"- Photo Placement: {photo_placement}")
+        
+        guidance_parts.append("- CRITICAL: Follow these country standards exactly for proper local compliance.")
+        
+        return '\n'.join(guidance_parts) + '\n'
+    
+    def _generate_profile_image_guidance(self, country_standards: Dict[str, Any], profile_image_data: bytes) -> str:
+        """Generate profile image integration guidance with placeholder approach."""
+        if not profile_image_data:
+            return ""
+        
+        guidance_parts = ["\nPROFILE IMAGE INTEGRATION REQUIRED:"]
+        guidance_parts.append("- A professional profile photo has been uploaded and MUST be included")
+        guidance_parts.append("- Use a PLACEHOLDER that will be replaced with the actual image after generation")
+        
+        # Add placement guidance based on country standards
+        if country_standards:
+            photo_placement = country_standards.get('photo_placement', 'top-right')
+            guidance_parts.append(f"- Placement: {photo_placement} (country standard)")
+        else:
+            guidance_parts.append("- Placement: top-right corner (default)")
+        
+        guidance_parts.extend([
+            "- Size: Professional headshot, approximately 150x200px",
+            "- Style: Rounded corners with subtle border",
+            "- HTML Structure: Use the EXACT placeholder format below:",
+            "- <img src='{{PROFILE_IMAGE_PLACEHOLDER}}' class='profile-photo' alt='Professional headshot' style='width: 150px; height: 200px; border-radius: 8px; border: 2px solid #ddd;'>",
+            "",
+            "CRITICAL REQUIREMENTS:",
+            "- Use EXACTLY this placeholder: {{PROFILE_IMAGE_PLACEHOLDER}}",
+            "- Add CSS classes and inline styles for professional appearance",
+            "- Position according to country standards or default placement",
+            "- The placeholder will be automatically replaced with actual image data",
+            "- Ensure proper spacing and integration with the overall layout",
+            "- Do NOT use any actual base64 data - only the placeholder"
+        ])
+        
+        return '\n'.join(guidance_parts) + '\n'
+    
+    def _generate_translation_guidance(self, country_standards: Dict[str, Any] = None) -> str:
+        """Generate translation and localization guidance."""
+        if not country_standards:
+            return ""
+        
+        # Map countries to their primary languages
+        country_language_map = {
+            "🇫🇷 France": "French",
+            "🇩🇪 Germany": "German", 
+            "🇪🇸 Spain": "Spanish",
+            "🇮🇹 Italy": "Italian",
+            "🇳🇱 Netherlands": "Dutch",
+            "🇸🇪 Sweden": "Swedish",
+            "🇧🇷 Brazil": "Portuguese",
+            "🇲🇽 Mexico": "Spanish",
+            "🇯🇵 Japan": "Japanese",
+            "🇰🇷 South Korea": "Korean"
+        }
+        
+        country_name = country_standards.get('country', 'the target country')
+        # Get explicit language from mapping, fallback to country standards or generic
+        language = country_language_map.get(country_name, country_standards.get('language', 'the local language'))
+        
+        guidance_parts = ["\nCRITICAL TRANSLATION & LOCALIZATION REQUIREMENTS:"]
+        guidance_parts.append(f"🌐 **PRIMARY REQUIREMENT**: TRANSLATE ALL CONTENT TO {language.upper()}")
+        guidance_parts.append(f"- Transform ALL English text into professional {language}")
+        guidance_parts.append(f"- Use native {language} professional terminology and conventions")
+        guidance_parts.append(f"- Adapt job titles, skills, and descriptions to {language} equivalents")
+        guidance_parts.append("- Convert measurements, dates, and formats to local standards")
+        guidance_parts.append("- Adjust cultural references and examples to be locally relevant")
+        guidance_parts.append(f"- Use appropriate professional titles and job descriptions for the {country_name} market")
+        guidance_parts.append(f"- Ensure all technical terms are appropriately translated to {language}")
+        guidance_parts.append(f"- Maintain professional tone while adapting to {country_name} business culture")
+        guidance_parts.append(f"- MANDATORY: The final resume must be written entirely in {language}, not English")
+        guidance_parts.append("- IMPORTANT: Keep original meaning while making content culturally appropriate")
+        
+        return '\n'.join(guidance_parts) + '\n'
+    
+    def _extract_html_from_response(self, content: str) -> str:
+        """
+        Extract HTML content from AI response, removing any explanatory text.
+        
+        Args:
+            content: Raw AI response content
+            
+        Returns:
+            Cleaned HTML content
+        """
+        import re
+        
+        # If content looks like pure HTML already, return as-is
+        if content.strip().startswith('<!DOCTYPE') or content.strip().startswith('<html'):
+            return content
+        
+        # Try to extract HTML document from response
+        html_pattern = r'```html\s*(.*?)\s*```'
+        html_match = re.search(html_pattern, content, re.DOTALL | re.IGNORECASE)
+        
+        if html_match:
+            return html_match.group(1).strip()
+        
+        # Try to find HTML document tags
+        html_doc_pattern = r'(<!DOCTYPE.*?</html>)'
+        html_doc_match = re.search(html_doc_pattern, content, re.DOTALL | re.IGNORECASE)
+        
+        if html_doc_match:
+            return html_doc_match.group(1).strip()
+        
+        # Try to find just <html> tags
+        html_tag_pattern = r'(<html.*?</html>)'
+        html_tag_match = re.search(html_tag_pattern, content, re.DOTALL | re.IGNORECASE)
+        
+        if html_tag_match:
+            return html_tag_match.group(1).strip()
+        
+        # If no HTML structure found, check if it contains explanatory text
+        # Remove common AI response prefixes
+        lines = content.split('\n')
+        cleaned_lines = []
+        skip_explanations = True
+        
+        for line in lines:
+            line_lower = line.lower().strip()
+            
+            # Skip explanatory lines
+            if skip_explanations and any(phrase in line_lower for phrase in [
+                "i've reviewed", "here's the", "i've created", "here is the", 
+                "the html document", "complete html", "i've analyzed"
+            ]):
+                continue
+            
+            # Start including content from HTML tags
+            if '<' in line and any(tag in line_lower for tag in ['<!doctype', '<html', '<head', '<body']):
+                skip_explanations = False
+            
+            if not skip_explanations:
+                cleaned_lines.append(line)
+        
+        if cleaned_lines:
+            return '\n'.join(cleaned_lines).strip()
+        
+        # Fallback: return original content
+        return content
+
+    def _make_request(self, prompt: str, max_tokens: int = 2000, prompt_type: str = "general") -> str:
         """Make request to OpenRouter API with rate limiting."""
+        
+        # Log the prompt being sent
+        logger.info(f"🚀 SENDING PROMPT TO AI - Type: {prompt_type}")
+        logger.info(f"   📏 Prompt length: {len(prompt)} characters")
+        logger.info(f"   🎯 Max tokens requested: {max_tokens}")
+        logger.info(f"   🤖 Model: {self.model}")
+        
+        # Log first 500 characters of prompt for debugging
+        prompt_preview = prompt[:500] + ("..." if len(prompt) > 500 else "")
+        logger.debug(f"   📄 PROMPT PREVIEW:\n{prompt_preview}")
+        
+        # Log full prompt if in debug mode (can be enabled by setting log level)
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug(f"   📋 FULL PROMPT:\n{'-'*50}\n{prompt}\n{'-'*50}")
         
         # Check rate limit before making request
         if not self.rate_limiter.record_request():
@@ -1281,7 +1633,22 @@ Return ONLY the complete HTML document with updated colors.
             response.raise_for_status()
             
             result = response.json()
-            return result["choices"][0]["message"]["content"]
+            content = result["choices"][0]["message"]["content"]
+            
+            # Log the response
+            logger.info(f"✅ AI RESPONSE RECEIVED - Type: {prompt_type}")
+            logger.info(f"   📏 Response length: {len(content)} characters")
+            
+            # Log response preview
+            response_preview = content[:300] + ("..." if len(content) > 300 else "")
+            logger.debug(f"   📄 RESPONSE PREVIEW:\n{response_preview}")
+            
+            # Log full response if in debug mode
+            if logger.isEnabledFor(logging.DEBUG):
+                logger.debug(f"   📋 FULL RESPONSE:\n{'-'*50}\n{content}\n{'-'*50}")
+            
+            # Extract HTML if the response contains explanatory text
+            return self._extract_html_from_response(content)
             
         except requests.exceptions.RequestException as e:
             logger.error(f"OpenRouter API request failed: {e}")
@@ -1320,7 +1687,13 @@ Return ONLY the complete HTML document with updated colors.
             )
             response.raise_for_status()
             result = response.json()
-            return result["choices"][0]["message"]["content"]
+            content = result["choices"][0]["message"]["content"]
+            
+            # Extract HTML if this looks like an HTML generation request
+            if any(keyword in prompt.lower() for keyword in ['html', 'resume', 'css', 'document']):
+                return self._extract_html_from_response(content)
+            
+            return content
         except Exception as e:
             logger.error(f"OpenRouter generate_text failed: {e}")
             return f"Error: Unable to generate text - {e}"

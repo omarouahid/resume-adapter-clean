@@ -62,12 +62,17 @@ def main():
     
     # Launch Streamlit
     try:
+        # Ensure UTF-8 output to avoid Windows charmap errors with Unicode
+        env = os.environ.copy()
+        env.setdefault("PYTHONUTF8", "1")
+        env.setdefault("PYTHONIOENCODING", "utf-8")
+
         subprocess.run([
             sys.executable, "-m", "streamlit", "run", "app.py",
             "--server.headless", "false",
             "--server.port", "8501",
             "--server.enableCORS", "false"
-        ])
+        ], env=env)
     except KeyboardInterrupt:
         print("\nApplication stopped by user")
     except Exception as e:

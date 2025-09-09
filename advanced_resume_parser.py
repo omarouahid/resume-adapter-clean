@@ -284,7 +284,11 @@ Please return a JSON object with the following structure (return ONLY the JSON, 
     ],
     "certifications": ["certification1", "certification2"],
     "additional_sections": {{
-        "section_name": ["item1", "item2"]
+        "Awards and Achievements": ["award1", "award2"],
+        "Volunteer Experience": ["volunteer activity 1"],
+        "Publications": ["publication 1"],
+        "Languages": ["English", "Spanish"],
+        "Interests": ["interest1", "interest2"]
     }}
 }}
 
@@ -316,6 +320,16 @@ CRITICAL PARSING INSTRUCTIONS:
 13. Look for URLs, links, GitHub profiles, portfolio websites
 14. Extract ALL quantifiable achievements (numbers, percentages, metrics)
 15. Don't miss sections due to unconventional naming or placement
+16. For additional_sections, use MEANINGFUL and DESCRIPTIVE section names based on the actual content:
+   - Use "Awards and Achievements" not "Awards" or generic names
+   - Use "Volunteer Experience" not "Volunteer" 
+   - Use "Publications and Research" not "Publications"
+   - Use "Languages" not "Language Skills"
+   - Use "Professional Interests" or "Hobbies and Interests" not "Interests"
+   - Use "Professional Associations" not "Memberships"
+   - Use "Patents and Intellectual Property" not "Patents"
+   - NEVER use generic names like "Section Name", "Additional Info", "Other", or "Miscellaneous"
+   - Always infer the most appropriate descriptive name from the content
 """
         
         return prompt

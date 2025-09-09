@@ -657,7 +657,10 @@ class HTMLResumeGenerator:
     def generate_resume_html(self, 
                            resume_data: Dict[str, Any], 
                            template_id: str = "modern",
-                           palette_id: str = "professional_blue") -> Dict[str, str]:
+                           palette_id: str = "professional_blue",
+                           country_standards: Dict[str, Any] = None,
+                           profile_image_data: bytes = None,
+                           translate_content: bool = False) -> Dict[str, str]:
         """
         Generate complete HTML resume with template and color palette.
         
@@ -739,11 +742,14 @@ class HTMLResumeGenerator:
 </html>
                 """
                 
-                # Use AI to adapt resume data to template
+                # Use AI to adapt resume data to template with country standards, profile image, and translation
                 complete_html = self.openrouter_client.adapt_resume_to_template(
                     resume_data, 
                     template_info,
-                    template_with_css
+                    template_with_css,
+                    country_standards=country_standards,
+                    profile_image_data=profile_image_data,
+                    translate_content=translate_content
                 )
                 
                 if complete_html and not complete_html.startswith("Error:"):
@@ -787,7 +793,8 @@ class HTMLResumeGenerator:
         html_content = self._populate_html_template(
             template.html_template, 
             resume_data,
-            template_id
+            template_id,
+            profile_image_data
         )
         
         logger.info(f"📄 HTML TEMPLATE POPULATION COMPLETED")
@@ -834,6 +841,10 @@ class HTMLResumeGenerator:
             "ai_adapted": False
         }
         
+        # Replace image placeholder if profile image data is provided
+        if profile_image_data:
+            result = self._replace_image_placeholder(result, profile_image_data)
+        
         logger.info(f"🔄 TEMPLATE GENERATION PHASE 3: Generation completed successfully")
         logger.info(f"   📊 Result keys: {list(result.keys())}")
         logger.info(f"   📄 Total HTML size: {len(result['html'])} chars")
@@ -844,7 +855,49 @@ class HTMLResumeGenerator:
         self._save_to_cache(cache_key, result)
         
         logger.info(f"🎯 TEMPLATE GENERATION COMPLETED - All phases finished")
+        
+        # Replace image placeholder if profile image data is provided
+        if profile_image_data:
+            result = self._replace_image_placeholder(result, profile_image_data)
+        
         return result
+    
+    def _replace_image_placeholder(self, html_result: Dict[str, str], profile_image_data: Dict[str, Any]) -> Dict[str, str]:
+        """Replace image placeholders with actual base64 image data."""
+        import base64
+        
+        if not profile_image_data:
+            return html_result
+        
+        # Extract image data
+        if isinstance(profile_image_data, dict):
+            image_b64 = profile_image_data.get('data', '')
+            image_type = profile_image_data.get('type', 'image/jpeg').replace('image/', '')
+        else:
+            # Fallback for direct bytes
+            image_b64 = base64.b64encode(profile_image_data).decode('utf-8')
+            image_type = 'jpeg'
+        
+        if not image_b64:
+            logger.warning("No image data found in profile_image_data")
+            return html_result
+        
+        # Create the data URI
+        data_uri = f"data:image/{image_type};base64,{image_b64}"
+        
+        # Replace placeholder in HTML
+        html_content = html_result.get('html', '')
+        if '{{PROFILE_IMAGE_PLACEHOLDER}}' in html_content:
+            html_content = html_content.replace('{{PROFILE_IMAGE_PLACEHOLDER}}', data_uri)
+            logger.info("✅ Successfully replaced image placeholder with actual image data")
+        else:
+            logger.warning("⚠️ Image placeholder not found in HTML content")
+        
+        # Update the result
+        return {
+            **html_result,
+            'html': html_content
+        }
     
     def generate_original_format_html(self, 
                                     resume_data: Dict[str, Any],
@@ -900,7 +953,7 @@ class HTMLResumeGenerator:
         
         return result
     
-    def _populate_html_template(self, html_template: str, resume_data: Dict[str, Any], template_id: str = "") -> str:
+    def _populate_html_template(self, html_template: str, resume_data: Dict[str, Any], template_id: str = "", profile_image_data: Dict[str, Any] = None) -> str:
         """
         Populate HTML template with resume data, handling both old and new template formats.
         Also dynamically adds missing sections to templates.
@@ -1001,6 +1054,25 @@ class HTMLResumeGenerator:
             # Avatar and image placeholders
             "{{name_initials}}": name_initials
         }
+        
+        # Handle profile image placeholder logic
+        if profile_image_data:
+            # Add image placeholder that will be replaced later
+            profile_image_html = '<img src="{{PROFILE_IMAGE_PLACEHOLDER}}" class="profile-photo" alt="Professional headshot" style="width: 150px; height: 200px; border-radius: 8px; border: 2px solid #ddd;">'
+            replacements.update({
+                "{{PROFILE_IMAGE}}": profile_image_html,
+                "{{profile_image}}": profile_image_html,
+                "{{PROFILE_PHOTO}}": profile_image_html,
+                "{{profile_photo}}": profile_image_html
+            })
+        else:
+            # Remove image placeholders if no image is provided
+            replacements.update({
+                "{{PROFILE_IMAGE}}": "",
+                "{{profile_image}}": "",
+                "{{PROFILE_PHOTO}}": "",
+                "{{profile_photo}}": ""
+            })
         
         # Apply all replacements with safety checks
         populated_html = html_template
