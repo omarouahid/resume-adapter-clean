@@ -7,6 +7,7 @@ import os
 import json
 import hashlib
 import time
+import re
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, asdict
 import logging
@@ -862,9 +863,10 @@ class HTMLResumeGenerator:
         
         return result
     
-    def _replace_image_placeholder(self, html_result: Dict[str, str], profile_image_data: Dict[str, Any]) -> Dict[str, str]:
+    def _replace_image_placeholder(self, html_result: Dict[str, str], profile_image_data) -> Dict[str, str]:
         """Replace image placeholders with actual base64 image data."""
         import base64
+        import re
         
         if not profile_image_data:
             return html_result
@@ -887,11 +889,50 @@ class HTMLResumeGenerator:
         
         # Replace placeholder in HTML
         html_content = html_result.get('html', '')
+        replacements_made = 0
+        
+        # 1. Replace direct placeholder tokens (Modern template)
         if '{{PROFILE_IMAGE_PLACEHOLDER}}' in html_content:
             html_content = html_content.replace('{{PROFILE_IMAGE_PLACEHOLDER}}', data_uri)
-            logger.info("✅ Successfully replaced image placeholder with actual image data")
+            replacements_made += 1
+            logger.info("✅ Successfully replaced {{PROFILE_IMAGE_PLACEHOLDER}} with actual image data")
+        
+        # 2. Replace profile-image-placeholder divs (Shine template)
+        placeholder_pattern = r'<div[^>]*class="[^"]*profile-image-placeholder[^"]*"[^>]*></div>'
+        if re.search(placeholder_pattern, html_content):
+            circular_img = f'<img src="{data_uri}" class="profile-photo circular" alt="Professional headshot" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.3);">'
+            html_content = re.sub(placeholder_pattern, circular_img, html_content)
+            replacements_made += 1
+            logger.info("✅ Successfully replaced profile-image-placeholder div with circular image")
+        
+        # 3. Replace profile-gradient-circle content (Gradient template)  
+        gradient_pattern = r'<div[^>]*class="[^"]*profile-gradient-circle[^"]*"[^>]*>.*?</div>'
+        if re.search(gradient_pattern, html_content, re.DOTALL):
+            circular_img = f'<div class="profile-gradient-circle"><img src="{data_uri}" class="profile-photo circular" alt="Professional headshot" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,0.3);"></div>'
+            html_content = re.sub(gradient_pattern, circular_img, html_content, flags=re.DOTALL)
+            replacements_made += 1
+            logger.info("✅ Successfully replaced profile-gradient-circle with circular image")
+        
+        # 4. Replace profile-circle content (Card template)
+        circle_pattern = r'<div[^>]*class="[^"]*profile-circle[^"]*"[^>]*>.*?</div>'
+        if re.search(circle_pattern, html_content, re.DOTALL):
+            circular_img = f'<div class="profile-circle"><img src="{data_uri}" class="profile-photo circular" alt="Professional headshot" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.2);"></div>'
+            html_content = re.sub(circle_pattern, circular_img, html_content, flags=re.DOTALL)
+            replacements_made += 1
+            logger.info("✅ Successfully replaced profile-circle with circular image")
+        
+        # 5. Handle profile-avatar circles (Timeline template)
+        avatar_pattern = r'<div[^>]*class="[^"]*profile-avatar[^"]*"[^>]*>.*?</div>'
+        if re.search(avatar_pattern, html_content, re.DOTALL):
+            circular_img = f'<div class="profile-avatar"><img src="{data_uri}" class="profile-photo circular" alt="Professional headshot" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #fff;"></div>'
+            html_content = re.sub(avatar_pattern, circular_img, html_content, flags=re.DOTALL)
+            replacements_made += 1
+            logger.info("✅ Successfully replaced profile-avatar with circular image")
+        
+        if replacements_made == 0:
+            logger.warning("⚠️ No image placeholders found in HTML content")
         else:
-            logger.warning("⚠️ Image placeholder not found in HTML content")
+            logger.info(f"✅ Made {replacements_made} image replacements")
         
         # Update the result
         return {
@@ -1191,7 +1232,11 @@ class HTMLResumeGenerator:
         
         experience_html = ""
         for i, job in enumerate(job_experiences):
-            job_title = self._safe_get_value(job, 'job_title', 'Job Title')
+            # Try multiple possible keys for job title
+            job_title = (self._safe_get_value(job, 'job_title', '') or 
+                        self._safe_get_value(job, 'position', '') or 
+                        self._safe_get_value(job, 'title', '') or 
+                        'Job Title')
             logger.info(f"🏢 PROCESSING JOB {i}: '{job_title}'")
             
             # Log all job fields for debugging
@@ -1261,7 +1306,11 @@ class HTMLResumeGenerator:
         education_html = ""
         for edu in education_list:
             degree = self._safe_get_value(edu, 'degree', 'Degree')
-            school = self._safe_get_value(edu, 'school', 'School')
+            # Try multiple possible keys for school/institution
+            school = (self._safe_get_value(edu, 'school', '') or 
+                     self._safe_get_value(edu, 'institution', '') or 
+                     self._safe_get_value(edu, 'university', '') or 
+                     'School')
             graduation_date = self._safe_get_value(edu, 'graduation_date', '')
             gpa = self._safe_get_value(edu, 'gpa', '')
             honors = self._safe_get_value(edu, 'honors', '')
@@ -2453,6 +2502,7 @@ Focus on professional, industry-appropriate colors that enhance readability and 
                 <h1 class="name">{{name}}</h1>
                 <div class="name-underline"></div>
             </div>
+            {{profile_image}}
             <div class="contact-info">
                 <div class="contact-item">
                     <i class="icon">✉️</i>
