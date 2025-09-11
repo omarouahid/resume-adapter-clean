@@ -1136,6 +1136,10 @@ class HTMLResumeGenerator:
         if 'profile_image' in resume_data or 'photo' in resume_data:
             has_profile_image = bool(resume_data.get('profile_image') or resume_data.get('photo'))
         
+        # Also check if profile image data is provided as parameter
+        if profile_image_data:
+            has_profile_image = True
+        
         if not has_profile_image:
             # Remove or hide image placeholder elements
             import re
@@ -5671,6 +5675,9 @@ body {
 <div class="timeline-container">
     <div class="timeline-header">
         <div class="header-content">
+            <div class="profile-avatar">
+                <span class="avatar-placeholder">👤</span>
+            </div>
             <h1 class="profile-name">{{name}}</h1>
             <p class="profile-title">{{job_title}}</p>
             <div class="contact-timeline">
@@ -5867,7 +5874,7 @@ body {
             <div class="profile-section">
                 <div class="profile-image-wrapper">
                     <div class="profile-gradient-circle">
-                        <span class="profile-initial">{{name_initial}}</span>
+                        <span class="profile-initial">{{name_initials}}</span>
                     </div>
                 </div>
                 <div class="profile-info">

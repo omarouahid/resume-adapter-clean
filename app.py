@@ -4068,15 +4068,6 @@ def display_template_matching_interface():
             st.markdown("- ⏱️ Response time")
             st.markdown("- ✅/❌ Success/failure status")
 
-def display_html_resume_builder():
-    """Display the HTML resume builder interface."""
-    st.markdown('<h2 class="section-header">🌐 HTML Resume Builder</h2>', unsafe_allow_html=True)
-    
-    # Initialize HTML content in session state
-    if 'html_resume_content' not in st.session_state:
-        st.session_state.html_resume_content = ""
-    if 'selected_template' not in st.session_state:
-        st.session_state.selected_template = "modern"
     if 'selected_palette' not in st.session_state:
         st.session_state.selected_palette = "professional_blue"
     
