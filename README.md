@@ -1,15 +1,32 @@
-# Resume to LaTeX Generator 📄
+# Resume Adapter Pro 🚀
 
-A beautiful Streamlit platform that transforms resume files into professional LaTeX code with AI assistance from OpenRouter.
+An intelligent AI-powered resume enhancement platform that transforms, optimizes, and adapts your resume across multiple formats with advanced AI assistance from OpenRouter.
 
 ## Features ✨
 
-- **Smart Document Processing**: Support for PDF, PNG, JPG, and DOCX files
-- **Advanced OCR**: EasyOCR and TrOCR integration for accurate text extraction
-- **Layout Analysis**: Intelligent section detection and text block grouping
-- **AI-Powered Optimization**: OpenRouter integration for LaTeX code improvement
-- **Professional Styling**: Custom LaTeX class with modern resume formatting
-- **Easy Download**: Complete package with documentation and instructions
+### 📄 **Multi-Format Processing**
+- **Document Support**: PDF, PNG, JPG, DOCX files
+- **Advanced OCR**: EasyOCR and TrOCR integration for precise text extraction
+- **Layout Analysis**: Intelligent section detection and structure preservation
+
+### 🤖 **AI-Powered Enhancement**
+- **Resume Optimization**: Smart content improvements and suggestions
+- **Job Adaptation**: Tailor resumes to specific job descriptions
+- **ATS Analysis**: Score optimization for Applicant Tracking Systems
+- **Cover Letter Generation**: AI-generated cover letters with company research
+
+### 🎨 **Multiple Output Formats**
+- **LaTeX**: Professional typesetting with custom styling
+- **HTML**: Modern web-based resumes with responsive design
+- **PDF**: Print-ready documents with perfect formatting
+- **DOCX**: ATS-friendly Word documents
+- **Images**: High-quality PNG/JPG for portfolios and social media
+
+### ⚡ **Advanced Features**
+- **Real-time Editing**: Live preview and collaborative editing
+- **Template Matching**: Professional design templates
+- **Web Research**: Automatic company information gathering
+- **Multi-language Support**: International resume standards
 
 ## Installation 🚀
 

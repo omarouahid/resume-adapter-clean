@@ -1,13 +1,13 @@
 """
-Configuration settings for the Resume to LaTeX Generator.
+Configuration settings for Resume Adapter Pro - AI-Powered Resume Enhancement Platform.
 """
 
 import os
 from typing import Dict, List
 
 # Application settings
-APP_TITLE = "Resume to LaTeX Generator"
-APP_ICON = "📄"
+APP_TITLE = "Resume Adapter Pro"
+APP_ICON = "🚀"
 MAX_FILE_SIZE_MB = 10
 
 # Supported file formats

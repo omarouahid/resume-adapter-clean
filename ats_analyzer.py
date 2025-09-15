@@ -26,10 +26,15 @@ class ATSScore:
     warnings: List[str]
 
 class ATSAnalyzer:
-    """Analyze resume for ATS compatibility without requiring user accounts."""
+    """Analyze resume for ATS compatibility with AI-enhanced analysis when available."""
     
-    def __init__(self):
-        """Initialize ATS analyzer."""
+    def __init__(self, openrouter_client=None):
+        """Initialize ATS analyzer.
+        
+        Args:
+            openrouter_client: Optional OpenRouter client for AI-enhanced analysis
+        """
+        self.openrouter_client = openrouter_client
         self.common_keywords = {
             'software_engineering': [
                 'python', 'javascript', 'react', 'node.js', 'sql', 'git', 'aws', 'docker',
@@ -80,7 +85,7 @@ class ATSAnalyzer:
     
     def analyze_resume(self, resume_data: Dict[str, Any], job_description: str = "") -> ATSScore:
         """
-        Analyze resume for ATS compatibility.
+        Analyze resume for ATS compatibility using AI when available, rule-based as fallback.
         
         Args:
             resume_data: Parsed resume data
@@ -90,6 +95,16 @@ class ATSAnalyzer:
             ATS compatibility score and recommendations
         """
         
+        # Use AI-enhanced analysis if client is available
+        if self.openrouter_client:
+            logger.info("🤖 Using AI-enhanced ATS analysis")
+            return self._ai_enhanced_analysis(resume_data, job_description)
+        else:
+            logger.info("📊 Using rule-based ATS analysis (add API key for AI enhancement)")
+            return self._rule_based_analysis(resume_data, job_description)
+    
+    def _rule_based_analysis(self, resume_data: Dict[str, Any], job_description: str = "") -> ATSScore:
+        """Rule-based ATS analysis (fallback when no AI available)."""
         scores = {}
         recommendations = []
         strengths = []
@@ -137,6 +152,198 @@ class ATSAnalyzer:
             strengths=strengths[:5],  # Top 5
             warnings=warnings[:5]  # Top 5
         )
+    
+    def _ai_enhanced_analysis(self, resume_data: Dict[str, Any], job_description: str = "") -> ATSScore:
+        """AI-enhanced ATS analysis for more accurate scoring and recommendations."""
+        try:
+            # Get base rule-based analysis first
+            base_score = self._rule_based_analysis(resume_data, job_description)
+            
+            # Prepare resume text for AI analysis
+            resume_text = self._extract_resume_text(resume_data)
+            
+            # Create comprehensive ATS analysis prompt
+            analysis_prompt = self._create_ai_ats_prompt(resume_text, job_description, base_score)
+            
+            # Get AI analysis
+            ai_response = self.openrouter_client.chat_completion(
+                messages=[{"role": "user", "content": analysis_prompt}],
+                max_tokens=2000,
+                temperature=0.1  # Low temperature for consistent analysis
+            )
+            
+            if ai_response.get('success'):
+                ai_analysis = ai_response['content']
+                # Parse AI response and enhance the base score
+                enhanced_score = self._parse_ai_analysis(ai_analysis, base_score, resume_data, job_description)
+                logger.info(f"✨ AI analysis complete: {enhanced_score.overall_score}/100")
+                return enhanced_score
+            else:
+                logger.warning("⚠️ AI analysis failed, falling back to rule-based analysis")
+                return base_score
+                
+        except Exception as e:
+            logger.error(f"❌ AI analysis error: {e}")
+            logger.info("🔄 Falling back to rule-based analysis")
+            return self._rule_based_analysis(resume_data, job_description)
+    
+    def _create_ai_ats_prompt(self, resume_text: str, job_description: str, base_score: ATSScore) -> str:
+        """Create comprehensive prompt for AI ATS analysis."""
+        
+        job_context = ""
+        if job_description.strip():
+            job_context = f"""
+
+TARGET JOB DESCRIPTION:
+{job_description}
+
+Analyze how well this resume matches the specific job requirements, keywords, and skills mentioned in the job description.
+"""
+        
+        return f"""You are an expert ATS (Applicant Tracking System) analyst and career coach. Analyze this resume for ATS compatibility and provide detailed scoring and recommendations.
+
+RESUME TO ANALYZE:
+{resume_text}
+{job_context}
+
+CURRENT RULE-BASED ANALYSIS:
+- Overall Score: {base_score.overall_score}/100
+- Keyword Score: {base_score.keyword_score}/100  
+- Format Score: {base_score.format_score}/100
+- Content Score: {base_score.content_score}/100
+- Readability Score: {base_score.readability_score}/100
+
+INSTRUCTIONS:
+1. Provide enhanced scoring (0-100) for each category based on deep analysis
+2. Identify specific ATS optimization opportunities  
+3. Analyze keyword density and relevance (especially if job description provided)
+4. Evaluate resume structure and formatting for ATS parsing
+5. Assess content quality and impact statements
+6. Check for ATS red flags and compatibility issues
+
+Please respond in this EXACT format:
+
+ENHANCED_SCORES:
+Overall: [score]/100
+Keywords: [score]/100
+Format: [score]/100
+Content: [score]/100
+Readability: [score]/100
+
+STRENGTHS:
+• [strength 1]
+• [strength 2]
+• [strength 3]
+
+WARNINGS:
+• [warning 1]
+• [warning 2]
+• [warning 3]
+
+RECOMMENDATIONS:
+• [specific recommendation 1]
+• [specific recommendation 2]  
+• [specific recommendation 3]
+• [specific recommendation 4]
+• [specific recommendation 5]
+
+ANALYSIS_REASONING:
+[Provide 2-3 sentences explaining the key factors affecting the scores and most critical improvements needed]
+
+Focus on actionable insights that will improve ATS parsing and ranking."""
+    
+    def _parse_ai_analysis(self, ai_response: str, base_score: ATSScore, resume_data: Dict, job_description: str) -> ATSScore:
+        """Parse AI response and create enhanced ATS score."""
+        try:
+            # Extract enhanced scores
+            scores = self._extract_ai_scores(ai_response, base_score)
+            
+            # Extract recommendations, strengths, and warnings
+            strengths = self._extract_section(ai_response, "STRENGTHS:")
+            warnings = self._extract_section(ai_response, "WARNINGS:")
+            recommendations = self._extract_section(ai_response, "RECOMMENDATIONS:")
+            
+            # Calculate overall score from AI-enhanced component scores
+            overall_score = int(
+                scores['keyword'] * 0.3 +
+                scores['format'] * 0.25 +
+                scores['content'] * 0.3 +
+                scores['readability'] * 0.15
+            )
+            
+            return ATSScore(
+                overall_score=overall_score,
+                keyword_score=scores['keyword'],
+                format_score=scores['format'],
+                content_score=scores['content'],
+                readability_score=scores['readability'],
+                recommendations=recommendations[:10],
+                strengths=strengths[:5],
+                warnings=warnings[:5]
+            )
+            
+        except Exception as e:
+            logger.error(f"❌ Error parsing AI analysis: {e}")
+            return base_score
+    
+    def _extract_ai_scores(self, ai_response: str, base_score: ATSScore) -> Dict[str, int]:
+        """Extract enhanced scores from AI response."""
+        scores = {
+            'keyword': base_score.keyword_score,
+            'format': base_score.format_score,
+            'content': base_score.content_score,
+            'readability': base_score.readability_score
+        }
+        
+        try:
+            # Extract scores section
+            scores_section = re.search(r'ENHANCED_SCORES:(.*?)(?=STRENGTHS:|$)', ai_response, re.DOTALL)
+            if scores_section:
+                scores_text = scores_section.group(1)
+                
+                # Extract individual scores
+                keyword_match = re.search(r'Keywords?:\s*(\d+)', scores_text)
+                format_match = re.search(r'Format:\s*(\d+)', scores_text)
+                content_match = re.search(r'Content:\s*(\d+)', scores_text)
+                readability_match = re.search(r'Readability:\s*(\d+)', scores_text)
+                
+                if keyword_match:
+                    scores['keyword'] = min(100, max(0, int(keyword_match.group(1))))
+                if format_match:
+                    scores['format'] = min(100, max(0, int(format_match.group(1))))
+                if content_match:
+                    scores['content'] = min(100, max(0, int(content_match.group(1))))
+                if readability_match:
+                    scores['readability'] = min(100, max(0, int(readability_match.group(1))))
+                    
+        except Exception as e:
+            logger.warning(f"⚠️ Could not extract AI scores, using base scores: {e}")
+            
+        return scores
+    
+    def _extract_section(self, ai_response: str, section_name: str) -> List[str]:
+        """Extract bullet points from a specific section in AI response."""
+        items = []
+        try:
+            # Find the section
+            pattern = f'{section_name}(.*?)(?=\\n[A-Z_]+:|$)'
+            section_match = re.search(pattern, ai_response, re.DOTALL)
+            
+            if section_match:
+                section_text = section_match.group(1)
+                # Extract bullet points
+                bullet_points = re.findall(r'•\s*(.+)', section_text)
+                items = [point.strip() for point in bullet_points if point.strip()]
+                
+        except Exception as e:
+            logger.warning(f"⚠️ Could not extract {section_name}: {e}")
+            
+        return items
+    
+    def set_client(self, openrouter_client):
+        """Update the OpenRouter client for AI analysis."""
+        self.openrouter_client = openrouter_client
+        logger.info("🔄 ATS Analyzer updated with OpenRouter client")
     
     def generate_ats_improvement_prompt(self, ats_score: ATSScore, job_description: str = "") -> str:
         """

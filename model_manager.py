@@ -51,8 +51,8 @@ class ModelManager:
             # API endpoint for models
             url = "https://openrouter.ai/api/v1/models"
             headers = {
-                "HTTP-Referer": "https://github.com/resume-adapter/resume-latex-generator",
-                "X-Title": "Resume LaTeX Generator"
+            "HTTP-Referer": "https://github.com/resume-adapter/resume-adapter-pro",
+            "X-Title": "Resume Adapter Pro"
             }
             
             response = requests.get(url, headers=headers, timeout=15)

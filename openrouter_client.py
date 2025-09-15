@@ -42,8 +42,8 @@ class OpenRouterClient:
         self.headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/resume-adapter/resume-latex-generator",
-            "X-Title": "Resume LaTeX Generator"
+            "HTTP-Referer": "https://github.com/resume-adapter/resume-adapter-pro",
+            "X-Title": "Resume Adapter Pro"
         }
         
         # Initialize rate limiter
@@ -1094,7 +1094,7 @@ Make it both ATS-friendly AND visually appealing for human reviewers.
         
         return self._make_request(prompt, max_tokens=5000, prompt_type="custom_improvement")
     
-    def adapt_resume_to_template(self, resume_data: Dict[str, Any], template_info: Dict[str, Any], template_html: str, country_standards: Dict[str, Any] = None, profile_image_data: bytes = None, translate_content: bool = False) -> str:
+    def adapt_resume_to_template(self, resume_data: Dict[str, Any], template_info: Dict[str, Any], template_html: str, country_standards: Dict[str, Any] = None, profile_image_data: bytes = None, translate_content: bool = False, original_layout_analysis: Dict[str, Any] = None) -> str:
         """
         Use AI to intelligently adapt resume data to match the specific template's style and requirements.
         
@@ -1124,12 +1124,30 @@ Make it both ATS-friendly AND visually appealing for human reviewers.
         if translate_content:
             translation_guidance = self._generate_translation_guidance(country_standards)
         
+        # Handle original layout analysis
+        layout_guidance = ""
+        if original_layout_analysis:
+            layout_guidance = f"""
+
+ORIGINAL LAYOUT ANALYSIS:
+The original resume had the following characteristics:
+- Layout Type: {original_layout_analysis.get('layout_type', 'Unknown')}
+- Content Distribution: {original_layout_analysis.get('content_distribution', 'Standard')}
+- Space Utilization: {original_layout_analysis.get('space_utilization', 'Unknown')}
+
+LAYOUT PRESERVATION INSTRUCTIONS:
+- Try to maintain the general content flow and organization of the original
+- If original was two-column, utilize template's sidebar/secondary areas effectively
+- If original was single-column, ensure content flows naturally in template
+- Preserve the professional appearance and information hierarchy from original
+"""
+        
         template_name = template_info.get('name', 'Professional Template')
         template_description = template_info.get('description', '')
         template_category = template_info.get('category', 'professional')
         
         prompt = f"""
-You are an expert resume writer and template designer. Adapt this resume data to perfectly match the style, tone, and structure requirements of the specific template.
+You are an expert resume writer, template designer, and layout optimization specialist. Adapt this resume data to perfectly match the template while maximizing space utilization and visual balance.
 
 Template Information:
 - Name: {template_name}
@@ -1144,47 +1162,65 @@ Resume Data to Adapt:
 {country_guidance}
 {profile_image_guidance}
 {translation_guidance}
+{layout_guidance}
 
-TEMPLATE ADAPTATION REQUIREMENTS:
+INTELLIGENT TEMPLATE ADAPTATION REQUIREMENTS:
 
-1. **Content Adaptation**: 
+1. **Smart Space Utilization**: 
+   - MAXIMIZE use of available layout space - eliminate empty areas
+   - For two-column layouts: Balance content between columns intelligently
+   - Distribute content based on section importance and length
+   - Skills/contact info in sidebar, main experience in primary column
+   - Ensure NO large empty spaces remain unused
+
+2. **Content Adaptation**: 
    - Rewrite content to match the template's professional tone and style
    - For corporate templates: Use formal, achievement-focused language
    - For creative templates: Use more dynamic, personality-showing language
    - For tech templates: Emphasize technical skills and project details
    - For freelancer templates: Focus on client results and portfolio highlights
 
-2. **Structure Optimization**:
-   - Organize information to flow perfectly with the template design
-   - Prioritize sections based on template focus (e.g., projects first for portfolio templates)
-   - Ensure content length matches template spacing and layout
+3. **Layout Intelligence**:
+   - Analyze content density and distribute optimally across template areas
+   - For content-heavy resumes: Use compact formatting, smaller margins
+   - For minimal content: Add relevant details, expand descriptions
+   - Prioritize sections based on template focus and available space
+   - Ensure visual balance - no column should be significantly emptier
 
-3. **Professional Enhancement**:
+4. **Professional Enhancement**:
    - Add quantifiable metrics and achievements where appropriate
    - Enhance bullet points with action verbs and impact statements
    - Improve professional summary to match template's target audience
+   - Expand thin sections with relevant details to fill space effectively
 
-4. **Template-Specific Features**:
+5. **Template-Specific Features**:
    - For executive templates: Emphasize leadership and strategic achievements
    - For startup templates: Highlight adaptability and growth impact  
    - For consulting templates: Focus on problem-solving and client outcomes
    - For academic templates: Emphasize research, publications, and teaching
 
-5. **Image Handling Logic**:
+6. **Space Optimization Strategies**:
+   - If sidebar exists: Fill it completely with skills, education, certifications
+   - Add additional sections if space allows: Projects, Certifications, Awards
+   - Use consistent spacing that fills the template without crowding
+   - Ensure content flows naturally while maximizing space usage
+
+7. **Image Handling Logic**:
    - IF profile image guidance is provided above: MUST include the placeholder exactly as specified
    - Use the exact placeholder format: {{PROFILE_IMAGE_PLACEHOLDER}}
    - IF no profile image guidance is provided: Do NOT include any image placeholders or img tags
    - NEVER create empty image elements or broken image links
    - The placeholder will be automatically replaced with actual image data after generation
 
-6. **Complete HTML Generation**:
+8. **Complete HTML Generation**:
    - Return the FULL HTML document with all template placeholders filled
    - Include proper HTML structure with embedded CSS
    - Ensure all sections are comprehensive and complete
    - Make it production-ready and ATS-friendly
    - Apply image logic: include image elements ONLY if image data was provided
+   - CRITICAL: Optimize layout to eliminate empty spaces and maximize professional appearance
 
-Generate the complete, adapted HTML resume that perfectly matches this template's requirements and showcases the candidate's strengths in the most effective way for the template's target use case.
+Generate the complete, adapted HTML resume that perfectly matches this template's requirements, showcases the candidate's strengths effectively, and makes optimal use of ALL available space in the layout.
 
 Return ONLY the complete HTML document - no explanations or additional text.
         """

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Launch script for Resume to LaTeX Generator
+Launch script for Resume Adapter Pro
 """
 
 import subprocess
@@ -40,7 +40,7 @@ def check_optional_dependencies():
 
 def main():
     """Main function to launch the Streamlit app."""
-    print("Starting Resume to LaTeX Generator...")
+    print("Starting Resume Adapter Pro...")
     print("=" * 50)
     
     # Check if we're in the right directory

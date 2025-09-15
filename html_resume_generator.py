@@ -312,6 +312,16 @@ class HTMLResumeGenerator:
             css_template=self._get_gradient_css_template()
         )
         
+        # Balanced Template (optimized space utilization)
+        templates["balanced"] = ResumeTemplate(
+            id="balanced",
+            name="Space Optimized",
+            description="Intelligently balanced layout that maximizes space utilization and content density",
+            category="professional",
+            html_template=self._get_balanced_html_template(),
+            css_template=self._get_balanced_css_template()
+        )
+        
         return templates
     
     def adapt_resume_for_role(self, resume_data: Dict, target_role: str) -> Dict:
@@ -743,14 +753,22 @@ class HTMLResumeGenerator:
 </html>
                 """
                 
-                # Use AI to adapt resume data to template with country standards, profile image, and translation
+                # Get original layout analysis if available
+                original_layout_analysis = None
+                if hasattr(resume_data, 'get') and 'analysis_data' in resume_data:
+                    analysis_data = resume_data.get('analysis_data', {})
+                    if 'layout_analysis' in analysis_data:
+                        original_layout_analysis = analysis_data['layout_analysis']
+                
+                # Use AI to adapt resume data to template with country standards, profile image, translation, and layout analysis
                 complete_html = self.openrouter_client.adapt_resume_to_template(
                     resume_data, 
                     template_info,
                     template_with_css,
                     country_standards=country_standards,
                     profile_image_data=profile_image_data,
-                    translate_content=translate_content
+                    translate_content=translate_content,
+                    original_layout_analysis=original_layout_analysis
                 )
                 
                 if complete_html and not complete_html.startswith("Error:"):
@@ -2619,7 +2637,9 @@ body {
 }
 
 .sidebar {
-    width: 320px;
+    width: 35%;
+    min-width: 280px;
+    max-width: 380px;
     background: linear-gradient(135deg, {{primary_color}} 0%, {{secondary_color}} 100%);
     color: white;
     padding: 3rem 2.5rem;
@@ -2647,6 +2667,8 @@ body {
     flex: 1;
     padding: 3rem 2.5rem;
     background: {{background_color}};
+    min-width: 0; /* Allow flex shrinking */
+    overflow-wrap: break-word;
 }
 
 .profile-header {
@@ -6201,6 +6223,311 @@ body {
     
     .section-heading {
         font-size: 1.5rem;
+    }
+}
+        """
+    
+    def _get_balanced_html_template(self) -> str:
+        """Get balanced template HTML with optimized space utilization."""
+        return """
+<div class="balanced-container">
+    <header class="balanced-header">
+        <div class="header-content">
+            <h1 class="name">{{name}}</h1>
+            <div class="contact-row">
+                <div class="contact-item">✉️ {{email}}</div>
+                <div class="contact-item">📱 {{phone}}</div>
+                <div class="contact-item">📍 {{location}}</div>
+                <div class="contact-item">🔗 {{linkedin}}</div>
+            </div>
+        </div>
+        {{profile_image}}
+    </header>
+    
+    <div class="balanced-layout">
+        <div class="primary-column">
+            <section class="summary-section">
+                <h2 class="section-title">Professional Summary</h2>
+                <div class="summary-content">{{professional_summary}}</div>
+            </section>
+            
+            <section class="experience-section">
+                <h2 class="section-title">Experience</h2>
+                <div class="experience-content">{{experience_section}}</div>
+            </section>
+            
+            <section class="education-section">
+                <h2 class="section-title">Education</h2>
+                <div class="education-content">{{education_section}}</div>
+            </section>
+        </div>
+        
+        <div class="secondary-column">
+            <section class="skills-section">
+                <h2 class="section-title">Skills</h2>
+                <div class="skills-content">{{skills_section}}</div>
+            </section>
+            
+            <section class="additional-section">
+                <h2 class="section-title">Additional</h2>
+                <div class="additional-content">{{additional_sections}}</div>
+            </section>
+        </div>
+    </div>
+</div>
+        """
+    
+    def _get_balanced_css_template(self) -> str:
+        """Get balanced template CSS with intelligent space optimization."""
+        return """
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    color: {{text_dark}};
+    background: {{background_color}};
+    font-size: 15px;
+}
+
+.balanced-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    background: {{background_color}};
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.balanced-header {
+    background: linear-gradient(135deg, {{primary_color}} 0%, {{secondary_color}} 100%);
+    color: white;
+    padding: 2.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.header-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+}
+
+.contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.15);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.balanced-layout {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 0;
+    min-height: 70vh;
+}
+
+.primary-column {
+    padding: 3rem;
+    background: {{background_color}};
+}
+
+.secondary-column {
+    padding: 3rem 2.5rem;
+    background: {{section_bg}};
+    border-left: 1px solid {{border_color}};
+}
+
+.section-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: {{primary_color}};
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: {{primary_color}};
+    border-radius: 2px;
+}
+
+.summary-section, .experience-section, .education-section {
+    margin-bottom: 2.5rem;
+}
+
+.skills-section, .additional-section {
+    margin-bottom: 2rem;
+}
+
+.summary-content {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    text-align: justify;
+    color: {{text_dark}};
+    background: {{section_bg}};
+    padding: 2rem;
+    border-radius: 8px;
+    border-left: 4px solid {{primary_color}};
+}
+
+.experience-item, .education-item {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: {{section_bg}};
+    border-radius: 8px;
+    border-left: 4px solid {{secondary_color}};
+    transition: all 0.3s ease;
+}
+
+.experience-item:hover, .education-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.experience-header h3, .education-item h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: {{primary_color}};
+    margin-bottom: 0.5rem;
+}
+
+.experience-meta, .education-meta {
+    font-size: 0.9rem;
+    color: {{text_light}};
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.company, .school {
+    font-weight: 500;
+    color: {{secondary_color}};
+}
+
+.experience-description {
+    list-style: none;
+    padding: 0;
+}
+
+.experience-description li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.6rem;
+    line-height: 1.6;
+    color: {{text_dark}};
+}
+
+.experience-description li:before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: {{primary_color}};
+    font-weight: bold;
+}
+
+.skills-category {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: {{background_color}};
+    border-radius: 8px;
+    border: 1px solid {{border_color}};
+}
+
+.skills-category h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: {{primary_color}};
+    margin-bottom: 0.8rem;
+}
+
+.skills-list {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: {{text_dark}};
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .balanced-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .secondary-column {
+        border-left: none;
+        border-top: 1px solid {{border_color}};
+    }
+    
+    .balanced-header {
+        padding: 2rem;
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .contact-row {
+        justify-content: center;
+    }
+    
+    .primary-column, .secondary-column {
+        padding: 2rem;
+    }
+    
+    .name {
+        font-size: 2rem;
+    }
+}
+
+@media print {
+    body {
+        background: white !important;
+    }
+    
+    .balanced-container {
+        box-shadow: none;
+        margin: 0;
+        max-width: none;
+    }
+    
+    .balanced-layout {
+        grid-template-columns: 1.8fr 1fr;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
     }
 }
         """

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Resume to LaTeX Generator
+Resume Adapter Pro - AI-Powered Resume Enhancement Platform
 A Python system that analyzes resume files (PDF, PNG, DOCX) and generates LaTeX code to recreate them.
 """
 

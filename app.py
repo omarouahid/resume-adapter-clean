@@ -1,6 +1,6 @@
 """
-Resume to LaTeX Generator - Streamlit Application
-A beautiful platform for converting resumes to LaTeX with AI assistance.
+Resume Adapter Pro - AI-Powered Resume Enhancement Platform
+Transform, enhance, and optimize your resume with intelligent AI assistance across multiple formats.
 """
 
 import streamlit as st
@@ -15,8 +15,8 @@ import logging
 
 # Configure page
 st.set_page_config(
-    page_title="Resume to LaTeX Generator",
-    page_icon="📄",
+    page_title="Resume Adapter Pro",
+    page_icon="🚀",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -773,7 +773,9 @@ def initialize_session_state():
     if 'html_preview_component' not in st.session_state:
         st.session_state.html_preview_component = HTMLResumePreview()
     if 'ats_analyzer' not in st.session_state:
-        st.session_state.ats_analyzer = ATSAnalyzer()
+        # Initialize ATS analyzer with OpenRouter client if available
+        openrouter_client = getattr(st.session_state, 'openrouter_client', None)
+        st.session_state.ats_analyzer = ATSAnalyzer(openrouter_client)
     if 'real_time_editor' not in st.session_state:
         st.session_state.real_time_editor = RealTimeEditor()
     if 'model_manager' not in st.session_state:
@@ -826,8 +828,8 @@ def create_header():
     """Create the application header."""
     st.markdown("""
     <div style="text-align: center; padding: 2rem 0;">
-        <h1 style="color: #2c3e50; margin-bottom: 0.5rem;">📄 Resume to LaTeX Generator</h1>
-        <p style="color: #7f8c8d; font-size: 1.2rem;">Transform your resume into professional LaTeX code with AI assistance</p>
+        <h1 style="color: #2c3e50; margin-bottom: 0.5rem;">🚀 Resume Adapter Pro</h1>
+        <p style="color: #7f8c8d; font-size: 1.2rem;">AI-powered resume enhancement platform - Transform, optimize & adapt your resume across multiple formats</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -972,7 +974,11 @@ def create_sidebar():
                 logger.info("🔄 Updating HTML generator with new OpenRouter client")
                 st.session_state.html_generator = HTMLResumeGenerator(st.session_state.openrouter_client)
                 
-                st.success("✅ AI assistant connected with intelligent template adaptation!")
+                # Update ATS analyzer with the new OpenRouter client for AI-enhanced analysis
+                logger.info("🔄 Updating ATS analyzer with new OpenRouter client")
+                st.session_state.ats_analyzer.set_client(st.session_state.openrouter_client)
+                
+                st.success("✅ AI assistant connected with enhanced ATS analysis and template adaptation!")
                 
                 # API Logging Settings
                 st.markdown("#### 📊 API Logging")
@@ -1176,6 +1182,72 @@ def create_file_upload_section():
             }
             
             st.json(file_details)
+            
+            # Show image preview if the uploaded file is an image
+            file_type = uploaded_file.type
+            if file_type in ['image/png', 'image/jpeg', 'image/jpg']:
+                try:
+                    st.markdown("#### 📷 Resume Preview")
+                    # Store current position and reset to beginning
+                    current_position = uploaded_file.tell()
+                    uploaded_file.seek(0)
+                    image_data = uploaded_file.read()
+                    
+                    # Validate image data
+                    if len(image_data) > 0:
+                        # Create columns for better layout
+                        col1, col2, col3 = st.columns([1, 2, 1])
+                        with col2:
+                            st.image(image_data, caption="Uploaded Resume", use_column_width=True)
+                        
+                        # Show helpful tip
+                        st.info("💡 Image preview shown above. Click 'Analyze Resume' to extract text and structure.")
+                    else:
+                        st.warning("⚠️ Uploaded image appears to be empty")
+                    
+                    # Reset file pointer for future processing
+                    uploaded_file.seek(0)
+                except Exception as e:
+                    st.warning(f"⚠️ Could not display image preview: {str(e)}")
+                    logger.warning(f"Image preview error: {e}")
+                    # Ensure file pointer is reset even if preview fails
+                    try:
+                        uploaded_file.seek(0)
+                    except:
+                        pass
+            elif file_type == "application/pdf":
+                st.info("📄 PDF file uploaded successfully. Click analyze to process.")
+                
+                # Optionally show PDF preview (first page as image)
+                if st.checkbox("📋 Show PDF Preview", help="Display first page of PDF as image preview"):
+                    try:
+                        with st.spinner("🔄 Generating PDF preview..."):
+                            from image_converter import image_converter
+                            uploaded_file.seek(0)
+                            pdf_data = uploaded_file.read()
+                            
+                            # Convert first page to image
+                            preview_image = image_converter.pdf_to_image(pdf_data, dpi=150, page_num=0)
+                            
+                            if preview_image:
+                                col1, col2, col3 = st.columns([1, 2, 1])
+                                with col2:
+                                    st.image(preview_image, caption="PDF Preview (Page 1)", use_column_width=True)
+                                st.info("💡 PDF preview shown above. Click 'Analyze Resume' to extract text from all pages.")
+                            else:
+                                st.warning("⚠️ Could not generate PDF preview")
+                            
+                            # Reset file pointer
+                            uploaded_file.seek(0)
+                    except Exception as e:
+                        st.warning(f"⚠️ Could not display PDF preview: {str(e)}")
+                        logger.warning(f"PDF preview error: {e}")
+                        try:
+                            uploaded_file.seek(0)
+                        except:
+                            pass
+            elif file_type in ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"]:
+                st.info("📝 Word document uploaded successfully. Click analyze to process.")
             
             if st.button("🔍 Analyze Resume", type="primary", width="stretch"):
                 analyze_resume(uploaded_file)
@@ -3202,7 +3274,7 @@ This package contains your generated LaTeX resume files.
 - Ensure both files are in the same directory
 - Check that file permissions allow reading
 
-Generated by Resume to LaTeX Generator
+Generated by Resume Adapter Pro
 """
             zip_file.writestr("README.md", readme_content)
         
@@ -3226,8 +3298,8 @@ def create_footer():
     st.markdown("---")
     st.markdown("""
     <div style="text-align: center; color: #7f8c8d; padding: 2rem 0;">
-        <p>Built with ❤️ using Streamlit • Resume to LaTeX Generator</p>
-        <p>Transform your resume into professional LaTeX code with AI assistance</p>
+        <p>Built with ❤️ using Streamlit • Resume Adapter Pro</p>
+        <p>AI-powered resume enhancement platform for modern job seekers</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -4446,7 +4518,7 @@ def display_template_matching_interface():
             col1, col2 = st.columns(2)
             
             with col1:
-                if st.button("🔍„ Restore This Version", key=f"revert_{selected_section_key}", type="primary"):
+                if st.button("🔄 Restore This Version", key=f"revert_{selected_section_key}", type="primary"):
                     if selected_version == 0:
                         comparison_service.revert_to_version(selected_section_key, -1)
                     else:
@@ -4471,11 +4543,11 @@ def display_template_matching_interface():
     
     with col1:
         versions_count = len(selected_section.versions)
-        st.metric("🔍„ Versions", versions_count, help="Number of improvements made")
+        st.metric("🔄 Versions", versions_count, help="Number of improvements made")
     
     with col2:
         word_count = len(selected_section.current.split())
-        st.metric("ðŸ“ Words", word_count, help="Current word count")
+        st.metric("📝 Words", word_count, help="Current word count")
     
     with col3:
         if versions_count > 0:
@@ -4566,21 +4638,21 @@ def get_default_quick_actions_for_section(section_type, section_name):
         return [
             ("🏆 Highlight Honors", "Emphasize academic achievements, honors, or high GPA if relevant"),
             ("📚 Relevant Courses", "Add relevant coursework that aligns with your career goals"),
-            ("🔍— Connect to Career", "Show how your education relates to your professional objectives"),
+            ("🔗 Connect to Career", "Show how your education relates to your professional objectives"),
             ("📅 Optimize Format", "Ensure proper formatting with dates and clear degree information")
         ]
     elif "skill" in section_type.lower() or "skill" in section_name.lower():
         return [
             ("📂 Categorize Skills", "Group skills into logical categories (Programming, Frameworks, Tools, etc.)"),
-            ("â­ Prioritize Top Skills", "Move most relevant skills to the beginning of each category"),
-            ("🔍„ Remove Outdated", "Remove outdated or basic skills that don't add value"),
+            ("⭐ Prioritize Top Skills", "Move most relevant skills to the beginning of each category"),
+            ("🔄 Remove Outdated", "Remove outdated or basic skills that don't add value"),
             ("🎯 Match Job Requirements", "Align skills with current job market demands")
         ]
     elif "project" in section_type.lower() or "project" in section_name.lower():
         return [
             ("💻 Technical Details", "Add specific technologies, frameworks, and tools used"),
             ("📈 Show Results", "Include metrics like users, performance improvements, or business impact"),
-            ("🔍— Add Links", "Include GitHub links or live demo URLs if available"),
+            ("🔗 Add Links", "Include GitHub links or live demo URLs if available"),
             ("🎯 Business Value", "Explain the purpose and value of the project")
         ]
     elif "summary" in section_type.lower() or "summary" in section_name.lower():
@@ -4592,7 +4664,7 @@ def get_default_quick_actions_for_section(section_type, section_name):
         ]
     elif "contact" in section_type.lower() or "contact" in section_name.lower():
         return [
-            ("🔍— Add LinkedIn", "Include professional LinkedIn profile URL"),
+            ("🔗 Add LinkedIn", "Include professional LinkedIn profile URL"),
             ("💻 Add Portfolio", "Add GitHub, portfolio website, or professional links"),
             ("📍 Optimize Location", "Use city, state format appropriate for target jobs"),
             ("✨ Professional Email", "Ensure email address is professional and current")
@@ -4865,7 +4937,7 @@ def apply_ai_improvements(recommendations):
 def regenerate_latex_from_parsed_data():
     """Regenerate LaTeX from the current parsed resume data."""
     try:
-        with st.spinner("🔍„ Regenerating LaTeX from parsed resume data..."):
+        with st.spinner("🔄 Regenerating LaTeX from parsed resume data..."):
             if st.session_state.parsed_resume:
                 # Get detected language for better formatting
                 sample_text = ""
@@ -4906,7 +4978,7 @@ def display_pdf_preview():
     st.markdown("### 🔥 PDF Download")
     
     if st.button("📄 Compile & Download PDF", type="primary", width="stretch"):
-        with st.spinner("🔍„ Compiling LaTeX to PDF..."):
+        with st.spinner("🔄 Compiling LaTeX to PDF..."):
             success, message, pdf_bytes = st.session_state.preview_service.compile_and_download(
                 st.session_state.tex_content,
                 st.session_state.cls_content,
@@ -4952,7 +5024,7 @@ def display_pdf_preview():
 
 def display_download_options():
     """Display download options including PDF compilation."""
-    st.markdown("### ðŸ“¦ Download Options")
+    st.markdown("### 📦 Download Options")
     
     col1, col2 = st.columns(2)
     
@@ -4961,7 +5033,7 @@ def display_download_options():
         
         # Individual file downloads
         st.download_button(
-            label="ðŸ“¥ Download resume.tex",
+            label="📝¥ Download resume.tex",
             data=st.session_state.tex_content,
             file_name="resume.tex",
             mime="text/plain",
@@ -4969,7 +5041,7 @@ def display_download_options():
         )
         
         st.download_button(
-            label="ðŸ“¥ Download resume.cls",
+            label="📝¥ Download resume.cls",
             data=st.session_state.cls_content,
             file_name="resume.cls", 
             mime="text/plain",
@@ -5015,11 +5087,11 @@ Paste the actual job description here...""",
             if st.button("🎯 Adapt Resume to Job", type="primary", width="stretch"):
                 adapt_resume_to_job(job_description, adaptation_level)
         else:
-            st.info("ðŸ‘† Paste a job description above to unlock AI job adaptation")
+            st.info("👆 Paste a job description above to unlock AI job adaptation")
 
 def compile_and_download_pdf():
     """Compile LaTeX to PDF and offer download."""
-    with st.spinner("🔍„ Compiling to PDF..."):
+    with st.spinner("🔄 Compiling to PDF..."):
         success, message, pdf_bytes = st.session_state.preview_service.compile_and_download(
             st.session_state.tex_content,
             st.session_state.cls_content,
@@ -5041,7 +5113,7 @@ def compile_and_download_pdf():
 
 def use_enhanced_generator():
     """Use the enhanced LaTeX generator for better results."""
-    with st.spinner("🔍„ Generating enhanced LaTeX..."):
+    with st.spinner("🔄 Generating enhanced LaTeX..."):
         try:
             # Convert sections to a compatible format
             sections_data = st.session_state.analysis_data.get('sections', [])
@@ -5170,7 +5242,7 @@ Return the adapted resume content maintaining the same structure:
                 st.info(f"Comparison sections created: {len(comparisons) if comparisons else 0}")
                 
                 # Button to go to comparison page
-                if st.button("🔍„ View Detailed Before/After Comparison", type="primary", key="job_adapt_comparison"):
+                if st.button("🔄 View Detailed Before/After Comparison", type="primary", key="job_adapt_comparison"):
                     if st.session_state.enhancement_comparison and st.session_state.enhancement_comparison.comparisons:
                         st.session_state.show_comparison_page = True
                         st.rerun()
@@ -5221,7 +5293,7 @@ This package contains your generated LaTeX resume files.
 - Ensure both files are in the same directory
 - Check that file permissions allow reading
 
-Generated by Resume to LaTeX Generator
+Generated by Resume Adapter Pro
 """
             zip_file.writestr("README.md", readme_content)
         
@@ -5229,7 +5301,7 @@ Generated by Resume to LaTeX Generator
         
         # Offer download
         st.download_button(
-            label="ðŸ“¥ Download Complete Package (ZIP)",
+            label="📝¥ Download Complete Package (ZIP)",
             data=zip_buffer.getvalue(),
             file_name=f"resume_latex_{st.session_state.uploaded_file_name.split('.')[0]}.zip",
             mime="application/zip"
@@ -5252,13 +5324,13 @@ def create_footer():
 
 def auto_generate_html_preview():
     """Auto-generate HTML preview when resume is first loaded."""
-    logger.info(f"🔍„ AUTO_GENERATE_HTML_PREVIEW STARTED")
+    logger.info(f"🔄 AUTO_GENERATE_HTML_PREVIEW STARTED")
     try:
         if not st.session_state.parsed_resume:
-            logger.warning(f"âš ï¸ No parsed resume available for auto-generation")
+            logger.warning(f"⚠️ No parsed resume available for auto-generation")
             return
             
-        logger.info(f"ðŸ“‹ Converting parsed resume to dict format")
+        logger.info(f"📝‹ Converting parsed resume to dict format")
         # Convert parsed resume to dict format
         resume_dict = convert_parsed_resume_to_dict(st.session_state.parsed_resume)
         
@@ -5278,8 +5350,8 @@ def auto_generate_html_preview():
         )
         
         logger.info(f"📊 AUTO-PREVIEW HTML result received:")
-        logger.info(f"   ðŸ“‹ Result type: {type(html_result)}")
-        logger.info(f"   ðŸ“‹ Result keys: {list(html_result.keys()) if isinstance(html_result, dict) else 'Not dict'}")
+        logger.info(f"   📝‹ Result type: {type(html_result)}")
+        logger.info(f"   📝‹ Result keys: {list(html_result.keys()) if isinstance(html_result, dict) else 'Not dict'}")
         
         if isinstance(html_result, dict):
             html_content = html_result.get('html', '')
@@ -5330,8 +5402,8 @@ def generate_html_with_loading(template_changed=False, palette_changed=False, ro
         logger.info(f"🎯 Checking role adaptation - Target role: {target_role}")
         
         if target_role != "None (Original)":
-            logger.info(f"ðŸ“ Starting role adaptation for: {target_role}")
-            logger.info(f"🔍— HTML generator OpenRouter client available: {bool(st.session_state.html_generator.openrouter_client)}")
+            logger.info(f"📝 Starting role adaptation for: {target_role}")
+            logger.info(f"🔗 HTML generator OpenRouter client available: {bool(st.session_state.html_generator.openrouter_client)}")
             
             original_keys = list(resume_dict.keys())
             resume_dict = st.session_state.html_generator.adapt_resume_for_role(resume_dict, target_role)
@@ -5340,7 +5412,7 @@ def generate_html_with_loading(template_changed=False, palette_changed=False, ro
             if resume_dict.get('_role_adapted'):
                 logger.info(f"✅ Role adaptation successful for: {target_role}")
             else:
-                logger.warning(f"âš ï¸ Role adaptation failed or returned original data for: {target_role}")
+                logger.warning(f"⚠️ Role adaptation failed or returned original data for: {target_role}")
                 logger.info(f"📊 Original keys: {original_keys}")
                 logger.info(f"📊 Returned keys: {list(resume_dict.keys())}")
         
@@ -5401,7 +5473,7 @@ def generate_html_with_loading(template_changed=False, palette_changed=False, ro
         if isinstance(html_result, dict):
             html_content = html_result.get('html', '')
             css_content = html_result.get('css', '')
-            logger.info(f"ðŸ“ NEW HTML content length: {len(html_content)} chars")
+            logger.info(f"📝 NEW HTML content length: {len(html_content)} chars")
             logger.info(f"🎨 NEW CSS content length: {len(css_content)} chars")
             
             # Log preview content sample for debugging
@@ -5417,7 +5489,7 @@ def generate_html_with_loading(template_changed=False, palette_changed=False, ro
                 elif 'data engineer' in html_content.lower():
                     logger.error(f"âŒ SESSION STATE: Still shows 'Data Engineer' - role adaptation failed to reach HTML")
                 else:
-                    logger.warning(f"âš ï¸ SESSION STATE: Role-adapted job title may not be in new HTML content")
+                    logger.warning(f"⚠️ SESSION STATE: Role-adapted job title may not be in new HTML content")
                     
                 # Check for role-adapted summary
                 adapted_summary = resume_dict.get('professional_summary', '')
@@ -5444,7 +5516,7 @@ def generate_html_with_loading(template_changed=False, palette_changed=False, ro
                 st.success(f"✅ Template populated with {validation_summary['total_sections']} sections: {sections_text}")
             
             # Log validation details
-            logger.info(f"ðŸ“‹ Section validation: {validation_summary}")
+            logger.info(f"📝‹ Section validation: {validation_summary}")
         
         # Debug: Log if adapted content made it to the HTML
         if target_role != "None (Original)" and resume_dict.get('_role_adapted'):
@@ -5468,7 +5540,7 @@ def generate_html_with_loading(template_changed=False, palette_changed=False, ro
             if found_keywords:
                 logger.info(f"✅ Adapted keywords found in HTML: {found_keywords}")
             else:
-                logger.warning(f"âš ï¸ No adapted keywords found in HTML. Checked: {keywords_to_check}")
+                logger.warning(f"⚠️ No adapted keywords found in HTML. Checked: {keywords_to_check}")
                 # Log a sample of the HTML content for debugging
                 html_sample = html_content[:500] if html_content else "No HTML content"
                 logger.debug(f"HTML content sample: {html_sample}")
@@ -5481,7 +5553,7 @@ def generate_html_with_loading(template_changed=False, palette_changed=False, ro
         elif target_role != "None (Original)":
             # Log the failure but don't clutter UI - just show a subtle notice
             logger.warning(f"Role adaptation failed for {target_role}")
-            st.info("🔍„ Processing role adaptation - if issues persist, check your OpenRouter API key in the sidebar.")
+            st.info("🔄 Processing role adaptation - if issues persist, check your OpenRouter API key in the sidebar.")
         
         # Show user feedback about template AI adaptation
         if html_result.get('ai_adapted', False):
@@ -5505,24 +5577,24 @@ def display_integrated_template_matching():
     
     # Check if we have the necessary components
     if not hasattr(st.session_state, 'original_file_data') or not st.session_state.original_file_data:
-        st.warning("âš ï¸ Original resume PDF required for template matching. Please upload your resume in the main interface.")
+        st.warning("⚠️ Original resume PDF required for template matching. Please upload your resume in the main interface.")
         return
         
     if not st.session_state.html_resume_content:
-        st.warning("âš ï¸ Generated HTML resume required. Please generate a resume first.")
+        st.warning("⚠️ Generated HTML resume required. Please generate a resume first.")
         return
     
     # Check for API key and OpenRouter client early
     if not getattr(st.session_state, 'openrouter_api_key', ''):
-        st.warning("âš ï¸ OpenRouter API key required for template matching. Please add your API key in the sidebar.")
+        st.warning("⚠️ OpenRouter API key required for template matching. Please add your API key in the sidebar.")
         return
     
     if not hasattr(st.session_state, 'openrouter_client') or not st.session_state.openrouter_client:
-        st.warning("âš ï¸ No AI model connected. Please select a model in the sidebar settings.")
+        st.warning("⚠️ No AI model connected. Please select a model in the sidebar settings.")
         return
     
     # Template reference options
-    st.markdown("#### ðŸ“‹ Template Reference")
+    st.markdown("#### 📝‹ Template Reference")
     template_option = st.radio(
         "Choose template reference:",
         ["Use Original PDF as Template", "Upload Custom Template Image"],
@@ -5600,7 +5672,7 @@ def display_integrated_template_matching():
         st.caption("💡 Change model in sidebar settings")
         
     except Exception as e:
-        st.warning(f"âš ï¸ Could not load model info: {str(e)}")
+        st.warning(f"⚠️ Could not load model info: {str(e)}")
         st.info(f"**Using:** {selected_model}")
     
     st.markdown("---")
@@ -5631,7 +5703,7 @@ def display_integrated_template_matching():
             st.session_state.template_matching_in_progress = True
             
             # Run template matching
-            with st.spinner("🔍„ Analyzing template and improving layout..."):
+            with st.spinner("🔄 Analyzing template and improving layout..."):
                 try:
                     # Initialize template matching system with properly selected model
                     from template_matcher import TemplateMatchingSystem
@@ -5694,7 +5766,7 @@ def display_integrated_template_matching():
                             
                             # Show the improved resume preview
                             st.markdown("#### 🎨 Improved Resume Preview")
-                            st.info("ðŸ“‹ Your resume has been improved to match the original layout!")
+                            st.info("📝‹ Your resume has been improved to match the original layout!")
                             
                             # Use the HTML preview component to show the result
                             try:
@@ -5708,7 +5780,7 @@ def display_integrated_template_matching():
                                 st.components.v1.html(improved_html, height=600, scrolling=True)
                                 
                         else:
-                            st.warning("âš ï¸ Template matching completed but couldn't extract CSS properly")
+                            st.warning("⚠️ Template matching completed but couldn't extract CSS properly")
                             
                     else:
                         st.error(f"âŒ Template matching failed: {results.get('error', 'Unknown error')}")
@@ -5719,7 +5791,7 @@ def display_integrated_template_matching():
                     st.session_state.template_matching_in_progress = False
                     st.rerun()
     else:
-        st.info("🔍„ Template matching in progress...")
+        st.info("🔄 Template matching in progress...")
         if st.button("â¹ï¸ Stop Matching", type="secondary"):
             st.session_state.template_matching_in_progress = False
             st.rerun()
@@ -5738,7 +5810,7 @@ def display_integrated_template_matching():
             st.metric("Iterations", results.get('total_iterations', 0))
         with col3:
             target_reached = results.get('target_reached', False)
-            st.metric("Target", "✅ Reached" if target_reached else "âš ï¸ Partial")
+            st.metric("Target", "✅ Reached" if target_reached else "⚠️ Partial")
             
         # Option to view detailed results
         with st.expander("🔍 View Detailed Results", expanded=False):
@@ -5771,7 +5843,7 @@ def display_integrated_template_matching():
 def display_template_matching_interface():
     """Display the advanced template matching interface using multimodal AI."""
     if not st.session_state.parsed_resume:
-        st.info("ðŸ‘† Please analyze a resume first to use template matching")
+        st.info("👆 Please analyze a resume first to use template matching")
         return
     
     st.markdown("## 🎯 AI-Powered Template Matching")
@@ -5820,10 +5892,10 @@ def display_template_matching_interface():
                 st.caption("💡 Change model in the sidebar settings")
                 
             except Exception as e:
-                st.warning(f"âš ï¸ Model info unavailable: {str(e)}")
+                st.warning(f"⚠️ Model info unavailable: {str(e)}")
                 st.info(f"🤖 **Using:** {selected_model}")
         else:
-            st.warning("âš ï¸ No AI model connected. Please select a model in the sidebar settings.")
+            st.warning("⚠️ No AI model connected. Please select a model in the sidebar settings.")
             selected_model = None
     
     with col2:
@@ -5912,7 +5984,7 @@ def display_template_matching_interface():
             
             # Start matching process
             try:
-                with st.spinner("🔍„ Starting template matching process..."):
+                with st.spinner("🔄 Starting template matching process..."):
                     results = st.session_state.template_matcher.match_template(
                         original_pdf_bytes=original_file_data,
                         resume_data=resume_dict,
@@ -5978,8 +6050,8 @@ def display_template_matching_interface():
                             st.markdown(f"""
                             **Template Matching Completed Successfully!**
                             - 📊 Similarity Score: **{results.get('final_score', 0)}%**
-                            - 🔍„ Iterations Used: **{results.get('total_iterations', 0)}**
-                            - 🎯 Target: {'✅ Reached' if results.get('target_reached', False) else 'âš ï¸ Partial Success'}
+                            - 🔄 Iterations Used: **{results.get('total_iterations', 0)}**
+                            - 🎯 Target: {'✅ Reached' if results.get('target_reached', False) else '⚠️ Partial Success'}
                             
                             **What happens when you apply?**
                             - Your current resume preview will be updated
@@ -6024,7 +6096,7 @@ def display_template_matching_interface():
                 st.metric("Iterations", results.get('total_iterations', 0))
             with col3:
                 target_reached = results.get('target_reached', False)
-                st.metric("Status", "✅ Success" if target_reached else "âš ï¸ Partial")
+                st.metric("Status", "✅ Success" if target_reached else "⚠️ Partial")
             
             # Show the final resume preview
             final_html = results.get('final_html', '')
@@ -6054,7 +6126,7 @@ def display_template_matching_interface():
     col1, col2 = st.columns(2)
     
     with col1:
-        with st.expander("ðŸ“‹ Dependencies Information"):
+        with st.expander("📝‹ Dependencies Information"):
             dependencies = image_converter.get_available_methods()
             st.markdown("**Image Conversion Methods:**")
             for method, available in dependencies.items():
@@ -6062,10 +6134,10 @@ def display_template_matching_interface():
                 st.markdown(f"- **{method}**: {status}")
             
             if not dependencies.get('pdf2image'):
-                st.warning("âš ï¸ PDF to image conversion not available. Install with: `pip install pdf2image`")
+                st.warning("⚠️ PDF to image conversion not available. Install with: `pip install pdf2image`")
             
             if not dependencies.get('selenium'):
-                st.warning("âš ï¸ HTML to image conversion not available. Install with: `pip install selenium`")
+                st.warning("⚠️ HTML to image conversion not available. Install with: `pip install selenium`")
     
     with col2:
         with st.expander("🔍 API Call Logs (Live)"):
@@ -6195,7 +6267,7 @@ def display_html_resume_builder():
             logger.info(f"🎯 Role changed from {getattr(st.session_state, 'target_role', 'None')} to {selected_role}")
             st.session_state.target_role = selected_role
             if selected_role != "None (Original)":
-                logger.info(f"🔍„ Triggering HTML regeneration for role: {selected_role}")
+                logger.info(f"🔄 Triggering HTML regeneration for role: {selected_role}")
                 # Force regeneration of HTML content
                 generate_html_with_loading(role_changed=True)
                 # Clear any cached preview content to force refresh
@@ -6204,7 +6276,7 @@ def display_html_resume_builder():
                 st.rerun()
             else:
                 # When reverting to original, also regenerate
-                logger.info("🔍„ Reverting to original content")
+                logger.info("🔄 Reverting to original content")
                 generate_html_with_loading(role_changed=True)
                 st.rerun()
     
@@ -6221,7 +6293,7 @@ def display_html_resume_builder():
                 else:
                     st.info(f"🤖 AI will adapt content for: **{selected_role}**")
             else:
-                st.warning("âš ï¸ AI adaptation requires OpenRouter API key")
+                st.warning("⚠️ AI adaptation requires OpenRouter API key")
         else:
             st.info("📄 Using original resume content")
     
@@ -6704,8 +6776,10 @@ def display_html_resume_builder():
                 show_improvement_tips = st.checkbox("📈 Improvement tips", value=True)
             
             # Run ATS analysis
-            if st.button("🚀 Analyze ATS Compatibility", width="stretch"):
-                with st.spinner("🔍 Analyzing your resume for ATS compatibility..."):
+            analysis_mode = "🤖 AI-Enhanced" if st.session_state.openrouter_client else "📊 Rule-Based"
+            if st.button(f"🚀 Analyze ATS Compatibility ({analysis_mode})", width="stretch"):
+                analysis_type = "AI-enhanced" if st.session_state.openrouter_client else "rule-based"
+                with st.spinner(f"🔍 Running {analysis_type} ATS compatibility analysis..."):
                     try:
                         # Convert resume data for analysis
                         resume_dict = convert_parsed_resume_to_dict(st.session_state.parsed_resume)
@@ -6719,7 +6793,12 @@ def display_html_resume_builder():
                         # Store score for later use
                         st.session_state.last_ats_score = ats_score
                         
-                        # Display results
+                        # Display results with analysis type info
+                        if st.session_state.openrouter_client:
+                            st.info("🤖 **AI-Enhanced Analysis**: Using advanced AI to analyze ATS compatibility, keyword optimization, and industry-specific insights.")
+                        else:
+                            st.info("📊 **Rule-Based Analysis**: Using heuristic scoring. Add your OpenRouter API key in the sidebar for AI-enhanced analysis with deeper insights!")
+                        
                         display_ats_score_dashboard(ats_score)
                         
                         # Additional insights
@@ -7416,31 +7495,31 @@ def main():
             create_input_section()
             
             # Feature showcase
-            st.markdown('<h2 class="section-header">✨ Why Choose Our Generator?</h2>', unsafe_allow_html=True)
+            st.markdown('<h2 class="section-header">✨ Why Choose Resume Adapter Pro?</h2>', unsafe_allow_html=True)
             
             col1, col2, col3 = st.columns(3)
             
             with col1:
                 st.markdown("""
                 <div class="feature-card">
-                    <h3>🎯 Precise Analysis</h3>
-                    <p>Advanced OCR and layout detection to capture every detail of your resume structure.</p>
+                    <h3>🎯 Intelligent Processing</h3>
+                    <p>Advanced OCR, layout analysis, and structure preservation across PDF, DOCX, and image formats.</p>
                 </div>
                 """, unsafe_allow_html=True)
             
             with col2:
                 st.markdown("""
                 <div class="feature-card">
-                    <h3>🤖 AI-Powered</h3>
-                    <p>Get intelligent suggestions and improvements from leading AI models.</p>
+                    <h3>🤖 AI-Enhanced</h3>
+                    <p>Smart resume optimization, job adaptation, ATS analysis, and cover letter generation with leading AI models.</p>
                 </div>
                 """, unsafe_allow_html=True)
             
             with col3:
                 st.markdown("""
                 <div class="feature-card">
-                    <h3>📁 Ready to Use</h3>
-                    <p>Download complete LaTeX package with professional styling and documentation.</p>
+                    <h3>📁 Multi-Format Export</h3>
+                    <p>Export to LaTeX, HTML, PDF, DOCX, and images with professional styling and documentation.</p>
                 </div>
                 """, unsafe_allow_html=True)
         
@@ -7501,6 +7580,47 @@ def main():
             import traceback
             with st.expander("🔍 Error Details"):
                 st.code(traceback.format_exc())
+
+def suggest_template_from_layout(analysis_data: Dict[str, Any]) -> str:
+    """Suggest the best template based on original layout analysis."""
+    try:
+        # Look for layout hints in the analysis data
+        text_blocks = analysis_data.get('text_blocks', [])
+        sections = analysis_data.get('sections', [])
+        
+        if not text_blocks:
+            return "balanced"  # Default balanced template
+        
+        # Analyze the x-positions to detect column layout
+        x_positions = [block.get('x', 0) for block in text_blocks if isinstance(block, dict)]
+        if not x_positions:
+            return "balanced"
+        
+        # Detect if it's a two-column layout
+        page_width = max(x_positions) if x_positions else 600
+        left_column = [x for x in x_positions if x < page_width * 0.4]
+        right_column = [x for x in x_positions if x > page_width * 0.6]
+        
+        # Count content density
+        total_blocks = len(text_blocks)
+        skills_sections = sum(1 for section in sections if 'skill' in str(section).lower())
+        
+        if len(right_column) > total_blocks * 0.2:
+            # Two-column layout detected
+            if skills_sections > 0:
+                return "balanced"  # Better space utilization for skills
+            else:
+                return "modern"  # Sidebar layout
+        else:
+            # Single column layout
+            if total_blocks > 15:  # Content-heavy resume
+                return "balanced"  # Better space utilization
+            else:
+                return "minimal"  # Clean single column
+                
+    except Exception as e:
+        logger.warning(f"Template suggestion failed: {e}")
+        return "balanced"  # Safe default
 
 if __name__ == "__main__":
     main()
